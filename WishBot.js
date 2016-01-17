@@ -84,6 +84,17 @@ bot.on("message", function (msg) {
 
 //Login
 bot.login(options.email, options.password);
+
+bot.on("disconnected", function () {
+console.log("Disconnected");
+		setTimeout(function(){
+			console.log("info", "Attempting to log in...");
+			bot.login(process.env.email, process.env.password, function (err, token) {
+			if (err) { console.log(err); process.exit(0); }
+			if (!token) { console.log("Failed to re-connect"); process.exit(0); }
+			});}, 20000);
+});
+
 console.log("Logged in using " + options.email);
 //Server Functions
 function updateServers() {
