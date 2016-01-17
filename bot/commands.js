@@ -171,7 +171,7 @@ var commands = {
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",
-		process: function (bot, msg, suffix) {
+		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");
 			bot.deleteMessage(msg);
 		}
