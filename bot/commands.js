@@ -147,15 +147,23 @@ var commands = {
 	"lenny": {
 		usage: "[no usage]",
 		description: "puts a ( ͡° ͜ʖ ͡°)",
-		process: function (bot, msg, suffix) {
+		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");
+			bot.deleteMessage(msg);
+		}
+	},
+	"hug": {
+		usage: "[no usage]",
+		description: "puts a (>^_^)> <(^.^<)",
+		process: function (bot, msg) {
+			bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");
 			bot.deleteMessage(msg);
 		}
 	},
 	"flamethrower": {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
-		process: function (bot, msg, suffix) {
+		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ");
 			bot.deleteMessage(msg);
 		}
