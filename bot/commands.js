@@ -27,7 +27,12 @@ var commands = {
 		usage: "[command]",
 		permLevel: 0,
 		process: function (bot, msg, suffix) {
-			if (!suffix)
+			if(commands[suffix])
+			{
+				bot.sendMessage(msg.author, correctUsage(suffix))
+				bot.deleteMessage(msg);
+			}
+			else
 			{
 				var msgArray = [];
 				msgArray.push("**Commands: **");
@@ -37,11 +42,6 @@ var commands = {
 				});
 				msgArray.push("```");
 				bot.sendMessage(msg.author, msgArray);
-				bot.deleteMessage(msg);
-			}
-			else
-			{
-				bot.sendMessage(msg.author, correctUsage(suffix))
 				bot.deleteMessage(msg);
 			}
 		}
