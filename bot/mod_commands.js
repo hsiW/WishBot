@@ -40,7 +40,8 @@ var mod_commands = {
 		usage: "[none]",
 		description: "lists servers bot is connected to",
 		process: function (bot, msg) {
-			bot.sendMessage(msg.channel, bot.servers);
+			bot.sendMessage(msg.channel,bot.user+" is currently connected to the following servers:\n ```" +bot.servers+"```");
+			bot.deleteMessage(msg);
 		}
 	},
 	"channels":
