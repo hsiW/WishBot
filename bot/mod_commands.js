@@ -14,7 +14,14 @@ var mod_commands = {
 		permLevel: 0,
 		process: function (bot, msg, suffix)
 		{
-			if(!suffix)
+			if(mod_commands[suffix])
+			{
+				{
+					bot.sendMessage(msg.author, correctUsage(suffix))
+					bot.deleteMessage(msg);
+				}
+			}
+			else
 			{
 				var msgArray = [];
 				msgArray.push("**mod_commands: **");
@@ -25,11 +32,6 @@ var mod_commands = {
 				msgArray.push("```");
 				bot.sendMessage(msg.author, msgArray);
 				bot.deleteMessage(msg);
-			}
-			else {
-				{
-					bot.sendMessage(msg.author, correctUsage(suffix))
-				}
 			}
 		}
 	},
