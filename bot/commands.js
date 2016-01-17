@@ -39,7 +39,7 @@ var commands = {
 				msgArray.push("```");
 				Object.keys(commands).forEach(function (cmd) {
 					msgArray.push("" + options.command_prefix + "" + cmd + ": " + commands[cmd].description + "");
-				});
+				});20
 				msgArray.push("```");
 				bot.sendMessage(msg.author, msgArray);
 				bot.deleteMessage(msg);
@@ -193,14 +193,27 @@ var commands = {
 		usage: "[topic]",
 		description: "Probably gives you a link to the first result of the searched term.",
 		process: function (bot, msg, suffix) {
-			youTube.search(suffix, 2, function (error, result) {
-				if (error) {
+			youTube.search(suffix, 10, function (error, result)
+			{
+				if (error || !result || !result.items || result.items.length < 1) {
 					console.log(error);
-					bot.sendMessage(msg.channel, "So sorry was error, plz dont ded");
-				} else {
-					if (!result || !result.items || result.items.length < 1) {
-						bot.sendMessage(msg.channel, "¯\\\\_(ツ)_/¯");
-					} else {
+					bot.sendMessage(msg.channel, "Your search resulted in an error. Please forgive me senpai! ;-;");
+				}
+				else {
+					if (typeof result.items[0].id.videoId === "undefined")
+					{
+						for(i = 1; i < result.items.length; i++)
+						{
+							if(typeof result.items[i].id.videoId !== "undefined")
+							{
+									bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[i].id.videoId);
+									bot.deleteMessage(msg);
+									return;
+							}
+						}
+					}
+					else
+					{
 						bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId);
 					}
 				}
