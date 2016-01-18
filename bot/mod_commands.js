@@ -200,7 +200,49 @@ var mod_commands = {
 				bot.sendMessage(msg.channel, "couldn't delete channel: " + error);
 			});
 		}
-	}
+	},
+	"delete": {
+		usage: "[number of messages from 1 - 100]",
+		description: "Deletes the specified number of messages from the channel",
+		process: function (bot, msg, suffix)
+		{
+			if(suffix && /^\d+$/.test(suffix))
+			{
+				bot.getChannelLogs(msg.channel, 100, function(error,messages)
+				{
+					if(error)
+					{
+						console.log("there was an error getting the logs");
+						return;
+					}
+					else {
+						bot.startTyping(msg.channel);
+						var deletes = parseInt(suffix, 10) + 1;
+						console.log(deletes);
+						var dones = 0;
+						for (count of messages)
+						{
+							bot.deleteMessage(count);
+							dones++;
+							deletes--;
+							console.log(dones);
+							if(deletes == 0 || dones == 100)
+							{
+								console.log("Finished deleting "+deletes+" messages in "+msg.channel);
+								bot.stopTyping(msg.channel);
+								return;
+							}
+						}
+						bot.stopTyping(msg.channel);
+					}
+				});
+			}
+			else
+			{
+					bot.reply(msg,"using the delete command requires a interger between 1-500")
+			}
+		}
+	},
 	/*,
 	"eval": {
 		usage: "[command]",
