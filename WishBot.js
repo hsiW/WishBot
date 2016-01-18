@@ -13,18 +13,22 @@ cleverbot.prepare(function () {});
 
 var servers = getServers();
 
-var lastMessage;
-var lastAuthor;
-var commandsProcessed = 0;
-var talked = 0;
-var rand = 0;
+var lastMessage;//used to store the last message for use in spam detection
+var lastAuthor;//used to store the last author for use in spam detection
+var commandsProcessed = 0;//used to count the ammount of commands processed in the current session
+var talked = 0;//used to count how many times people talked to WishBot in the current session
+var rand = 0;//used for randomly pikcing game later on in code
 
-bot.on("ready", function () {
-	checkServers();
-	bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))]);
-	console.log("Ready to begin! Serving in " + bot.channels.length + " channels");
+
+//Does this stuff when the bot is ready and running
+bot.on("ready", function ()
+{
+	checkServers();//checks if servers changed
+	bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))]);//randomly sets a game
+	console.log("Ready to begin! Serving in " + bot.channels.length + " channels");//tells you that the bot is ready as well as in how many channels
 });
 
+//Does this stuff when the bot detects a message, can be in a channel its part of or through a private chat
 bot.on("message", function (msg) {
 	//Stuff to randomly change the game the bot is playing
 	rand = Math.floor((Math.random() * 33) + 1); //Randomly Generates a number and then checks that number to see if it is 1 and if it is the game is randomly changed
