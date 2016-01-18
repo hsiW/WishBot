@@ -153,13 +153,21 @@ var commands = {
 		}
 	},
 	"hug": {
-		usage: "[no usage]",
-		description: "puts a (>^_^)> <(^.^<)",
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");
-			bot.deleteMessage(msg);
-		}
-	},
+        usage: "[no usage]",
+        description: "puts a (>^_^)> <(^.^<)",
+        process: function (bot, msg, suffix) {
+            if (!suffix)
+            {
+                bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");
+            }
+            else {
+                msg.mentions.map(function (usr) {
+                    bot.sendMessage(msg, "(>^_^)> <(^.^<) " + "<@" + usr.id + ">");
+                });
+            }
+            bot.deleteMessage(msg);
+        }
+    },
 	"flamethrower": {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
