@@ -243,7 +243,8 @@ var commands = {
 		process: function (bot, msg, suffix) {
 			if (!suffix) {
 				bot.reply(msg, msg.author.avatarURL);
-			} else {
+			}
+			else {
 				msg.mentions.map(function (usr) {
 					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL);
 				});
