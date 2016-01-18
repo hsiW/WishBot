@@ -162,7 +162,7 @@ var commands = {
             }
             else {
                 msg.mentions.map(function (usr) {
-                    bot.sendMessage(msg, "(>^_^)> <(^.^<) " + "<@" + usr.id + ">");
+                    bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");
                 });
             }
             bot.deleteMessage(msg);
