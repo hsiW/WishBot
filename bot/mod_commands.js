@@ -147,8 +147,12 @@ var mod_commands = {
 			if (msg.author.id === "87600987040120832") {
 				bot.reply(msg, "I will be taking my leave.")
 				bot.logout();
-				console.log("Stopped bot.");
-			} else {
+				setTimeout(function(){
+					console.log("Stopped bot.");
+					process.exit(0);
+				}, 1000);
+			}
+			else {
 				bot.reply(msg, "I CANNOT BE STOPPED BY THE LIKES OF YOU");
 			}
 			bot.deleteMessage(msg);
@@ -201,6 +205,7 @@ var mod_commands = {
 			});
 		}
 	},
+
 	"delete": {
 		usage: "[number of messages from 1 - 100]",
 		description: "Deletes the specified number of messages from the channel",
@@ -225,7 +230,6 @@ var mod_commands = {
 							bot.deleteMessage(count);
 							dones++;
 							deletes--;
-							console.log(dones);
 							if(deletes == 0 || dones == 100)
 							{
 								console.log("Finished deleting "+deletes+" messages in "+msg.channel);
