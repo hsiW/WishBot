@@ -55,10 +55,9 @@ bot.on("message", function (msg) {
 			cmd.process(bot, msg, suffix, commandsProcessed, talked);
 		}
 	}
-	if (!(msg.channel.isPrivate) && (msg.content.indexOf(bot.user.mention()) == 0)) {
+	if (!(msg.channel.isPrivate) && (msg.content.indexOf(bot.user.mention()) == 0) && (msg.author.id != bot.user.id)) {
 		console.log("#" + msg.channel.name + ": " + msg.author.username + " - " + msg.content);
-		var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1))
-			.length + 2);
+		var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 		var conv = suffix.split(" ");
 		bot.startTyping(msg.channel);
 		talked = talked + 1;
@@ -93,7 +92,7 @@ bot.on("disconnected", function () {
 console.log("Disconnected");
 		setTimeout(function(){
 			console.log("info", "Attempting to log in...");
-			bot.login(process.env.email, process.env.password, function (err, token) {
+			bot.login(options.email, options.password, function (err, token) {
 			if (err) { console.log(err); process.exit(0); }
 			if (!token) { console.log("Failed to re-connect"); process.exit(0); }
 			});}, 20000);
