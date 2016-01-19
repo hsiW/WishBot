@@ -20,6 +20,10 @@
   "scripts": {
     "test": "-help"
   },
+    "repository": {
+  "type": "git",
+  "url": "https://github.com/hsiw/Wishbot.git"
+},
   "keywords": [
     "bot",
     "discord"
