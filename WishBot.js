@@ -7,9 +7,6 @@ var commands = require("./bot/commands.js").commands;
 var mod_commands = require("./bot/mod_commands.js").mod_commands;
 var fs = require('fs');
 
-var StyledConsole = require('styled-console');
-var styledConsole = new StyledConsole;
-
 var cleverbot = require("cleverbot-node");
 var onee = new cleverbot;
 cleverbot.prepare(function () {});
@@ -28,7 +25,7 @@ bot.on("ready", function ()
 {
 	checkServers();//checks if servers changed
 	bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))]);//randomly sets a game
-	console.log(styledConsole.parse("<c:spurple>Ready to begin! Serving in " + bot.channels.length + " channels"));//tells you that the bot is ready as well as in how many channels
+	console.log("Ready to begin! Serving in " + bot.channels.length + " channels");//tells you that the bot is ready as well as in how many channels
 });
 
 //Does this stuff when the bot detects a message, can be in a channel its part of or through a private chat
@@ -38,7 +35,7 @@ bot.on("message", function (msg) {
 	if (rand == 1) {
 		var randgame = games[Math.floor(Math.random() * (games.length))];
 		bot.setPlayingGame(randgame);
-		console.log(styledConsole.parse("<c:syellow>@WishBot</c:syellow> - Randomly changed game to <c:syellow>\"" + randgame + "\""));
+		console.log("@WishBot - Randomly changed game to \"" + randgame + "\"");
 	}
 	//Start of command checking
 	if ((!(msg.channel.isPrivate)) && ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix)) && (msg.author.id != bot.user.id)) {
@@ -47,40 +44,40 @@ bot.on("message", function (msg) {
 		if (msg.content[0] === options.command_prefix && commands[cmdTxt]) {
 			var cmd = commands[cmdTxt];
 			commandsProcessed = commandsProcessed + 1;
-			console.log(styledConsole.parse("<c:sgreen>#" + msg.channel.name + ":</c:sgreen> <c:syellow>@WishBot</c:syellow> - " + cmdTxt + " was used by <c:scyan>" + msg.author.username));
+			console.log("#" + msg.channel.name + ": @WishBot - " + cmdTxt + " was used by " + msg.author.username);
 			cmd.process(bot, msg, suffix);
 		}
 		if ((msg.content[0] === options.mod_command_prefix) && (msg.channel.permissionsOf(msg.sender)
 				.hasPermission("manageServer")) && mod_commands[cmdTxt]) {
 			var cmd = mod_commands[cmdTxt];
 			commandsProcessed = commandsProcessed + 1;
-			console.log(styledConsole.parse("<c:sgreen>#" + msg.channel.name + ":</c:sgreen> <c:syellow>@WishBot</c:syellow> - " + cmdTxt + " was used by <c:scyan>" + msg.author.username));
+			console.log("#" + msg.channel.name + ": @WishBot - " + cmdTxt + " was used by " + msg.author.username);
 			cmd.process(bot, msg, suffix, commandsProcessed, talked);
 		}
 	}
 	if (!(msg.channel.isPrivate) && (msg.content.indexOf(bot.user.mention()) == 0) && (msg.author.id != bot.user.id)) {
-		console.log(styledConsole.parse("<c:sgreen>#private:</c:sgreen> <c:scyan>" + msg.author.username + "</c:scyan> - " + msg.content));
+		console.log("#" + msg.channel.name + ": " + msg.author.username + " - " + msg.content);
 		var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 		var conv = suffix.split(" ");
 		bot.startTyping(msg.channel);
 		talked = talked + 1;
 		onee.write(conv, function (response) {
-			console.log(styledConsole.parse("<c:sgreen>#" + msg.channel.name + ":</c:sgreen> <c:syellow>@WishBot</c:syellow> - <c:scyan>🌐</c:scyan> - " + response.message));
+			console.log("#" + msg.channel.name + ": @WishBot - 🌐 - " + response.message);
 			bot.sendMessage(msg.channel, "🌐 - " + response.message);
 			bot.stopTyping(msg.channel);
 		})
 		return;
 	}
-	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {
-		console.log(styledConsole.parse("<c:sgreen>#private:</c:sgreen> <c:scyan>" + msg.author.username + "</c:scyan> - " + msg.content));
-		bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat.");
+	if (msg.author.id != bot.user.id) {
+		console.log("#" + msg.channel.name + ": " + msg.author.username + " - " + msg.content);
 	}
-	if (msg.author.id != bot.user.id && !(msg.channel.isPrivate)) {
-		console.log(styledConsole.parse("<c:sgreen>#" + msg.channel.name + ":</c:sgreen> <c:scyan>" + msg.author.username + "</c:scyan> - " + msg.content));
+	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {
+		console.log("#private: " + msg.author.username + " - " + msg.content);
+		bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat.");
 	}
 	if ((msg.content === lastMessage && !(msg.channel.id === ("87901288729178112"))) && (msg.author.id === lastAuthor)) {
 		bot.deleteMessage(msg);
-		console.log(styledConsole.parse("<c:syellow>@WishBot</c:syellow> - Deleted message from <c:scyan>" + msg.author.name + "</c:scyan> because it was a duplicate message."));
+		console.log("@WishBot - Deleted message from " + msg.author.name + " because it was a duplicate message.");
 	}
 	if (!(msg.channel.id == ("87901288729178112"))) {
 		lastAuthor = msg.author.id;
@@ -90,17 +87,18 @@ bot.on("message", function (msg) {
 
 //Login
 bot.login(options.email, options.password);
-console.log(styledConsole.parse("<c:syellow>Logged in using " + options.email));
 
 bot.on("disconnected", function () {
-console.log(styledConsole.parse("<c:sred>Disconnected"));
+console.log("Disconnected");
 		setTimeout(function(){
-			console.log(styledConsole.parse("<c:syellow>Attempting to re-connect in..."));
+			console.log("info", "Attempting to log in...");
 			bot.login(options.email, options.password, function (err, token) {
 			if (err) { console.log(err); process.exit(0); }
-			if (!token) { console.log(styledConsole.parse("<c:sred>Failed to re-connect")); process.exit(0); }
+			if (!token) { console.log("Failed to re-connect"); process.exit(0); }
 			});}, 20000);
 });
+
+console.log("Logged in using " + options.email);
 //Server Functions
 function updateServers() {
 	fs.writeFile("./bot/servers.json", JSON.stringify(servers, null, '\t'), null);
