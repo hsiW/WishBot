@@ -2,6 +2,9 @@ var options = require("./options.json");
 var games = require("./games.json").games;
 var Discord = require("discord.js");
 
+var StyledConsole = require('styled-console');
+var styledConsole = new StyledConsole;
+
 function correctUsage(cmd) {
 	var msg = "Usage: " + options.command_prefix + "" + cmd + " " + mod_commands[cmd].usage;
 	return msg;
@@ -164,10 +167,9 @@ var mod_commands = {
 		process: function (bot, msg, suffix) {
 			if (suffix) {
 				bot.setUsername(suffix);
-				console.log("Mod Command - Set Username to " + suffix);
+				console.log(styledConsole.parse("<c:syellow>@WishBot</c:syellow> - " + msg.author.name + " set Username to " + suffix));
 			} else {
 				bot.setUsername("Onee-chan");
-				console.log("Mod Command - Set Username to Onee-chan");
 			}
 			bot.reply(msg, "done!")
 		}
@@ -217,13 +219,13 @@ var mod_commands = {
 				{
 					if(error)
 					{
-						console.log("there was an error getting the logs");
+						console.log(styledConsole.parse("<c:red>there was an error getting the logs"));
 						return;
 					}
 					else {
 						bot.startTyping(msg.channel);
 						var deletes = parseInt(suffix, 10) + 1;
-						console.log(deletes);
+						var temp = deletes - 1;
 						var dones = 0;
 						for (count of messages)
 						{
@@ -232,7 +234,7 @@ var mod_commands = {
 							deletes--;
 							if(deletes == 0 || dones == 100)
 							{
-								console.log("Finished deleting "+deletes+" messages in "+msg.channel);
+								console.log(styledConsole.parse("<c:syellow>Finished deleting "+temp+" messages in "+msg.channel.name));
 								bot.stopTyping(msg.channel);
 								return;
 							}
