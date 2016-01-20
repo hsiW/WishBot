@@ -41,7 +41,7 @@ bot.on("message", function (msg) {
 	if (rand == 1) {
 		var randgame = games[Math.floor(Math.random() * (games.length))];
 		bot.setPlayingGame(randgame);
-		console.log(botc("@WishBot")+" - Randomly changed game to \"" + warningC(randgame) + "\"");
+		console.log(botC("@WishBot")+" - Randomly changed game to \"" + warningC(randgame) + "\"");
 	}
 	//Start of command checking
 	if ((!(msg.channel.isPrivate)) && ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix)) && (msg.author.id != bot.user.id)) {
