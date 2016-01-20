@@ -2,6 +2,15 @@ var options = require("./options.json");
 var games = require("./games.json").games;
 var Discord = require("discord.js");
 
+var chalk = require("chalk");
+var c = new chalk.constructor({enabled: true});
+
+var channelC = c.green.bold;
+var userC = c.cyan.bold;
+var warningC = c.yellow.bold;
+var errorC = c.red.bold;
+var botC = c.magenta.bold;
+
 function correctUsage(cmd) {
 	var msg = "Usage: " + options.command_prefix + "" + cmd + " " + mod_commands[cmd].usage;
 	return msg;
@@ -164,10 +173,10 @@ var mod_commands = {
 		process: function (bot, msg, suffix) {
 			if (suffix) {
 				bot.setUsername(suffix);
-				console.log("Mod Command - Set Username to " + suffix);
+				console.log(channelC("#" + msg.channel.name) + ": "+botC("@WishBot")+" - Username set to "+warningC(suffix)+" by " + userC(msg.author.username));
 			} else {
 				bot.setUsername("Onee-chan");
-				console.log("Mod Command - Set Username to Onee-chan");
+				console.log(channelC("#" + msg.channel.name) + ": "+botC("@WishBot")+" - Username set to "+warningC("Onee-chan")+" by " + userC(msg.author.username));
 			}
 			bot.reply(msg, "done!")
 		}
