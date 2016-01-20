@@ -101,5 +101,5 @@ console.log(errorC("Disconnected"));
 			bot.login(options.email, options.password, function (err, token) {
 			if (err) { console.log(err); process.exit(0); }
 			if (!token) { console.log(errorC("Failed to re-connect")); process.exit(0); }
-			});}, 20000);
+		});}, 33333);
 });
