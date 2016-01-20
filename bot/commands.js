@@ -6,6 +6,15 @@ var qs = require("querystring");
 var YouTube = require('youtube-node');
 var fs = require('fs');
 
+var chalk = require("chalk");
+var c = new chalk.constructor({enabled: true});
+
+var channelC = c.green.bold;
+var userC = c.cyan.bold;
+var warningC = c.yellow.bold;
+var errorC = c.red.bold;
+var botC = c.magenta.bold;
+
 var youTube = new YouTube();
 youTube.setKey(options.youtube_api_key);
 
@@ -212,7 +221,7 @@ var commands = {
 			youTube.search(suffix, 10, function (error, result)
 			{
 				if (error || !result || !result.items || result.items.length < 1) {
-					console.log(error);
+					console.log(errorC(error));
 					bot.sendMessage(msg.channel, "Your search resulted in an error. Please forgive me senpai! ;-;");
 				}
 				else {
@@ -280,7 +289,7 @@ var commands = {
 				}
 			}, function (error, response, body) {
 				if (error) {
-					console.log(error);
+					console.log(errorC(error));
 				}
 				if (!error && response.statusCode == 200) {
 					xml2js.parseString(body, function (err, result) {
@@ -322,15 +331,11 @@ function get_gif(tags, func) {
 		query += "&tag=" + tags.join('+')
 	}
 
-	//wouldnt see request lib if defined at the top for some reason:\
 	var request = require("request");
-	//console.log(query)
 	request(giphy_config.url + "?" + query, function (error, response, body) {
-		//console.log(arguments)
 		if (error || response.statusCode !== 200) {
-			console.error("giphy: Got error: " + body);
-			console.log(error);
-			//console.log(response)
+			console.log();(errorC("giphy: Got error: " + body));
+			console.log(errorC(error));
 		} else {
 			try {
 				var responseObj = JSON.parse(body)
