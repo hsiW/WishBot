@@ -53,14 +53,6 @@ var mod_commands = {
 			bot.deleteMessage(msg);
 		}
 	},
-	"channels":
-	{
-		usage: ["none"],
-		description: "lists channels bot is connected to",
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel, bot.channels);
-		}
-	},
 	"stats": {
 		usage: "[none]",
 		description: "outputs different about the bot",
@@ -94,37 +86,15 @@ var mod_commands = {
 		usage: "[invite]",
 		description: "joins the server it's invited to",
 		process: function (bot, msg, suffix) {
-			console.log(bot.joinServer(suffix, function (error, server) {
-				console.log("callback: " + arguments);
+		bot.joinServer(suffix, function (error, server) {
 				if (error) {
-					bot.sendMessage(msg.channel, "failed to join: " + error);
-				} else {
-					console.log("Joined server " + server);
+					bot.sendMessage(msg.channel, "Failed to join");
+					console.log(errorC("Failed to join - "+error));
+				}
+				else {
+					console.log(warningC("Joined server " + server));
 					bot.sendMessage(msg.channel, "Successfully joined " + server);
 				}
-			}));
-		}
-	},
-	"create": {
-		usage: "[channel name]",
-		description: "creates a new text channel with the given name.",
-		process: function (bot, msg, suffix) {
-			bot.createChannel(msg.channel.server, suffix, "text").then(function (channel) {
-				bot.sendMessage(msg.channel, "created " + channel);
-			}).catch(function (error) {
-				bot.sendMessage(msg.channel, "failed to create channel: " + error);
-			});
-		}
-	},
-	"voice": {
-		usage: "[channel name]",
-		description: "creates a new voice channel with the give name.",
-		process: function (bot, msg, suffix) {
-			bot.createChannel(msg.channel.server, suffix, "voice").then(function (channel) {
-				bot.sendMessage(msg.channel, "created " + channel.id);
-				console.log("created " + channel);
-			}).catch(function (error) {
-				bot.sendMessage(msg.channel, "failed to create channel: " + error);
 			});
 		}
 	},
@@ -133,6 +103,7 @@ var mod_commands = {
 		description: "Sets the topic for the channel. No topic removes the topic.",
 		process: function (bot, msg, suffix) {
 			bot.setChannelTopic(msg.channel, suffix);
+			console.log(botC("@WishBot - ")+warningC("Set topic of "+msg.channel));
 			bot.reply(msg, "done!")
 		}
 	},
@@ -157,7 +128,7 @@ var mod_commands = {
 				bot.reply(msg, "I will be taking my leave.")
 				bot.logout();
 				setTimeout(function(){
-					console.log("Stopped bot.");
+					console.log("@WishBot - Stopped bot.");
 					process.exit(0);
 				}, 1000);
 			}
@@ -181,40 +152,6 @@ var mod_commands = {
 			bot.reply(msg, "done!")
 		}
 	},
-	"remove": {
-		usage: "[channel name]",
-		description: "deletes the specified channel",
-		process: function (bot, msg, suffix) {
-			var channel = bot.channels.get("id", suffix);
-			if (suffix.startsWith('[#')) {
-				channel = bot.channels.get("id", suffix.substr(2, suffix.length - 3));
-			}
-			if (!channel) {
-				var channels = bot.channels.getAll("name", suffix);
-				if (channels.length > 1) {
-					https: //github.com/chalda/DiscordBot/issues/new
-						var response = "Multiple channels match, please use id:";
-					for (var i = 0; i < channels.length; i++) {
-						response += channels[i] + ": " + channels[i].id;
-					}
-					bot.sendMessage(msg.channel, response);
-					return;
-				} else if (channels.length == 1) {
-					channel = channels[0];
-				} else {
-					bot.sendMessage(msg.channel, "Couldn't find channel " + suffix + " to delete!");
-					return;
-				}
-			}
-			bot.sendMessage(msg.channel, "deleting channel " + suffix + " at " + msg.author + "'s request");
-			bot.deleteChannel(channel).then(function (channel) {
-				console.log("deleted " + suffix + " at " + msg.author + "'s request");
-			}).catch(function (error) {
-				bot.sendMessage(msg.channel, "couldn't delete channel: " + error);
-			});
-		}
-	},
-
 	"delete": {
 		usage: "[number of messages from 1 - 100]",
 		description: "Deletes the specified number of messages from the channel",
