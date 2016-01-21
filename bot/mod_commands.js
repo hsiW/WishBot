@@ -60,7 +60,14 @@ var mod_commands = {
 			var seconds = Math.round((bot.uptime / 1000) % 60);
 			var minutes = Math.round((bot.uptime / (1000 * 60)) % 60);
 			var hours = Math.round((bot.uptime / (1000 * 60 * 60)) % 60);
-			bot.sendMessage(msg, "**Info about "+bot.user+":** \n```Bot Uptime: " + hours + " hours, " + minutes + " minutes, and " + seconds + " seconds.\nConnected to "+bot.servers.length+" server(s) and "+bot.channels.length+" channel(s).\nDuring the current session "+commandsProcessed+" command(s) have been processed.\nTalked to "+talked+" time(s).```");
+			var statArray = []
+			statArray.push("**Info about" +bot.user+"**");
+			statArray.push("```Bot Uptime: "+hours+" hours, "+minutes+" minutes, and "+seconds+" seconds.");
+			statArray.push("Currently connected to "+bot.servers.length+" server(s) and "+bot.channels.length+" channel(s)");
+			statArray.push("During the current session "+commandsProcessed+" command(s) have been processed.");
+			statArray.push(bot.user.username+ "has been talked to "+talked+" time(s)");
+			statArray.push("Currently using "+ (Math.round(process.memoryUsage().rss/1024/1000))+ "MB```")
+			bot.sendMessage(msg, statArray);
 			bot.deleteMessage(msg);
 		}
 	},
