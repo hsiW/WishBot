@@ -193,6 +193,15 @@ var commands = {
 			bot.deleteMessage(msg);
 		}
 	},
+	"weedle": {
+		usage: "[no usage]",
+		description: "weedle weedle weedle wee",
+		process: function (bot, msg) {
+			bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee");
+			bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif");
+			bot.deleteMessage(msg);
+		}
+	},
 	"letsplay": {
 		usage: "[game]",
 		description: "Tells everyone to play a game.",
