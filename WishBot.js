@@ -26,7 +26,6 @@ var commandsProcessed = 0;//used to count the ammount of commands processed in t
 var talked = 0;//used to count how many times people talked to WishBot in the current session
 var rand = 0;//used for randomly pikcing game later on in code
 
-
 //Does this stuff when the bot is ready and running
 bot.on("ready", function ()
 {
