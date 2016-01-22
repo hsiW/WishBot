@@ -14,6 +14,7 @@ cleverbot.prepare(function () {});
 var chalk = require("chalk");
 var c = new chalk.constructor({enabled: true});
 
+var serverC = c.black.bold;
 var channelC = c.green.bold;
 var userC = c.cyan.bold;
 var warningC = c.yellow.bold;
@@ -35,6 +36,8 @@ bot.on("ready", function ()
 
 //Does this stuff when the bot detects a message, can be in a channel its part of or through a private chat
 bot.on("message", function (msg) {
+	//console.log(msg.channel.id);
+	//console.log(msg.channel.server.id);
 	//Stuff to randomly change the game the bot is playing
 	rand = Math.floor((Math.random() * 33) + 1); //Randomly Generates a number and then checks that number to see if it is 1 and if it is the game is randomly changed
 	if (rand == 1) {
@@ -73,7 +76,7 @@ bot.on("message", function (msg) {
 		return;
 	}
 	if (msg.author.id != bot.user.id && !(msg.channel.isPrivate)) {
-		console.log(channelC("#" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
+		console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
 	}
 	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {
 		console.log(channelC("#private")+": " + userC(msg.author.username) + " - " + msg.content);
