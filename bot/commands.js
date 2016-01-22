@@ -5,6 +5,8 @@ var xml2js = require('xml2js');
 var qs = require("querystring");
 var YouTube = require('youtube-node');
 var fs = require('fs');
+var define = require('define-it').definitions;
+var Wiki = require('wikijs');
 
 var chalk = require("chalk");
 var c = new chalk.constructor({enabled: true});
@@ -161,6 +163,61 @@ var commands = {
 			bot.deleteMessage(msg);
 		}
 	},
+	"define": {
+		usage: "[word to define]",
+		description: "Gives the definition of the word mentioned",
+		process: function (bot, msg, suffix)
+		{
+			if(suffix)
+			{
+				define(suffix, function(err, res) {
+				if (err){
+					bot.reply("There was an error looking that up.")
+				}
+				if (res)
+				{
+					bot.sendMessage(msg.channel,"__The definition of "+suffix+" is:__\n - "+res);
+				}
+				else
+				{
+					bot.sendMessage(msg.channel, "Your search for "+suffix+" didn't return any results.")
+				}
+			});
+			}
+			else {
+				bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
+			}
+			bot.deleteMessage(msg);
+		}
+	},
+	"wiki": {
+		usage: "[information to be brought up]",
+		description: "Sometimes returns information from wikipeida based on the suffix",
+		process: function (bot, msg, suffix) {
+			if(suffix)
+			{
+            new Wiki().search(suffix,1).then(function(data) {
+                new Wiki().page(data.results[0]).then(function(page) {
+                    page.summary().then(function(summary) {
+                        var sumText = summary.toString().split('\n');
+                            var paragraph = sumText.shift();
+                            if(paragraph)
+														{
+                                bot.sendMessage(msg.channel,"__Wiki info of "+suffix+":__\n"+paragraph);
+                            }
+                    });
+                });
+            },function(err){
+							console.log(errorC(err));
+                bot.reply(msg,"There was an error somewhere.");
+            });
+			}
+			else {
+				bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
+			}
+			bot.deleteMessage(msg);
+		}
+	},
 	"hug": {
         usage: "[no usage]",
         description: "puts a (>^_^)> <(^.^<)",
@@ -219,9 +276,31 @@ var commands = {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
 		process: function (bot, msg, suffix) {
-			bot.sendMessage(msg.channel, "📞 @everyone, " + msg.author + " would like to have a call!");
+			bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!");
 			bot.deleteMessage(msg);
 		}
+	},
+	"randomquote": {
+		usage: "[none]",
+		description: "Tells everyone you want to call.",
+		process: function (bot, msg)
+		{
+			bot.getChannelLogs("136558567082819584", 100, function(error,messages)
+			{
+			if(error)
+			{
+				console.log(error);
+				console.log("there was an error getting the logs");
+				return;
+			}
+			else
+			{
+				var rand = Math.floor((Math.random() * messages.length) + 1);
+				bot.sendMessage(msg.channel,messages[rand]);
+			}
+			bot.deleteMessage(msg);
+		});
+	}
 	},
 	"youtube": {
 		usage: "[topic]",
