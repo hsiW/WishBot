@@ -61,12 +61,12 @@ var mod_commands = {
 			var minutes = Math.round((bot.uptime / (1000 * 60)) % 60);
 			var hours = Math.round((bot.uptime / (1000 * 60 * 60)) % 60);
 			var statArray = []
-			statArray.push("**Info about" +bot.user+"**");
+			statArray.push("**Info about " +bot.user+"**");
 			statArray.push("```Bot Uptime: "+hours+" hours, "+minutes+" minutes, and "+seconds+" seconds.");
 			statArray.push("Currently connected to "+bot.servers.length+" server(s) and "+bot.channels.length+" channel(s)");
 			statArray.push("During the current session "+commandsProcessed+" command(s) have been processed.");
 			statArray.push(bot.user.username+ "has been talked to "+talked+" time(s)");
-			statArray.push("Currently using "+ (Math.round(process.memoryUsage().rss/1024/1000))+ "MB```")
+			statArray.push("Currently using "+ (Math.round(process.memoryUsage().rss/1024/1000))+ "MB of memory```")
 			bot.sendMessage(msg, statArray);
 			bot.deleteMessage(msg);
 		}
@@ -176,7 +176,6 @@ var mod_commands = {
 					else {
 						bot.startTyping(msg.channel);
 						var deletes = parseInt(suffix, 10) + 1;
-						console.log(deletes);
 						var dones = 0;
 						for (count of messages)
 						{
@@ -185,7 +184,6 @@ var mod_commands = {
 							deletes--;
 							if(deletes == 0 || dones == 100)
 							{
-								console.log("Finished deleting "+deletes+" messages in "+msg.channel);
 								bot.stopTyping(msg.channel);
 								return;
 							}
@@ -200,6 +198,35 @@ var mod_commands = {
 			}
 		}
 	}/*,
+	"setcolour": {
+		usage: "[name]",
+		description: "Changes the bots username",
+		process: function (bot, msg, suffix) {
+			if (suffix && msg.mentions)
+			{
+				var colour = (suffix.split(" ")[1]);
+				var temp = colour.toString();
+				msg.mentions.map(function (usr)
+				{
+					bot.createRole(msg.channel.server.id,
+					{
+								color : temp,
+    						name : temp
+					})
+					setTimeout(function()
+					{
+						bot.addMemberToRole(usr,temp);
+					},1000);
+				});
+
+			}
+			else
+			{
+				bot.sendMessage(msg.channel, "You need to enter a colour before I can change you to that Senpai.")
+			}
+		}
+	},
+	/*,
 	"update": {
 		usage: "[none]",
 		description:"Updates the bot to the most current veresion on github",
