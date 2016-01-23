@@ -5,6 +5,16 @@ var xml2js = require('xml2js');
 var qs = require("querystring");
 var YouTube = require('youtube-node');
 var fs = require('fs');
+var Wiki = require('wikijs');
+
+var chalk = require("chalk");
+var c = new chalk.constructor({enabled: true});
+
+var channelC = c.green.bold;
+var userC = c.cyan.bold;
+var warningC = c.yellow.bold;
+var errorC = c.red.bold;
+var botC = c.magenta.bold;
 
 var youTube = new YouTube();
 youTube.setKey(options.youtube_api_key);
@@ -23,14 +33,13 @@ function correctUsage(cmd) {
 
 var commands = {
 	"help": {
-		description: "Sends a DM containing all of the commands.",
 		usage: "[command]",
-		permLevel: 0,
+		description: "Sends a DM containing all of the commands.",
+    delete: true,
 		process: function (bot, msg, suffix) {
 			if(commands[suffix])
 			{
 				bot.sendMessage(msg.author, correctUsage(suffix))
-				bot.deleteMessage(msg);
 			}
 			else
 			{
@@ -42,13 +51,13 @@ var commands = {
 				});20
 				msgArray.push("```");
 				bot.sendMessage(msg.author, msgArray);
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"info": {
 		usage: "[none]",
 		description: "Gives info about the server",
+    delete: true,
 		process: function (bot, msg, suffix) {
 			var msgArray = [];
 			msgArray.push("You requested info on **" + msg.channel.server.name + "**");
@@ -70,6 +79,7 @@ var commands = {
 	"ping": {
 		usage: "[none]",
 		description: "responds pong, useful for checking if bot is alive",
+    delete: false,
 		process: function (bot, msg, suffix) {
 			bot.reply(msg, "PONG!");
 		}
@@ -77,38 +87,37 @@ var commands = {
 	"vquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with voice tag",
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix)
 			{
 				bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")
-				bot.deleteMessage(msg);
 			}
 			else
 			{
 				bot.sendMessage("136558567082819584", "From voice chat: " + suffix)
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"tquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with text tag",
+    	delete: true,
 		process: function (bot, msg, suffix) {
 			if(!suffix)
 			{
 				bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")
-				bot.deleteMessage(msg);
 			}
 			else
 			{
 				bot.sendMessage("136558567082819584", "From text chat: " + suffix)
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"gif": {
 		usage: "[image tags]",
 		description: "returns a random gif matching the tags passed",
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			var tags = suffix.split(" ");
 			get_gif(tags, function (id) {
@@ -118,43 +127,68 @@ var commands = {
 					bot.sendMessage(msg.channel, "Invalid tags, try something different. [Tags: " + (tags ? tags : "Random GIF") + "]");
 				}
 			});
-			bot.deleteMessage(msg);
 		}
 	},
 	"reddit": {
 		usage: "[subreddit]",
 		description: "Links the top post on /r/all or the top post on the subreddit entered",
+  	delete: false,
 		process: function (bot, msg, suffix) {
 			var path = "/.rss"
 			if (suffix) {
 				path = "/r/" + suffix + path;
 			}
 			rssfeed(bot, msg, "https://www.reddit.com" + path, 1, false);
-			bot.deleteMessage(msg);
 		}
 	},
 	"roll": {
 		usage: "[max value]",
 		description: "returns a random number between 1 and max value. If no max is specified it is 10",
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			var max = 6;
 			if (suffix) max = suffix;
 			var roll = Math.floor(Math.random() * max) + 1;
-			bot.reply(msg, "you rolled a " + roll + "!");
+			bot.reply(msg, "you rolled a " + roll + "! 🎲");
 			bot.deleteMessage(msg);
 		}
 	},
 	"lenny": {
 		usage: "[no usage]",
 		description: "puts a ( ͡° ͜ʖ ͡°)",
+  	delete: true,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");
-			bot.deleteMessage(msg);
+		}
+	},
+	"wiki": {
+		usage: "[information to be brought up]",
+		description: "Gives you a wikipedia url based on the entered text",
+  	delete: true,
+		process: function (bot, msg, suffix)
+		{
+			if(suffix)
+			{
+        new Wiki().search(suffix,1).then(function(data) {
+      	new Wiki().page(data.results[0]).then(function(page)
+				{
+					bot.sendMessage(msg.channel, page.fullurl);
+				});
+			},function(err){
+				console.log(errorC(err));
+				bot.reply(msg,"There was an error somewhere.");
+			});
+		}
+		else
+		{
+			bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
+		}
 		}
 	},
 	"hug": {
         usage: "[no usage]",
         description: "puts a (>^_^)> <(^.^<)",
+        delete: true,
         process: function (bot, msg, suffix) {
             if (!suffix)
             {
@@ -165,54 +199,86 @@ var commands = {
                     bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");
                 });
             }
-            bot.deleteMessage(msg);
         }
     },
 	"flamethrower": {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
+  	delete: true,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ");
-			bot.deleteMessage(msg);
 		}
 	},
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",
-		process: function (bot, msg) {
+  	delete: true,
+		process: function (bot, msg)
+		{
 			bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");
-			bot.deleteMessage(msg);
+		}
+	},
+	"weedle": {
+		usage: "[no usage]",
+		description: "weedle weedle weedle wee",
+		delete: true,
+		process: function (bot, msg) {
+			bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee");
+			bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif");
 		}
 	},
 	"letsplay": {
 		usage: "[game]",
 		description: "Tells everyone to play a game.",
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			if (suffix) {
 				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!");
-				bot.deleteMessage(msg);
 			} else {
 				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play a game!");
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"call": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
+  	delete: true,
 		process: function (bot, msg, suffix) {
-			bot.sendMessage(msg.channel, "📞 @everyone, " + msg.author + " would like to have a call!");
+			bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!");
 			bot.deleteMessage(msg);
 		}
+	},
+	"randomquote": {
+		usage: "[none]",
+		description: "Tells everyone you want to call.",
+  	delete: false,
+		process: function (bot, msg)
+		{
+			bot.getChannelLogs("136558567082819584", 100, function(error,messages)
+			{
+			if(error)
+			{
+				console.log(error);
+				console.log("there was an error getting the logs");
+				return;
+			}
+			else
+			{
+				var rand = Math.floor((Math.random() * messages.length) + 1);
+				bot.sendMessage(msg.channel,messages[rand]);
+			}
+		});
+	}
 	},
 	"youtube": {
 		usage: "[topic]",
 		description: "Probably gives you a link to the first result of the searched term.",
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			youTube.search(suffix, 10, function (error, result)
 			{
 				if (error || !result || !result.items || result.items.length < 1) {
-					console.log(error);
+					console.log(errorC(error));
 					bot.sendMessage(msg.channel, "Your search resulted in an error. Please forgive me senpai! ;-;");
 				}
 				else {
@@ -223,7 +289,6 @@ var commands = {
 							if(typeof result.items[i].id.videoId !== "undefined")
 							{
 									bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[i].id.videoId);
-									bot.deleteMessage(msg);
 									return;
 							}
 						}
@@ -233,13 +298,13 @@ var commands = {
 						bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId);
 					}
 				}
-				bot.deleteMessage(msg);
 			});
 		}
 	},
 	"avatar": {
 		usage: "outputs the avatar of the user of the command or the person linked.",
 		description: "Outputs an avatar url",
+		delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix) {
 				bot.reply(msg, msg.author.avatarURL);
@@ -249,12 +314,12 @@ var commands = {
 					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL);
 				});
 			}
-			bot.deleteMessage(msg);
 		}
 	},
 	"id": {
 		usage: "outputs the id of the user of the command or the person linked.",
 		description: "Outputs an id",
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix) {
 				bot.reply(msg, "your id is ```" + msg.author.id + "```");
@@ -263,12 +328,12 @@ var commands = {
 					bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```");
 				});
 			}
-			bot.deleteMessage(msg);
 		}
 	},
 	"anime": {
 		usage: "[no usage]",
 		description: "Gives information about the anime mentioned",
+  	delete: false,
 		process: function (bot, msg, suffix) {
 			var anime = msg.content.split(" ").slice(1).join("+");
 			var apiURL = "http://myanimelist.net/api/anime/search.xml?q=" + anime;
@@ -280,7 +345,7 @@ var commands = {
 				}
 			}, function (error, response, body) {
 				if (error) {
-					console.log(error);
+					console.log(errorC(error));
 				}
 				if (!error && response.statusCode == 200) {
 					xml2js.parseString(body, function (err, result) {
@@ -322,15 +387,11 @@ function get_gif(tags, func) {
 		query += "&tag=" + tags.join('+')
 	}
 
-	//wouldnt see request lib if defined at the top for some reason:\
 	var request = require("request");
-	//console.log(query)
 	request(giphy_config.url + "?" + query, function (error, response, body) {
-		//console.log(arguments)
 		if (error || response.statusCode !== 200) {
-			console.error("giphy: Got error: " + body);
-			console.log(error);
-			//console.log(response)
+			console.log();(errorC("giphy: Got error: " + body));
+			console.log(errorC(error));
 		} else {
 			try {
 				var responseObj = JSON.parse(body)
