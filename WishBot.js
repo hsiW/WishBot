@@ -36,40 +36,27 @@ bot.on("ready", function ()
 
 //Does this stuff when the bot detects a message, can be in a channel its part of or through a private chat
 bot.on("message", function (msg) {
-	//console.log(msg.channel.id);
-	//console.log(msg.channel.server.id);
-	//Stuff to randomly change the game the bot is playing
-	rand = Math.floor((Math.random() * 33) + 1); //Randomly Generates a number and then checks that number to see if it is 1 and if it is the game is randomly changed
-	if (rand == 1) {
-		var randgame = games[Math.floor(Math.random() * (games.length))];
-		bot.setPlayingGame(randgame);
-		console.log(botC("@WishBot")+" - Randomly changed game to \"" + warningC(randgame) + "\"");
-	}
 	//Start of command checking
-	if ((!(msg.channel.isPrivate)) && ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix)) && (msg.author.id != bot.user.id)) {
+	if (!(msg.channel.isPrivate) && ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix)) && (msg.author.id != bot.user.id)) {
 		var cmdTxt = msg.content.split(" ")[0].substring(1);
 		var suffix = msg.content.substring(cmdTxt.length + 2);
-		if (msg.content[0] === options.command_prefix && commands[cmdTxt]) {
-			var cmd = commands[cmdTxt];
+		if (commands[cmdTxt]||mod_commands[cmdTxt])
+		{
 			commandsProcessed = commandsProcessed + 1;
-			console.log(channelC("#" + msg.channel.name) + ": "+botC("@WishBot")+" - " + warningC(cmdTxt) + " was used by " + userC(msg.author.username));
-			cmd.process(bot, msg, suffix);
-		}
-		if ((msg.content[0] === options.mod_command_prefix) && (msg.channel.permissionsOf(msg.sender).hasPermission("manageServer")) && mod_commands[cmdTxt]) {
-			var cmd = mod_commands[cmdTxt];
-			commandsProcessed = commandsProcessed + 1;
-			console.log(channelC("#" + msg.channel.name) + ": "+botC("@WishBot")+" - " + warningC(cmdTxt) + " was used by " + userC(msg.author.username));
+			if (commands[cmdTxt]){var cmd = commands[cmdTxt]}
+			if (mod_commands[cmdTxt]){var cmd = mod_commands[cmdTxt]}
+			bot.sendMessage("140261987111141376", "<"+msg.timestamp+ "> @"+msg.channel.server.name+": #" + msg.channel.name + ": @WishBot - `" + cmdTxt + "` was used by " + msg.author.username)
 			cmd.process(bot, msg, suffix, commandsProcessed, talked);
 		}
 	}
 	if (!(msg.channel.isPrivate) && (msg.content.indexOf(bot.user.mention()) == 0) && (msg.author.id != bot.user.id)) {
-		console.log(channelC("#" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
+		console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
 		var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 		var conv = suffix.split(" ");
 		bot.startTyping(msg.channel);
 		talked = talked + 1;
 		onee.write(conv, function (response) {
-			console.log(channelC("#" + msg.channel.name) + ": "+botC("@WishBot")+" - 🌐 - " + response.message);
+			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - 🌐 - " + response.message);
 			bot.sendMessage(msg.channel, "🌐 - " + response.message);
 			bot.stopTyping(msg.channel);
 		})
@@ -78,10 +65,7 @@ bot.on("message", function (msg) {
 	if (msg.author.id != bot.user.id && !(msg.channel.isPrivate)) {
 		console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
 	}
-	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {
-		console.log(channelC("#private")+": " + userC(msg.author.username) + " - " + msg.content);
-		bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat.");
-	}
+	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat.");}
 	if ((msg.content === lastMessage && !(msg.channel.id === ("87901288729178112"))) && (msg.author.id === lastAuthor)) {
 		bot.deleteMessage(msg);
 		console.log(botC("@WishBot")+" - Deleted message from " + userC(msg.author.name) + " because it was a duplicate message.");
@@ -89,6 +73,12 @@ bot.on("message", function (msg) {
 	if (!(msg.channel.id == ("87901288729178112"))) {
 		lastAuthor = msg.author.id;
 		lastMessage = msg.content;
+	}
+	rand = Math.floor((Math.random() * 33) + 1); //Randomly Generates a number and then checks that number to see if it is 1 and if it is the game is randomly changed
+	if (rand == 1) {
+		var randgame = games[Math.floor(Math.random() * (games.length))];
+		bot.setPlayingGame(randgame);
+		console.log(botC("@WishBot")+" - Randomly changed game to \"" + warningC(randgame) + "\"");
 	}
 });
 
