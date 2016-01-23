@@ -5,7 +5,6 @@ var xml2js = require('xml2js');
 var qs = require("querystring");
 var YouTube = require('youtube-node');
 var fs = require('fs');
-var define = require('define-it').definitions;
 var Wiki = require('wikijs');
 
 var chalk = require("chalk");
@@ -34,9 +33,9 @@ function correctUsage(cmd) {
 
 var commands = {
 	"help": {
-		description: "Sends a DM containing all of the commands.",
 		usage: "[command]",
-		permLevel: 0,
+		description: "Sends a DM containing all of the commands.",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			if(commands[suffix])
 			{
@@ -60,6 +59,7 @@ var commands = {
 	"info": {
 		usage: "[none]",
 		description: "Gives info about the server",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			var msgArray = [];
 			msgArray.push("You requested info on **" + msg.channel.server.name + "**");
@@ -81,6 +81,7 @@ var commands = {
 	"ping": {
 		usage: "[none]",
 		description: "responds pong, useful for checking if bot is alive",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			bot.reply(msg, "PONG!");
 		}
@@ -88,6 +89,7 @@ var commands = {
 	"vquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with voice tag",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			if (!suffix)
 			{
@@ -104,6 +106,7 @@ var commands = {
 	"tquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with text tag",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			if(!suffix)
 			{
@@ -120,6 +123,7 @@ var commands = {
 	"gif": {
 		usage: "[image tags]",
 		description: "returns a random gif matching the tags passed",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			var tags = suffix.split(" ");
 			get_gif(tags, function (id) {
@@ -135,6 +139,7 @@ var commands = {
 	"reddit": {
 		usage: "[subreddit]",
 		description: "Links the top post on /r/all or the top post on the subreddit entered",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			var path = "/.rss"
 			if (suffix) {
@@ -147,6 +152,7 @@ var commands = {
 	"roll": {
 		usage: "[max value]",
 		description: "returns a random number between 1 and max value. If no max is specified it is 10",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			var max = 6;
 			if (suffix) max = suffix;
@@ -158,69 +164,43 @@ var commands = {
 	"lenny": {
 		usage: "[no usage]",
 		description: "puts a ( ͡° ͜ʖ ͡°)",
+    	delete: false,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");
 			bot.deleteMessage(msg);
 		}
 	},
-	"define": {
-		usage: "[word to define]",
-		description: "Gives the definition of the word mentioned",
-		process: function (bot, msg, suffix)
-		{
-			if(suffix)
-			{
-				define(suffix, function(err, res) {
-				if (err){
-					bot.reply("There was an error looking that up.")
-				}
-				if (res)
-				{
-					bot.sendMessage(msg.channel,"__The definition of "+suffix+" is:__\n - "+res);
-				}
-				else
-				{
-					bot.sendMessage(msg.channel, "Your search for "+suffix+" didn't return any results.")
-				}
-			});
-			}
-			else {
-				bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
-			}
-			bot.deleteMessage(msg);
-		}
-	},
 	"wiki": {
 		usage: "[information to be brought up]",
-		description: "Sometimes returns information from wikipeida based on the suffix",
-		process: function (bot, msg, suffix) {
+		description: "Gives you a wikipedia url based on the entered text",
+    	delete: false,
+		process: function (bot, msg, suffix)
+		{
+			bot.startTyping();
 			if(suffix)
 			{
-            new Wiki().search(suffix,1).then(function(data) {
-                new Wiki().page(data.results[0]).then(function(page) {
-                    page.summary().then(function(summary) {
-                        var sumText = summary.toString().split('\n');
-                            var paragraph = sumText.shift();
-                            if(paragraph)
-														{
-                                bot.sendMessage(msg.channel,"__Wiki info of "+suffix+":__\n"+paragraph);
-                            }
-                    });
-                });
-            },function(err){
-							console.log(errorC(err));
-                bot.reply(msg,"There was an error somewhere.");
-            });
-			}
-			else {
-				bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
-			}
-			bot.deleteMessage(msg);
+        new Wiki().search(suffix,1).then(function(data) {
+      	new Wiki().page(data.results[0]).then(function(page)
+				{
+					bot.sendMessage(msg.channel, page.fullurl);
+				});
+			},function(err){
+				console.log(errorC(err));
+				bot.reply(msg,"There was an error somewhere.");
+			});
+		}
+		else
+		{
+			bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
+		}
+		bot.stopTyping();
+		bot.deleteMessage(msg);
 		}
 	},
 	"hug": {
         usage: "[no usage]",
         description: "puts a (>^_^)> <(^.^<)",
+        delete: false,
         process: function (bot, msg, suffix) {
             if (!suffix)
             {
@@ -237,6 +217,7 @@ var commands = {
 	"flamethrower": {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
+    	delete: false,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ");
 			bot.deleteMessage(msg);
@@ -245,7 +226,9 @@ var commands = {
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",
-		process: function (bot, msg) {
+    	delete: false,
+		process: function (bot, msg)
+		{
 			bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");
 			bot.deleteMessage(msg);
 		}
@@ -253,6 +236,7 @@ var commands = {
 	"weedle": {
 		usage: "[no usage]",
 		description: "weedle weedle weedle wee",
+    	delete: false,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee");
 			bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif");
@@ -262,6 +246,7 @@ var commands = {
 	"letsplay": {
 		usage: "[game]",
 		description: "Tells everyone to play a game.",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			if (suffix) {
 				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!");
@@ -275,6 +260,7 @@ var commands = {
 	"call": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!");
 			bot.deleteMessage(msg);
@@ -283,6 +269,7 @@ var commands = {
 	"randomquote": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
+    	delete: false,
 		process: function (bot, msg)
 		{
 			bot.getChannelLogs("136558567082819584", 100, function(error,messages)
@@ -305,6 +292,7 @@ var commands = {
 	"youtube": {
 		usage: "[topic]",
 		description: "Probably gives you a link to the first result of the searched term.",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			youTube.search(suffix, 10, function (error, result)
 			{
@@ -337,6 +325,7 @@ var commands = {
 	"avatar": {
 		usage: "outputs the avatar of the user of the command or the person linked.",
 		description: "Outputs an avatar url",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			if (!suffix) {
 				bot.reply(msg, msg.author.avatarURL);
@@ -352,6 +341,7 @@ var commands = {
 	"id": {
 		usage: "outputs the id of the user of the command or the person linked.",
 		description: "Outputs an id",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			if (!suffix) {
 				bot.reply(msg, "your id is ```" + msg.author.id + "```");
@@ -366,6 +356,7 @@ var commands = {
 	"anime": {
 		usage: "[no usage]",
 		description: "Gives information about the anime mentioned",
+    	delete: false,
 		process: function (bot, msg, suffix) {
 			var anime = msg.content.split(" ").slice(1).join("+");
 			var apiURL = "http://myanimelist.net/api/anime/search.xml?q=" + anime;
