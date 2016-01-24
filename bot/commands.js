@@ -35,12 +35,11 @@ var commands = {
 	"help": {
 		usage: "[command]",
 		description: "Sends a DM containing all of the commands.",
-    	delete: false,
+    delete: true,
 		process: function (bot, msg, suffix) {
 			if(commands[suffix])
 			{
 				bot.sendMessage(msg.author, correctUsage(suffix))
-				bot.deleteMessage(msg);
 			}
 			else
 			{
@@ -52,14 +51,13 @@ var commands = {
 				});20
 				msgArray.push("```");
 				bot.sendMessage(msg.author, msgArray);
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"info": {
 		usage: "[none]",
 		description: "Gives info about the server",
-    	delete: false,
+    delete: true,
 		process: function (bot, msg, suffix) {
 			var msgArray = [];
 			msgArray.push("You requested info on **" + msg.channel.server.name + "**");
@@ -81,7 +79,7 @@ var commands = {
 	"ping": {
 		usage: "[none]",
 		description: "responds pong, useful for checking if bot is alive",
-    	delete: false,
+    delete: false,
 		process: function (bot, msg, suffix) {
 			bot.reply(msg, "PONG!");
 		}
@@ -89,41 +87,37 @@ var commands = {
 	"vquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with voice tag",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix)
 			{
 				bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")
-				bot.deleteMessage(msg);
 			}
 			else
 			{
 				bot.sendMessage("136558567082819584", "From voice chat: " + suffix)
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"tquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with text tag",
-    	delete: false,
+    	delete: true,
 		process: function (bot, msg, suffix) {
 			if(!suffix)
 			{
 				bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")
-				bot.deleteMessage(msg);
 			}
 			else
 			{
 				bot.sendMessage("136558567082819584", "From text chat: " + suffix)
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"gif": {
 		usage: "[image tags]",
 		description: "returns a random gif matching the tags passed",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			var tags = suffix.split(" ");
 			get_gif(tags, function (id) {
@@ -133,50 +127,46 @@ var commands = {
 					bot.sendMessage(msg.channel, "Invalid tags, try something different. [Tags: " + (tags ? tags : "Random GIF") + "]");
 				}
 			});
-			bot.deleteMessage(msg);
 		}
 	},
 	"reddit": {
 		usage: "[subreddit]",
 		description: "Links the top post on /r/all or the top post on the subreddit entered",
-    	delete: false,
+  	delete: false,
 		process: function (bot, msg, suffix) {
 			var path = "/.rss"
 			if (suffix) {
 				path = "/r/" + suffix + path;
 			}
 			rssfeed(bot, msg, "https://www.reddit.com" + path, 1, false);
-			bot.deleteMessage(msg);
 		}
 	},
 	"roll": {
 		usage: "[max value]",
 		description: "returns a random number between 1 and max value. If no max is specified it is 10",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			var max = 6;
 			if (suffix) max = suffix;
 			var roll = Math.floor(Math.random() * max) + 1;
-			bot.reply(msg, "you rolled a " + roll + "!");
+			bot.reply(msg, "you rolled a " + roll + "! 🎲");
 			bot.deleteMessage(msg);
 		}
 	},
 	"lenny": {
 		usage: "[no usage]",
 		description: "puts a ( ͡° ͜ʖ ͡°)",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");
-			bot.deleteMessage(msg);
 		}
 	},
 	"wiki": {
 		usage: "[information to be brought up]",
 		description: "Gives you a wikipedia url based on the entered text",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix)
 		{
-			bot.startTyping();
 			if(suffix)
 			{
         new Wiki().search(suffix,1).then(function(data) {
@@ -193,14 +183,12 @@ var commands = {
 		{
 			bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
 		}
-		bot.stopTyping();
-		bot.deleteMessage(msg);
 		}
 	},
 	"hug": {
         usage: "[no usage]",
         description: "puts a (>^_^)> <(^.^<)",
-        delete: false,
+        delete: true,
         process: function (bot, msg, suffix) {
             if (!suffix)
             {
@@ -211,56 +199,50 @@ var commands = {
                     bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");
                 });
             }
-            bot.deleteMessage(msg);
         }
     },
 	"flamethrower": {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ");
-			bot.deleteMessage(msg);
 		}
 	},
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg)
 		{
 			bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");
-			bot.deleteMessage(msg);
 		}
 	},
 	"weedle": {
 		usage: "[no usage]",
 		description: "weedle weedle weedle wee",
-    	delete: false,
+		delete: true,
 		process: function (bot, msg) {
 			bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee");
 			bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif");
-			bot.deleteMessage(msg);
 		}
 	},
 	"letsplay": {
 		usage: "[game]",
 		description: "Tells everyone to play a game.",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			if (suffix) {
 				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!");
-				bot.deleteMessage(msg);
 			} else {
 				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play a game!");
-				bot.deleteMessage(msg);
 			}
 		}
 	},
 	"call": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!");
 			bot.deleteMessage(msg);
@@ -269,7 +251,7 @@ var commands = {
 	"randomquote": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
-    	delete: false,
+  	delete: false,
 		process: function (bot, msg)
 		{
 			bot.getChannelLogs("136558567082819584", 100, function(error,messages)
@@ -285,14 +267,13 @@ var commands = {
 				var rand = Math.floor((Math.random() * messages.length) + 1);
 				bot.sendMessage(msg.channel,messages[rand]);
 			}
-			bot.deleteMessage(msg);
 		});
 	}
 	},
 	"youtube": {
 		usage: "[topic]",
 		description: "Probably gives you a link to the first result of the searched term.",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			youTube.search(suffix, 10, function (error, result)
 			{
@@ -308,7 +289,6 @@ var commands = {
 							if(typeof result.items[i].id.videoId !== "undefined")
 							{
 									bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[i].id.videoId);
-									bot.deleteMessage(msg);
 									return;
 							}
 						}
@@ -318,14 +298,13 @@ var commands = {
 						bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId);
 					}
 				}
-				bot.deleteMessage(msg);
 			});
 		}
 	},
 	"avatar": {
 		usage: "outputs the avatar of the user of the command or the person linked.",
 		description: "Outputs an avatar url",
-    	delete: false,
+		delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix) {
 				bot.reply(msg, msg.author.avatarURL);
@@ -335,13 +314,12 @@ var commands = {
 					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL);
 				});
 			}
-			bot.deleteMessage(msg);
 		}
 	},
 	"id": {
 		usage: "outputs the id of the user of the command or the person linked.",
 		description: "Outputs an id",
-    	delete: false,
+  	delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix) {
 				bot.reply(msg, "your id is ```" + msg.author.id + "```");
@@ -350,13 +328,12 @@ var commands = {
 					bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```");
 				});
 			}
-			bot.deleteMessage(msg);
 		}
 	},
 	"anime": {
 		usage: "[no usage]",
 		description: "Gives information about the anime mentioned",
-    	delete: false,
+  	delete: false,
 		process: function (bot, msg, suffix) {
 			var anime = msg.content.split(" ").slice(1).join("+");
 			var apiURL = "http://myanimelist.net/api/anime/search.xml?q=" + anime;
