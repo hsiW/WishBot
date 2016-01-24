@@ -6,6 +6,7 @@ var qs = require("querystring");
 var YouTube = require('youtube-node');
 var fs = require('fs');
 var Wiki = require('wikijs');
+var quote = require("./animequotes.json").animequotes;
 
 var chalk = require("chalk");
 var c = new chalk.constructor({enabled: true});
@@ -84,6 +85,13 @@ var commands = {
 			bot.reply(msg, "PONG!");
 		}
 	},
+	"animequote":
+	{
+		usage: "[none]",
+		description: "Give a random anime quote",
+  	delete: true,
+		process: function (bot, msg){bot.sendMessage(msg.channel, quote[Math.floor(Math.random() * (quote.length))]);}
+	},
 	"vquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with voice tag",
@@ -95,7 +103,7 @@ var commands = {
 			}
 			else
 			{
-				bot.sendMessage("136558567082819584", "From voice chat: " + suffix)
+				bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)
 			}
 		}
 	},
@@ -110,7 +118,7 @@ var commands = {
 			}
 			else
 			{
-				bot.sendMessage("136558567082819584", "From text chat: " + suffix)
+				bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)
 			}
 		}
 	},
@@ -155,11 +163,9 @@ var commands = {
 	},
 	"lenny": {
 		usage: "[no usage]",
-		description: "puts a ( ͡° ͜ʖ ͡°)",
+		description: "puts a lenny face",
   	delete: true,
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");
-		}
+		process: function (bot, msg) {bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");}
 	},
 	"wiki": {
 		usage: "[information to be brought up]",
@@ -174,14 +180,11 @@ var commands = {
 				{
 					bot.sendMessage(msg.channel, page.fullurl);
 				});
-			},function(err){
-				console.log(errorC(err));
-				bot.reply(msg,"There was an error somewhere.");
 			});
 		}
 		else
 		{
-			bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
+			bot.sendMessage(msg.channel, "You need to enter a word to be wiki'd!");
 		}
 		}
 	},
@@ -190,14 +193,9 @@ var commands = {
         description: "puts a (>^_^)> <(^.^<)",
         delete: true,
         process: function (bot, msg, suffix) {
-            if (!suffix)
-            {
-                bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");
-            }
-            else {
-                msg.mentions.map(function (usr) {
-                    bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");
-                });
+            if (!suffix){bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");}
+            else {msg.mentions.map(function (usr) {
+                    bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");});
             }
         }
     },
@@ -205,48 +203,34 @@ var commands = {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
   	delete: true,
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ");
-		}
+		process: function (bot, msg) {bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ")}
 	},
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",
   	delete: true,
-		process: function (bot, msg)
-		{
-			bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");
-		}
+		process: function (bot, msg){bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");}
 	},
 	"weedle": {
 		usage: "[no usage]",
 		description: "weedle weedle weedle wee",
 		delete: true,
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee");
-			bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif");
-		}
+		process: function (bot, msg) {bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee").then(	bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif"))}
 	},
 	"letsplay": {
 		usage: "[game]",
 		description: "Tells everyone to play a game.",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (suffix) {
-				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!");
-			} else {
-				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play a game!");
-			}
+			if (suffix) {bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!")}
+			else {bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play a game!")}
 		}
 	},
 	"call": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
   	delete: true,
-		process: function (bot, msg, suffix) {
-			bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!");
-			bot.deleteMessage(msg);
-		}
+		process: function (bot, msg, suffix) {bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!")}
 	},
 	"randomquote": {
 		usage: "[none]",
@@ -306,13 +290,9 @@ var commands = {
 		description: "Outputs an avatar url",
 		delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix) {
-				bot.reply(msg, msg.author.avatarURL);
-			}
-			else {
-				msg.mentions.map(function (usr) {
-					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL);
-				});
+			if (!suffix || !msg.mentions) {bot.reply(msg, msg.author.avatarURL);}
+			else {msg.mentions.map(function (usr) {
+					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL)});
 			}
 		}
 	},
@@ -321,12 +301,9 @@ var commands = {
 		description: "Outputs an id",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix) {
-				bot.reply(msg, "your id is ```" + msg.author.id + "```");
-			} else {
-				msg.mentions.map(function (usr) {
-					bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```");
-				});
+			if (!suffix) {bot.reply(msg, "your id is ```" + msg.author.id + "```");}
+			else {msg.mentions.map(function (usr) {
+					bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```")});
 			}
 		}
 	},
