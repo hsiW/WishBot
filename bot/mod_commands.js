@@ -97,6 +97,14 @@ var mod_commands = {
 				}
 			}
 		},
+		"setcolor":
+		{
+			usage: "[none]",
+			description: "Its setcolour not setcolor",
+	    delete: true,
+			process: function (bot, msg, suffix)
+			{bot.sendMessage(msg.author, correctUsage("setcolour")).then(bot.sendMessage(msg.author, "You can use http://www.colorpicker.com/ to get a hex colour code"))}
+		},
 	"stats":
 	{
 		usage: "[none]",
@@ -119,16 +127,14 @@ var mod_commands = {
 		usage: "[message]",
 		description: "bot says message",
 		delete: true,
-		process: function (bot, msg, suffix)
-		{bot.sendMessage(msg.channel, suffix)}
+		process: function (bot, msg, suffix){bot.sendMessage(msg.channel, suffix)}
 	},
 	"announce":
 	{
 		usage: "[message]",
 		description: "bot says message with text to speech",
     delete: true,
-		process: function (bot, msg, suffix)
-		{bot.sendMessage(msg.channel, suffix,{tts: true});}
+		process: function (bot, msg, suffix){bot.sendMessage(msg.channel, suffix,{tts: true});}
 	},
 	"join":
 	{
@@ -139,27 +145,9 @@ var mod_commands = {
 		{
 			bot.joinServer(suffix, function (error, server)
 			{
-				if (error)
-				{
-					bot.sendMessage(msg.channel, "Failed to join");
-					console.log(errorC("Failed to join - " + error));
-				}
-				else
-				{
-					console.log(warningC("Joined server " + server));
-					bot.sendMessage(msg.channel, "Successfully joined " + server);
-				}
+				if (error){bot.sendMessage(msg.channel, "Failed to join").then(console.log(errorC("Failed to join server - " + error)))}
+				else{bot.sendMessage(msg.channel, "Successfully joined " + server).then(console.log(warningC("Joined server " + server)))}
 			});
-		}
-	},
-	"setcolor":
-	{
-		usage: "[message]",
-		description: "bot says message with text to speech",
-    delete: true,
-		process: function (bot, msg, suffix)
-		{
-			bot.sendMessage(msg.author, correctUsage("setcolour")).then(bot.sendMessage(msg.author, "Use http://www.mathsisfun.com/hexadecimal-decimal-colors.html to get a decimal colour code."));
 		}
 	},
 	"topic":
@@ -221,16 +209,8 @@ var mod_commands = {
 		delete: true,
 		process: function (bot, msg, suffix)
 		{
-			if (suffix)
-			{
-				bot.setUsername(suffix);
-				console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC(suffix) + " by " + userC(msg.author.username));
-			}
-			else
-			{
-				bot.setUsername("Onee-chan");
-				console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC("Onee-chan") + " by " + userC(msg.author.username));
-			}
+			if (suffix){bot.setUsername(suffix).then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC(suffix) + " by " + userC(msg.author.username)))}
+			else{bot.setUsername("Onee-chan").then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC("Onee-chan") + " by " + userC(msg.author.username)))}
 			bot.reply(msg, "done!")
 		}
 	},
