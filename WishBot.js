@@ -37,21 +37,22 @@ bot.on("ready", function ()
 //Does this stuff when the bot detects a message, can be in a channel its part of or through a private chat
 bot.on("message", function (msg) {
 	//Start of command checking
+	var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 	if (!(msg.channel.isPrivate) && ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix)) && (msg.author.id != bot.user.id)) {
 		var cmdTxt = msg.content.split(" ")[0].substring(1);
-		var suffix = msg.content.substring(cmdTxt.length + 2);
-		if (commands[cmdTxt]||mod_commands[cmdTxt])
+		if ((commands[cmdTxt] && msg.content[0] === options.command_prefix) || (mod_commands[cmdTxt] && msg.content[0] === options.mod_command_prefix && msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles")))
 		{
 			commandsProcessed = commandsProcessed + 1;
-			if (commands[cmdTxt]){var cmd = commands[cmdTxt]}
-			if (mod_commands[cmdTxt]){var cmd = mod_commands[cmdTxt]}
-			bot.sendMessage("140261987111141376", "<"+msg.timestamp+ "> @"+msg.channel.server.name+": #" + msg.channel.name + ": @WishBot - `" + cmdTxt + "` was used by " + msg.author.username)
+			if (commands[cmdTxt] && msg.content[0] === options.command_prefix){var cmd = commands[cmdTxt]}
+			if (mod_commands[cmdTxt] && msg.content[0] === options.mod_command_prefix){var cmd = mod_commands[cmdTxt]}
+			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - "+warningC(cmdTxt) + " was used by " + userC(msg.author.username));
+			bot.sendMessage("@"+msg.channel.server.name+": #" + msg.channel.name + ": @WishBot - `" + cmdTxt + "` was used by " + msg.author.username);
 			cmd.process(bot, msg, suffix, commandsProcessed, talked);
+			if(cmd.delete){bot.deleteMessage(msg)}
 		}
 	}
 	if (!(msg.channel.isPrivate) && (msg.content.indexOf(bot.user.mention()) == 0) && (msg.author.id != bot.user.id)) {
 		console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
-		var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 		var conv = suffix.split(" ");
 		bot.startTyping(msg.channel);
 		talked = talked + 1;
