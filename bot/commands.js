@@ -311,7 +311,7 @@ var commands = {
 						synopsis = synopsis.replace(/\r?\n|\r/g, " "); synopsis = synopsis.replace(/\[(i|\/i)\]/g, "*");
 						synopsis = synopsis.replace(/\[(b|\/b)\]/g, "**");
 						synopsis = fix.decodeHTML(synopsis);
-						animeArray.push("__**"+result.anime.entry[0].title+" - "+result.anime.entry[0].english+"**__ - *"+result.anime.entry[0].start_date+"*  to *"+result.anime.entry[0].end_date+"*\n");
+						animeArray.push("__**"+result.anime.entry[0].title+"__ - __"+result.anime.entry[0].english+"**__ • *"+result.anime.entry[0].start_date+"*  to *"+result.anime.entry[0].end_date+"*\n");
 						animeArray.push("**Type:** *"+result.anime.entry[0].type+"*  **Episodes:** *"+result.anime.entry[0].episodes+"*  **Score:** *"+result.anime.entry[0].score+"*");
 						animeArray.push(synopsis);
 						bot.sendMessage(msg, animeArray);
