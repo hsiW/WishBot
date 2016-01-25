@@ -334,7 +334,7 @@ var commands = {
 							synopsis = synopsis.substring(0,500);
 							synopsis += ".....";
 						}
-						bot.sendMessage(msg, "**" + title + " / " + english + "**\n**Type:** " + type + ", **Episodes:** " + ep + ", **Status:** " + status + ", **Score:** " + score + "\n" + synopsis + "\n http://myanimelist.net/anime/" + id);
+						bot.sendMessage(msg, "**" + title + " / " + english + "**\n**Type:** " + type + ", **Episodes:** " + ep + ", **Status:** " + status + ", **Score:** " + score + "\n" + synopsis + "\n```http://myanimelist.net/anime/" + id"```");
 					});
 				} else {
 					bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"");
