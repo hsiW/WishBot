@@ -21,13 +21,6 @@ var botC = c.magenta.bold;
 var youTube = new YouTube();
 youTube.setKey(options.youtube_api_key);
 
-var giphy_config = {
-	"api_key": "dc6zaTOxFJmzC",
-	"rating": "r",
-	"url": "http://api.giphy.com/v1/gifs/random",
-	"permission": ["NORMAL"]
-};
-
 function correctUsage(cmd) {
 	var msg = "Usage: " + options.command_prefix + "" + cmd + " " + commands[cmd].usage;
 	return msg;
@@ -305,62 +298,37 @@ var commands = {
 			var anime = msg.content.split(" ").slice(1).join("+");
 			var apiURL = "http://myanimelist.net/api/anime/search.xml?q=" + anime;
 			request(apiURL, {
-				"auth": {
-					"user": "hsiw",
-					"pass": "RrzY3ykoK>4^^SKUK6sHCOwZ^mwY#1",
-					"sendImmediately": true
-				}
+				"auth": {"user": "hsiw","pass": "RrzY3ykoK>4^^SKUK6sHCOwZ^mwY#1","sendImmediately": true}
 			}, function (error, response, body) {
 				if (error) {
 					console.log(errorC(error));
 				}
 				if (!error && response.statusCode == 200) {
 					xml2js.parseString(body, function (err, result) {
-						var id = result.anime.entry[0].id;
-						var title = result.anime.entry[0].title;
-						var english = result.anime.entry[0].english;
-						var ep = result.anime.entry[0].episodes;
-						var score = result.anime.entry[0].score;
-						var type = result.anime.entry[0].type;
-						var status = result.anime.entry[0].status;
+						var animeArray = [];
 						var synopsis = result.anime.entry[0].synopsis.toString();
-						var image = result.anime.entry[0].image.toString();
 						synopsis = synopsis.replace(/<br \/>/g, " "); synopsis = synopsis.replace(/\[(.{1,10})\]/g, "");
 						synopsis = synopsis.replace(/\r?\n|\r/g, " "); synopsis = synopsis.replace(/\[(i|\/i)\]/g, "*");
 						synopsis = synopsis.replace(/\[(b|\/b)\]/g, "**");
 						synopsis = fix.decodeHTML(synopsis);
-						if(synopsis.length > 333)
-						{
-							synopsis = synopsis.substring(0,500);
-							synopsis += ".....";
-						}
-						bot.sendMessage(msg, "**" + title + " / " + english + "**\n**Type:** " + type + ", **Episodes:** " + ep + ", **Status:** " + status + ", **Score:** " + score + "\n" + synopsis + "\n```http://myanimelist.net/anime/" + id+"```");
+						animeArray.push("__**"+result.anime.entry[0].title+" - "+result.anime.entry[0].english+"**__ - *"+result.anime.entry[0].start_date+"* to *"+result.anime.entry[0].end_date+"*\n");
+						animeArray.push("**Type:** *"+result.anime.entry[0].type+"*  **Episodes:** *"+result.anime.entry[0].episodes+"*  **Score:** *"+result.anime.entry[0].score+"*");
+						animeArray.push(synopsis);
+						bot.sendMessage(msg, animeArray);
 					});
-				} else {
-					bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"");
 				}
+				else {bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"")}
 			});
 		}
-
 	}
-};
-
+}
 function get_gif(tags, func) {
 	//limit=1 will only return 1 gif
-	var params = {
-		"api_key": giphy_config.api_key,
-		"rating": giphy_config.rating,
-		"format": "json",
-		"limit": 1
-	};
+	var params = {"api_key": "dc6zaTOxFJmzC", "rating": "r", "format": "json", "limit": 1};
 	var query = qs.stringify(params);
-
-	if (tags !== null) {
-		query += "&tag=" + tags.join('+')
-	}
-
+	if (tags !== null) {query += "&tag=" + tags.join('+')}
 	var request = require("request");
-	request(giphy_config.url + "?" + query, function (error, response, body) {
+	request("http://api.giphy.com/v1/gifs/random?" + query, function (error, response, body) {
 		if (error || response.statusCode !== 200) {
 			console.log();(errorC("giphy: Got error: " + body));
 			console.log(errorC(error));
@@ -371,8 +339,7 @@ function get_gif(tags, func) {
 			} catch (err) {
 				func(undefined);
 			}
-		}
-	}.bind(this));
+		}}.bind(this));
 }
 
 function rssfeed(bot, msg, url, count, full) {
