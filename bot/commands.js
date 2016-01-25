@@ -7,6 +7,7 @@ var YouTube = require('youtube-node');
 var fs = require('fs');
 var Wiki = require('wikijs');
 var quote = require("./animequotes.json").animequotes;
+var fix = require('entities');
 
 var chalk = require("chalk");
 var c = new chalk.constructor({enabled: true});
@@ -235,22 +236,11 @@ var commands = {
 	"randomquote": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
-  	delete: false,
+  	delete: true,
 		process: function (bot, msg)
-		{
-			bot.getChannelLogs("136558567082819584", 100, function(error,messages)
-			{
-			if(error)
-			{
-				console.log(error);
-				console.log("there was an error getting the logs");
-				return;
-			}
-			else
-			{
-				var rand = Math.floor((Math.random() * messages.length) + 1);
-				bot.sendMessage(msg.channel,messages[rand]);
-			}
+		{bot.getChannelLogs("136558567082819584", 100, function(error,messages){
+			if(error){console.log(error); return;}
+			else{bot.sendMessage(msg.channel,messages[Math.floor((Math.random() * messages.length) + 1)])}
 		});
 	}
 	},
@@ -335,10 +325,15 @@ var commands = {
 						var status = result.anime.entry[0].status;
 						var synopsis = result.anime.entry[0].synopsis.toString();
 						var image = result.anime.entry[0].image.toString();
-						synopsis = synopsis.replace(/&mdash;/g, "—");
-						synopsis = synopsis.replace(/<br \/>/g, " ");
-						synopsis = synopsis.replace(/&quot;/g, "\"");
-						synopsis = synopsis.substring(0, 300);
+						synopsis = synopsis.replace(/<br \/>/g, " "); synopsis = synopsis.replace(/\[(.{1,10})\]/g, "");
+						synopsis = synopsis.replace(/\r?\n|\r/g, " "); synopsis = synopsis.replace(/\[(i|\/i)\]/g, "*");
+						synopsis = synopsis.replace(/\[(b|\/b)\]/g, "**");
+						synopsis = fix.decodeHTML(synopsis);
+						if(synopsis.length > 333)
+						{
+							synopsis = synopsis.substring(0,500);
+							synopsis += ".....";
+						}
 						bot.sendMessage(msg, "**" + title + " / " + english + "**\n**Type:** " + type + ", **Episodes:** " + ep + ", **Status:** " + status + ", **Score:** " + score + "\n" + synopsis + "\n http://myanimelist.net/anime/" + id);
 					});
 				} else {
