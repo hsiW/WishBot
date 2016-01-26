@@ -75,9 +75,7 @@ var commands = {
 		usage: "[none]",
 		description: "responds pong, useful for checking if bot is alive",
     delete: false,
-		process: function (bot, msg, suffix) {
-			bot.reply(msg, "PONG!");
-		}
+		process: function (bot, msg, suffix) {bot.reply(msg, "PONG!")}
 	},
 	"animequote":
 	{
@@ -91,14 +89,8 @@ var commands = {
 		description: "logs message to quotes chat with voice tag",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix)
-			{
-				bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")
-			}
-			else
-			{
-				bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)
-			}
+			if (!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
+			else{bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)}
 		}
 	},
 	"tquote": {
@@ -106,14 +98,8 @@ var commands = {
 		description: "logs message to quotes chat with text tag",
     	delete: true,
 		process: function (bot, msg, suffix) {
-			if(!suffix)
-			{
-				bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")
-			}
-			else
-			{
-				bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)
-			}
+			if(!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
+			else{bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)}
 		}
 	},
 	"gif": {
@@ -123,11 +109,8 @@ var commands = {
 		process: function (bot, msg, suffix) {
 			var tags = suffix.split(" ");
 			get_gif(tags, function (id) {
-				if (typeof id !== "undefined") {
-					bot.sendMessage(msg.channel, "http://media.giphy.com/media/" + id + "/giphy.gif [Tags: " + (tags ? tags : "Random GIF") + "]");
-				} else {
-					bot.sendMessage(msg.channel, "Invalid tags, try something different. [Tags: " + (tags ? tags : "Random GIF") + "]");
-				}
+				if (typeof id !== "undefined") {bot.sendMessage(msg.channel, "http://media.giphy.com/media/" + id + "/giphy.gif [Tags: " + (tags ? tags : "Random GIF") + "]")}
+				else{bot.sendMessage(msg.channel, "Invalid tags, try something different. [Tags: " + (tags ? tags : "Random GIF") + "]")}
 			});
 		}
 	},
@@ -137,9 +120,7 @@ var commands = {
   	delete: false,
 		process: function (bot, msg, suffix) {
 			var path = "/.rss"
-			if (suffix) {
-				path = "/r/" + suffix + path;
-			}
+			if (suffix) {path = "/r/" + suffix + path}
 			rssfeed(bot, msg, "https://www.reddit.com" + path, 1, false);
 		}
 	},
@@ -149,10 +130,8 @@ var commands = {
   	delete: true,
 		process: function (bot, msg, suffix) {
 			var max = 6;
-			if (suffix) max = suffix;
-			var roll = Math.floor(Math.random() * max) + 1;
-			bot.reply(msg, "you rolled a " + roll + "! 🎲");
-			bot.deleteMessage(msg);
+			if (suffix) {max = suffix}
+			bot.reply(msg, "you rolled a " + (Math.floor(Math.random() * max) + 1) + "! 🎲")
 		}
 	},
 	"lenny": {
@@ -171,15 +150,10 @@ var commands = {
 			{
         new Wiki().search(suffix,1).then(function(data) {
       	new Wiki().page(data.results[0]).then(function(page)
-				{
-					bot.sendMessage(msg.channel, page.fullurl);
-				});
+				{bot.sendMessage(msg.channel, page.fullurl)});
 			});
 		}
-		else
-		{
-			bot.sendMessage(msg.channel, "You need to enter a word to be wiki'd!");
-		}
+		else{bot.sendMessage(msg.channel, "You need to enter a topic to be wiki'd!")}
 		}
 	},
 	"hug": {
@@ -187,10 +161,8 @@ var commands = {
         description: "puts a (>^_^)> <(^.^<)",
         delete: true,
         process: function (bot, msg, suffix) {
-            if (!suffix){bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");}
-            else {msg.mentions.map(function (usr) {
-                    bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");});
-            }
+            if (!suffix){bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)")}
+            else {msg.mentions.map(function (usr) {bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");})}
         }
     },
 	"flamethrower": {
@@ -244,10 +216,7 @@ var commands = {
 		process: function (bot, msg, suffix) {
 			youTube.search(suffix, 10, function (error, result)
 			{
-				if (error || !result || !result.items || result.items.length < 1) {
-					console.log(errorC(error));
-					bot.sendMessage(msg.channel, "Your search resulted in an error. Please forgive me senpai! ;-;");
-				}
+				if (error || !result || !result.items || result.items.length < 1) {bot.sendMessage(msg.channel, "Your search resulted in an error. Please forgive me senpai! ;-;")}
 				else {
 					if (typeof result.items[0].id.videoId === "undefined")
 					{
@@ -260,10 +229,7 @@ var commands = {
 							}
 						}
 					}
-					else
-					{
-						bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId);
-					}
+					else{bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId)}
 				}
 			});
 		}
@@ -274,9 +240,7 @@ var commands = {
 		delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix || !msg.mentions) {bot.reply(msg, msg.author.avatarURL);}
-			else {msg.mentions.map(function (usr) {
-					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL)});
-			}
+			else {msg.mentions.map(function (usr) {bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL)})}
 		}
 	},
 	"id": {
@@ -284,10 +248,8 @@ var commands = {
 		description: "Outputs an id",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix) {bot.reply(msg, "your id is ```" + msg.author.id + "```");}
-			else {msg.mentions.map(function (usr) {
-					bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```")});
-			}
+			if (!suffix) {bot.reply(msg, "your id is ```" + msg.author.id + "```")}
+			else {msg.mentions.map(function (usr) {bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```")})}
 		}
 	},
 	"anime": {
