@@ -6,6 +6,8 @@ var qs = require("querystring");
 var YouTube = require('youtube-node');
 var fs = require('fs');
 var Wiki = require('wikijs');
+var quote = require("./animequotes.json").animequotes;
+var fix = require('entities');
 
 var chalk = require("chalk");
 var c = new chalk.constructor({enabled: true});
@@ -18,13 +20,6 @@ var botC = c.magenta.bold;
 
 var youTube = new YouTube();
 youTube.setKey(options.youtube_api_key);
-
-var giphy_config = {
-	"api_key": "dc6zaTOxFJmzC",
-	"rating": "r",
-	"url": "http://api.giphy.com/v1/gifs/random",
-	"permission": ["NORMAL"]
-};
 
 function correctUsage(cmd) {
 	var msg = "Usage: " + options.command_prefix + "" + cmd + " " + commands[cmd].usage;
@@ -46,7 +41,7 @@ var commands = {
 				var msgArray = [];
 				msgArray.push("**Commands: **");
 				msgArray.push("```");
-				Object.keys(commands).forEach(function (cmd) {
+				Object.keys(commands).sort().forEach(function (cmd) {
 					msgArray.push("" + options.command_prefix + "" + cmd + ": " + commands[cmd].description + "");
 				});20
 				msgArray.push("```");
@@ -84,6 +79,13 @@ var commands = {
 			bot.reply(msg, "PONG!");
 		}
 	},
+	"animequote":
+	{
+		usage: "[none]",
+		description: "Give a random anime quote",
+  	delete: true,
+		process: function (bot, msg){bot.sendMessage(msg.channel, quote[Math.floor(Math.random() * (quote.length))]);}
+	},
 	"vquote": {
 		usage: "[quote message]",
 		description: "logs message to quotes chat with voice tag",
@@ -95,7 +97,7 @@ var commands = {
 			}
 			else
 			{
-				bot.sendMessage("136558567082819584", "From voice chat: " + suffix)
+				bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)
 			}
 		}
 	},
@@ -110,7 +112,7 @@ var commands = {
 			}
 			else
 			{
-				bot.sendMessage("136558567082819584", "From text chat: " + suffix)
+				bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)
 			}
 		}
 	},
@@ -155,11 +157,9 @@ var commands = {
 	},
 	"lenny": {
 		usage: "[no usage]",
-		description: "puts a ( ͡° ͜ʖ ͡°)",
+		description: "puts a lenny face",
   	delete: true,
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");
-		}
+		process: function (bot, msg) {bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");}
 	},
 	"wiki": {
 		usage: "[information to be brought up]",
@@ -174,14 +174,11 @@ var commands = {
 				{
 					bot.sendMessage(msg.channel, page.fullurl);
 				});
-			},function(err){
-				console.log(errorC(err));
-				bot.reply(msg,"There was an error somewhere.");
 			});
 		}
 		else
 		{
-			bot.sendMessage(msg.channel, "You need to enter a word to be defined!");
+			bot.sendMessage(msg.channel, "You need to enter a word to be wiki'd!");
 		}
 		}
 	},
@@ -190,14 +187,9 @@ var commands = {
         description: "puts a (>^_^)> <(^.^<)",
         delete: true,
         process: function (bot, msg, suffix) {
-            if (!suffix)
-            {
-                bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");
-            }
-            else {
-                msg.mentions.map(function (usr) {
-                    bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");
-                });
+            if (!suffix){bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)");}
+            else {msg.mentions.map(function (usr) {
+                    bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");});
             }
         }
     },
@@ -205,68 +197,43 @@ var commands = {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
   	delete: true,
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ");
-		}
+		process: function (bot, msg) {bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ")}
 	},
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",
   	delete: true,
-		process: function (bot, msg)
-		{
-			bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");
-		}
+		process: function (bot, msg){bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");}
 	},
 	"weedle": {
 		usage: "[no usage]",
 		description: "weedle weedle weedle wee",
 		delete: true,
-		process: function (bot, msg) {
-			bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee");
-			bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif");
-		}
+		process: function (bot, msg) {bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee").then(	bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif"))}
 	},
 	"letsplay": {
 		usage: "[game]",
 		description: "Tells everyone to play a game.",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (suffix) {
-				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!");
-			} else {
-				bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play a game!");
-			}
+			if (suffix) {bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!")}
+			else {bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play a game!")}
 		}
 	},
 	"call": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
   	delete: true,
-		process: function (bot, msg, suffix) {
-			bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!");
-			bot.deleteMessage(msg);
-		}
+		process: function (bot, msg, suffix) {bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!")}
 	},
 	"randomquote": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
-  	delete: false,
+  	delete: true,
 		process: function (bot, msg)
-		{
-			bot.getChannelLogs("136558567082819584", 100, function(error,messages)
-			{
-			if(error)
-			{
-				console.log(error);
-				console.log("there was an error getting the logs");
-				return;
-			}
-			else
-			{
-				var rand = Math.floor((Math.random() * messages.length) + 1);
-				bot.sendMessage(msg.channel,messages[rand]);
-			}
+		{bot.getChannelLogs("136558567082819584", 100, function(error,messages){
+			if(error){console.log(error); return;}
+			else{bot.sendMessage(msg.channel,messages[Math.floor((Math.random() * messages.length) + 1)])}
 		});
 	}
 	},
@@ -306,13 +273,9 @@ var commands = {
 		description: "Outputs an avatar url",
 		delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix) {
-				bot.reply(msg, msg.author.avatarURL);
-			}
-			else {
-				msg.mentions.map(function (usr) {
-					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL);
-				});
+			if (!suffix || !msg.mentions) {bot.reply(msg, msg.author.avatarURL);}
+			else {msg.mentions.map(function (usr) {
+					bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL)});
 			}
 		}
 	},
@@ -321,12 +284,9 @@ var commands = {
 		description: "Outputs an id",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix) {
-				bot.reply(msg, "your id is ```" + msg.author.id + "```");
-			} else {
-				msg.mentions.map(function (usr) {
-					bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```");
-				});
+			if (!suffix) {bot.reply(msg, "your id is ```" + msg.author.id + "```");}
+			else {msg.mentions.map(function (usr) {
+					bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```")});
 			}
 		}
 	},
@@ -338,57 +298,37 @@ var commands = {
 			var anime = msg.content.split(" ").slice(1).join("+");
 			var apiURL = "http://myanimelist.net/api/anime/search.xml?q=" + anime;
 			request(apiURL, {
-				"auth": {
-					"user": "hsiw",
-					"pass": "RrzY3ykoK>4^^SKUK6sHCOwZ^mwY#1",
-					"sendImmediately": true
-				}
+				"auth": {"user": "hsiw","pass": "RrzY3ykoK>4^^SKUK6sHCOwZ^mwY#1","sendImmediately": true}
 			}, function (error, response, body) {
 				if (error) {
 					console.log(errorC(error));
 				}
 				if (!error && response.statusCode == 200) {
 					xml2js.parseString(body, function (err, result) {
-						var id = result.anime.entry[0].id;
-						var title = result.anime.entry[0].title;
-						var english = result.anime.entry[0].english;
-						var ep = result.anime.entry[0].episodes;
-						var score = result.anime.entry[0].score;
-						var type = result.anime.entry[0].type;
-						var status = result.anime.entry[0].status;
+						var animeArray = [];
 						var synopsis = result.anime.entry[0].synopsis.toString();
-						var image = result.anime.entry[0].image.toString();
-						synopsis = synopsis.replace(/&mdash;/g, "—");
-						synopsis = synopsis.replace(/<br \/>/g, " ");
-						synopsis = synopsis.replace(/&quot;/g, "\"");
-						synopsis = synopsis.substring(0, 300);
-						bot.sendMessage(msg, "**" + title + " / " + english + "**\n**Type:** " + type + ", **Episodes:** " + ep + ", **Status:** " + status + ", **Score:** " + score + "\n" + synopsis + "\n http://myanimelist.net/anime/" + id);
+						synopsis = synopsis.replace(/<br \/>/g, " "); synopsis = synopsis.replace(/\[(.{1,10})\]/g, "");
+						synopsis = synopsis.replace(/\r?\n|\r/g, " "); synopsis = synopsis.replace(/\[(i|\/i)\]/g, "*");
+						synopsis = synopsis.replace(/\[(b|\/b)\]/g, "**");
+						synopsis = fix.decodeHTML(synopsis);
+						animeArray.push("__**"+result.anime.entry[0].title+"**__ - __**"+result.anime.entry[0].english+"**__ • *"+result.anime.entry[0].start_date+"*  to *"+result.anime.entry[0].end_date+"*\n");
+						animeArray.push("**Type:** *"+result.anime.entry[0].type+"*  **Episodes:** *"+result.anime.entry[0].episodes+"*  **Score:** *"+result.anime.entry[0].score+"*");
+						animeArray.push(synopsis);
+						bot.sendMessage(msg, animeArray);
 					});
-				} else {
-					bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"");
 				}
+				else {bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"")}
 			});
 		}
-
 	}
-};
-
+}
 function get_gif(tags, func) {
 	//limit=1 will only return 1 gif
-	var params = {
-		"api_key": giphy_config.api_key,
-		"rating": giphy_config.rating,
-		"format": "json",
-		"limit": 1
-	};
+	var params = {"api_key": "dc6zaTOxFJmzC", "rating": "r", "format": "json", "limit": 1};
 	var query = qs.stringify(params);
-
-	if (tags !== null) {
-		query += "&tag=" + tags.join('+')
-	}
-
+	if (tags !== null) {query += "&tag=" + tags.join('+')}
 	var request = require("request");
-	request(giphy_config.url + "?" + query, function (error, response, body) {
+	request("http://api.giphy.com/v1/gifs/random?" + query, function (error, response, body) {
 		if (error || response.statusCode !== 200) {
 			console.log();(errorC("giphy: Got error: " + body));
 			console.log(errorC(error));
@@ -399,8 +339,7 @@ function get_gif(tags, func) {
 			} catch (err) {
 				func(undefined);
 			}
-		}
-	}.bind(this));
+		}}.bind(this));
 }
 
 function rssfeed(bot, msg, url, count, full) {
