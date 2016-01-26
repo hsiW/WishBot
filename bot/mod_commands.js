@@ -24,22 +24,13 @@ var mod_commands = {
   	delete: true,
 		process: function (bot, msg, suffix)
 		{
-			if (mod_commands[suffix])
-			{
-				{
-					bot.sendMessage(msg.author, correctUsage(suffix))
-				}
-			}
+			if (mod_commands[suffix]){bot.sendMessage(msg.author, correctUsage(suffix))}
 			else
 			{
 				var msgArray = [];
 				msgArray.push("**mod_commands: **");
 				msgArray.push("```");
-				Object.keys(mod_commands)
-					.forEach(function (cmd)
-					{
-						msgArray.push("" + options.mod_command_prefix + "" + cmd + ": " + mod_commands[cmd].description + "");
-					});
+				Object.keys(mod_commands).sort().forEach(function (cmd){msgArray.push("" + options.mod_command_prefix + "" + cmd + ": " + mod_commands[cmd].description + "")});
 				msgArray.push("```");
 				bot.sendMessage(msg.author, msgArray);
 			}
@@ -49,12 +40,8 @@ var mod_commands = {
 	{
 		usage: "[none]",
 		description: "lists servers bot is connected to",
-  	delete: false,
-		process: function (bot, msg)
-		{
-			bot.sendMessage(msg.channel, bot.user + " is currently connected to the following servers:\n ```" + bot.servers + "```");
-			bot.deleteMessage(msg);
-		}
+  	delete: true,
+		process: function (bot, msg){bot.sendMessage(msg.channel, bot.user + " is currently connected to the following servers:\n ```" + bot.servers + "```")}
 	},
 	"setcolour":
 		{
@@ -129,13 +116,6 @@ var mod_commands = {
 		delete: true,
 		process: function (bot, msg, suffix){bot.sendMessage(msg.channel, suffix)}
 	},
-	"announce":
-	{
-		usage: "[message]",
-		description: "bot says message with text to speech",
-    delete: true,
-		process: function (bot, msg, suffix){bot.sendMessage(msg.channel, suffix,{tts: true});}
-	},
 	"join":
 	{
 		usage: "[invite]",
@@ -156,11 +136,8 @@ var mod_commands = {
 		description: "Sets the topic for the channel. No topic removes the topic.",
   	delete: true,
 		process: function (bot, msg, suffix)
-		{
-			bot.setChannelTopic(msg.channel, suffix);
-			console.log(botC("@WishBot - ") + warningC("Set topic of " + msg.channel));
-			bot.reply(msg, "done!")
-		}
+		{bot.setChannelTopic(msg.channel, suffix);
+			console.log(botC("@WishBot - ") + warningC("Set topic of " + msg.channel)).then(bot.reply(msg, msg.channel.name+" had its topic set to "+suffix))}
 	},
 	"playing":
 	{
@@ -169,17 +146,11 @@ var mod_commands = {
   	delete: true,
 		process: function (bot, msg, suffix)
 		{
-			if (suffix)
-			{
-				bot.setPlayingGame(suffix);
-			}
-			if (!suffix)
-			{
-				bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))]);
-			}
+			if (suffix){bot.setPlayingGame(suffix)}
+			else{bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
 		}
 	},
-	"stop":
+	"restart":
 	{
 		usage: "[none]",
 		description: "stops the bot",
@@ -188,11 +159,9 @@ var mod_commands = {
 		{
 			if (msg.author.id === "87600987040120832")
 			{
-				bot.reply(msg, "I will be taking my leave.")
-				bot.logout();
 				setTimeout(function ()
 				{
-					console.log("@WishBot - Stopped bot.");
+					console.log("@WishBot - Restarted bot.");
 					process.exit(0);
 				}, 1000);
 			}
@@ -211,7 +180,6 @@ var mod_commands = {
 		{
 			if (suffix){bot.setUsername(suffix).then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC(suffix) + " by " + userC(msg.author.username)))}
 			else{bot.setUsername("Onee-chan").then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC("Onee-chan") + " by " + userC(msg.author.username)))}
-			bot.reply(msg, "done!")
 		}
 	},
 	"delete":

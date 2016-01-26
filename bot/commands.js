@@ -41,7 +41,7 @@ var commands = {
 				var msgArray = [];
 				msgArray.push("**Commands: **");
 				msgArray.push("```");
-				Object.keys(commands).forEach(function (cmd) {
+				Object.keys(commands).sort().forEach(function (cmd) {
 					msgArray.push("" + options.command_prefix + "" + cmd + ": " + commands[cmd].description + "");
 				});20
 				msgArray.push("```");
