@@ -138,7 +138,7 @@ var mod_commands = {
 		process: function (bot, msg, suffix)
 		{
 			bot.setChannelTopic(msg.channel, suffix);
-			console.log(botC("@WishBot - ") + warningC("Set topic of " + msg.channel)).
+			console.log(botC("@WishBot - ") + warningC("Set topic of " + msg.channel))
 			bot.reply(msg, msg.channel.name+" had its topic set to "+suffix)
 		}
 	},
