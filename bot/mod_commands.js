@@ -136,8 +136,11 @@ var mod_commands = {
 		description: "Sets the topic for the channel. No topic removes the topic.",
   	delete: true,
 		process: function (bot, msg, suffix)
-		{bot.setChannelTopic(msg.channel, suffix);
-			console.log(botC("@WishBot - ") + warningC("Set topic of " + msg.channel)).then(bot.reply(msg, msg.channel.name+" had its topic set to "+suffix))}
+		{
+			bot.setChannelTopic(msg.channel, suffix);
+			console.log(botC("@WishBot - ") + warningC("Set topic of " + msg.channel)).
+			bot.reply(msg, msg.channel.name+" had its topic set to "+suffix)
+		}
 	},
 	"playing":
 	{

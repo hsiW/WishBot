@@ -1,7 +1,5 @@
 #!/bin/sh
 cd C:\Users\Evan\Documents\Onee-chan
-git add .
-git commit -am "made changes"
-git push heroku master
+heroku logs --tail
 echo Press Enter...
 read
