@@ -89,8 +89,13 @@ var commands = {
 		description: "logs message to quotes chat with voice tag",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
-			else{bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)}
+			if(msg.channel.server.id === "87601506039132160"){
+				if (!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
+				else{bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)}
+			}
+			else {
+				bot.reply(msg,"I'm sorry but that command doesnt work on this server.")
+			}
 		}
 	},
 	"tquote": {
@@ -98,8 +103,14 @@ var commands = {
 		description: "logs message to quotes chat with text tag",
     	delete: true,
 		process: function (bot, msg, suffix) {
+			if(msg.channel.server.id === "87601506039132160")
+			{
 			if(!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
 			else{bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)}
+		  }
+			else {
+				bot.reply(msg,"I'm sorry but that command doesnt work on this server.")
+			}
 		}
 	},
 	"gif": {

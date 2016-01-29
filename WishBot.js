@@ -8,7 +8,6 @@ var mod_commands = require("./bot/mod_commands.js").mod_commands;
 var admin_commands = require("./bot/admin_commands.js").admin_commands;
 var admins = require("./bot/admins.json").admins;
 
-
 var cleverbot = require("cleverbot-node");
 var onee = new cleverbot;
 cleverbot.prepare(function () {});
