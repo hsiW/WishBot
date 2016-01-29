@@ -93,9 +93,7 @@ var commands = {
 				if (!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
 				else{bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)}
 			}
-			else {
-				bot.reply(msg,"I'm sorry but that command doesnt work on this server.")
-			}
+			else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
 		}
 	},
 	"tquote": {
@@ -108,9 +106,7 @@ var commands = {
 			if(!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
 			else{bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)}
 		  }
-			else {
-				bot.reply(msg,"I'm sorry but that command doesnt work on this server.")
-			}
+			else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
 		}
 	},
 	"gif": {
@@ -213,10 +209,13 @@ var commands = {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
   	delete: true,
-		process: function (bot, msg)
-		{bot.getChannelLogs("136558567082819584", 100, function(error,messages){
+		process: function (bot, msg){
+			if(msg.channel.server.id === "87601506039132160"){
+			bot.getChannelLogs("136558567082819584", 100, function(error,messages){
 			if(error){console.log(error); return;}
 			else{bot.sendMessage(msg.channel,messages[Math.floor((Math.random() * messages.length) + 1)])}
+		}
+		else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
 		});
 	}
 	},
