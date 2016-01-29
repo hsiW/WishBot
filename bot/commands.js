@@ -218,7 +218,6 @@ var commands = {
 	}
 		else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
 		}
-	}
 	},
 	"youtube": {
 		usage: "[topic]",
