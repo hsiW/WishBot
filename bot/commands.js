@@ -215,6 +215,7 @@ var commands = {
 			if(error){console.log(error); return;}
 			else{bot.sendMessage(msg.channel,messages[Math.floor((Math.random() * messages.length) + 1)])}
 		}
+	}
 		else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
 		});
 	}
