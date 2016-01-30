@@ -4,10 +4,10 @@ var request = require('request');
 var xml2js = require('xml2js');
 var qs = require("querystring");
 var YouTube = require('youtube-node');
-var fs = require('fs');
 var Wiki = require('wikijs');
 var quote = require("./animequotes.json").animequotes;
 var fix = require('entities');
+var cool = require('cool-ascii-faces');
 
 var chalk = require("chalk");
 var c = new chalk.constructor({enabled: true});
@@ -146,6 +146,38 @@ var commands = {
 		description: "puts a lenny face",
   	delete: true,
 		process: function (bot, msg) {bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");}
+	},
+	"facelist": {
+		usage: "[no usage]",
+		description: "gives you a list of the faces you can use with the face command",
+  	delete: true,
+		process: function (bot, msg) {
+			var msgArray = [];
+			msgArray.push("__Below is a list of the faces you can do with the face comannd:__")
+			msgArray.push("```")
+			for(i = 0; i < cool.faces.length; i++)
+			{
+				msgArray.push(i+": "+cool.faces[i])
+			}
+			msgArray.push("```")
+			bot.sendMessage(msg.author, msgArray);
+			}
+	},
+	"face": {
+		usage: "[A number]",
+		description: "Sends an ascii face at random or sends the ascii for the number",
+  	delete: true,
+		process: function (bot, msg, suffix)
+		{
+		if(suffix &&  /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix))
+		{
+			bot.sendMessage(msg.channel, cool.faces[suffix])
+		}
+		else
+		{
+				bot.sendMessage(msg.channel, cool.faces[Math.floor(Math.random() * (cool.faces.length))])
+		}
+		}
 	},
 	"wiki": {
 		usage: "[information to be brought up]",
