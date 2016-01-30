@@ -178,7 +178,7 @@ var commands = {
   	delete: true,
 		process: function (bot, msg) {bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ")}
 	},
-	"flamethrower": {
+	"botserver": {
 		usage: "[no usage]",
 		description: "Posts a invite to this bots server",
   	delete: true,
