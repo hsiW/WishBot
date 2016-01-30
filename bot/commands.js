@@ -178,6 +178,12 @@ var commands = {
   	delete: true,
 		process: function (bot, msg) {bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ")}
 	},
+	"flamethrower": {
+		usage: "[no usage]",
+		description: "Posts a invite to this bots server",
+  	delete: true,
+		process: function (bot, msg) {bot.sendMessage(msg.channel, "__**Heres a invite to my server:**__ https://discord.gg/0lBiROCNVaDaE8rR")}
+	},
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",

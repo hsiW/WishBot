@@ -52,6 +52,8 @@ bot.on("message", function (msg) {
 		bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat.")
 		return;
 	}
+	if (msg.channel.id != ("87901288729178112")) {lastMessage = {text:msg.content, lastAuthor:msg.author.id, channel:msg.channel.id}}
+	if (Math.floor((Math.random() * 33) + 1) == 1) {bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
 	if ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix) || (msg.content[0] === options.admin_command_prefix)) {
 		var cmdTxt = msg.content.split(" ")[0].substring(1);
 		if ((commands[cmdTxt] && msg.content[0] === options.command_prefix) ||
@@ -65,10 +67,9 @@ bot.on("message", function (msg) {
 			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - "+warningC(cmdTxt) + " was used by " + userC(msg.author.username));
 			cmd.process(bot, msg, suffix, commandsProcessed, talked)
 			if(cmd.delete){bot.deleteMessage(msg)}
+			return;
 		}
 	}
-	if (msg.channel.id != ("87901288729178112")) {lastMessage = {text:msg.content, lastAuthor:msg.author.id, channel:msg.channel.id}}
-	if (Math.floor((Math.random() * 33) + 1) == 1) {bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
 });
 
 //Login
