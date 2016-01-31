@@ -85,6 +85,13 @@ var admin_commands = {
 			if (suffix){bot.setUsername(suffix).then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC(suffix) + " by " + userC(msg.author.username)))}
 			else{bot.setUsername("Onee-chan").then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC("Onee-chan") + " by " + userC(msg.author.username)))}
 		}
+	},
+	"servers":
+	{
+		usage: "[none]",
+		description: "lists servers bot is connected to",
+		delete: true,
+		process: function (bot, msg){bot.sendMessage(msg.channel, bot.user + " is currently connected to the following servers:\n ```" + bot.servers + "```")}
 	}
 	/*,
 	"eval": {
