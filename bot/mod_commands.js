@@ -36,13 +36,6 @@ var mod_commands = {
 			}
 		}
 	},
-	"servers":
-	{
-		usage: "[none]",
-		description: "lists servers bot is connected to",
-  	delete: true,
-		process: function (bot, msg){bot.sendMessage(msg.channel, bot.user + " is currently connected to the following servers:\n ```" + bot.servers + "```")}
-	},
 	"setcolour":
 		{
 			usage: "[mention] + [6 digit hexidecimal colour code]",
