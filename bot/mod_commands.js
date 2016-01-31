@@ -64,7 +64,7 @@ var mod_commands = {
 									bot.addMemberToRole(usr.id, permission)
 										.then(function ()
 										{
-											bot.sendMessage(msg.channel, "Applied the colour "+colour+" to <@" + usr.id + ">.");
+											bot.sendMessage(msg, "Applied the colour "+colour+" to <@" + usr.id + ">.");
 											console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - New Role was made " + warningC("Colour ") + colour + " by " + userC(msg.author.username));
 										})
 								})
@@ -111,8 +111,8 @@ var mod_commands = {
 		{
 			bot.joinServer(suffix, function (error, server)
 			{
-				if (error){bot.sendMessage(msg.channel, "Failed to join").then(console.log(errorC("Failed to join server - " + error)))}
-				else{bot.sendMessage(msg.channel, "Successfully joined " + server).then(console.log(warningC("Joined server " + server)))}
+				if (error){bot.sendMessage(msg, "Failed to join").then(console.log(errorC("Failed to join server - " + error)))}
+				else{bot.sendMessage(msg, "Successfully joined " + server).then(console.log(warningC("Joined server " + server)))}
 			});
 		}
 	},
@@ -164,10 +164,7 @@ var mod_commands = {
 					}
 				});
 			}
-			else
-			{
-				bot.reply(msg, "using the delete command requires a interger between 1-500")
-			}
+			else{bot.reply(msg, "using the delete command requires a interger between 1-100")}
 		}
 	}
 	/*,
