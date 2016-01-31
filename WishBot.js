@@ -45,7 +45,7 @@ bot.on("message", function (msg) {
 		bot.startTyping(msg.channel);
 		talked += 1;
 		onee.write(suffix, function (response) {
-			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - 🌐 - " + response.message);
+			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - 💭 - " + response.message);
 			bot.sendMessage(msg, "🌐 - " + response.message).then(bot.stopTyping(msg.channel));
 		})
 		return;
