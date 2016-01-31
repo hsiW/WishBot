@@ -19,7 +19,7 @@ function correctUsage(cmd) {
 var mod_commands = {
 	"help":
 	{
-		description: "Sends a DM containing all of these mod_commands.",
+		description: "Sends a PM containing all of these Mod Commands.",
 		usage: "[command]",
   	delete: true,
 		process: function (bot, msg, suffix)
@@ -28,7 +28,7 @@ var mod_commands = {
 			else
 			{
 				var msgArray = [];
-				msgArray.push("**mod_commands: **");
+				msgArray.push("**Mod Commands: **");
 				msgArray.push("```");
 				Object.keys(mod_commands).sort().forEach(function (cmd){msgArray.push("" + options.mod_command_prefix + "" + cmd + ": " + mod_commands[cmd].description + "")});
 				msgArray.push("```");
@@ -88,7 +88,7 @@ var mod_commands = {
 	"stats":
 	{
 		usage: "[none]",
-		description: "outputs different about the bot",
+		description: "Outputs different stats about this bot",
   	delete: true,
 		process: function (bot, msg, suffix, commandsProcessed, talked)
 		{
@@ -102,17 +102,10 @@ var mod_commands = {
 			bot.sendMessage(msg, statArray);
 		}
 	},
-	"say":
-	{
-		usage: "[message]",
-		description: "bot says message",
-		delete: true,
-		process: function (bot, msg, suffix){bot.sendMessage(msg.channel, suffix)}
-	},
 	"join":
 	{
 		usage: "[invite]",
-		description: "joins the server it's invited to",
+		description: "Joins the server it's invited to",
   	delete: true,
 		process: function (bot, msg, suffix)
 		{
@@ -133,49 +126,6 @@ var mod_commands = {
 			bot.setChannelTopic(msg.channel, suffix);
 			console.log(botC("@WishBot - ") + warningC("Set topic of " + msg.channel))
 			bot.reply(msg, msg.channel.name+" had its topic set to "+suffix)
-		}
-	},
-	"playing":
-	{
-		usage: "[game]",
-		description: "allows you to set a game for Onee-chan to play. If nothing specified it will be random.",
-  	delete: true,
-		process: function (bot, msg, suffix)
-		{
-			if (suffix){bot.setPlayingGame(suffix)}
-			else{bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
-		}
-	},
-	"restart":
-	{
-		usage: "[none]",
-		description: "stops the bot",
-  	delete: true,
-		process: function (bot, msg, suffix)
-		{
-			if (msg.author.id === "87600987040120832")
-			{
-				setTimeout(function ()
-				{
-					console.log("@WishBot - Restarted bot.");
-					process.exit(0);
-				}, 1000);
-			}
-			else
-			{
-				bot.reply(msg, "I CANNOT BE STOPPED BY THE LIKES OF YOU");
-			}
-		}
-	},
-	"setname":
-	{
-		usage: "[name]",
-		description: "Changes the bots username",
-		delete: true,
-		process: function (bot, msg, suffix)
-		{
-			if (suffix){bot.setUsername(suffix).then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC(suffix) + " by " + userC(msg.author.username)))}
-			else{bot.setUsername("Onee-chan").then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC("Onee-chan") + " by " + userC(msg.author.username)))}
 		}
 	},
 	"delete":
