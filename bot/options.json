@@ -4,7 +4,7 @@
 	"command_prefix": "-",
 	"mod_command_prefix": "=",
 	"admin_command_prefix": "|",
-	"admin_id": "87600987040120832",
 	"youtube_api_key": "AIzaSyC533IHgrIBhGxR_S_8EcBE_FHd7gBluq8",
+	"weather_api_key": "92a35e791480fa259da8ee8e487eee96",
 	"private": true
 }
