@@ -1,5 +1,6 @@
 
-TESTS = test/*.js test/node/*.js
+NODETESTS ?= test/*.js test/node/*.js
+BROWSERTESTS ?= test/*.js test/client/*.js
 REPORTER = spec
 
 all: superagent.js
@@ -13,16 +14,16 @@ test-node:
 		--reporter $(REPORTER) \
 		--timeout 5000 \
 		--growl \
-		$(TESTS)
+		$(NODETESTS)
 
 test-cov: lib-cov
 	SUPERAGENT_COV=1 $(MAKE) test REPORTER=html-cov > coverage.html
 
 test-browser:
-	./node_modules/.bin/zuul -- test/*.js test/client/*.js
+	./node_modules/.bin/zuul -- $(BROWSERTESTS)
 
 test-browser-local:
-	./node_modules/.bin/zuul --local 4000 -- test/*.js test/client/*.js
+	./node_modules/.bin/zuul --local 4000 -- $(BROWSERTESTS)
 
 lib-cov:
 	jscoverage lib lib-cov
@@ -35,12 +36,20 @@ superagent.js: lib/node/*.js lib/node/parsers/*.js
 test-server:
 	@node test/server
 
-docs: test-docs
+docs: index.html test-docs
+
+index.html: docs/index.md
+	marked < $< \
+		| cat docs/head.html - docs/tail.html \
+		> $@
+
+docclean:
+	rm -f index.html test.html
 
 test-docs:
 	make test REPORTER=doc \
 		| cat docs/head.html - docs/tail.html \
-		> docs/test.html
+		> test.html
 
 clean:
 	rm -fr superagent.js components

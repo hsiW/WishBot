@@ -1,11 +1,11 @@
-var baseWrapperValue = require('./internal/baseWrapperValue');
+var baseWrapperValue = require('./_baseWrapperValue');
 
 /**
  * Executes the chained sequence to extract the unwrapped value.
  *
  * @name value
  * @memberOf _
- * @alias run, toJSON, valueOf
+ * @alias toJSON, valueOf
  * @category Seq
  * @returns {*} Returns the resolved unwrapped value.
  * @example

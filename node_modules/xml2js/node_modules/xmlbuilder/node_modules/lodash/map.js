@@ -1,6 +1,6 @@
-var arrayMap = require('./internal/arrayMap'),
-    baseIteratee = require('./internal/baseIteratee'),
-    baseMap = require('./internal/baseMap'),
+var arrayMap = require('./_arrayMap'),
+    baseIteratee = require('./_baseIteratee'),
+    baseMap = require('./_baseMap'),
     isArray = require('./isArray');
 
 /**
@@ -29,11 +29,11 @@ var arrayMap = require('./internal/arrayMap'),
  *   return n * n;
  * }
  *
- * _.map([1, 2], square);
- * // => [3, 6]
+ * _.map([4, 8], square);
+ * // => [16, 64]
  *
- * _.map({ 'a': 1, 'b': 2 }, square);
- * // => [3, 6] (iteration order is not guaranteed)
+ * _.map({ 'a': 4, 'b': 8 }, square);
+ * // => [16, 64] (iteration order is not guaranteed)
  *
  * var users = [
  *   { 'user': 'barney' },

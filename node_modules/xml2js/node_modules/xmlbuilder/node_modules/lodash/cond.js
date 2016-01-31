@@ -1,6 +1,6 @@
-var apply = require('./internal/apply'),
-    arrayMap = require('./internal/arrayMap'),
-    baseIteratee = require('./internal/baseIteratee'),
+var apply = require('./_apply'),
+    arrayMap = require('./_arrayMap'),
+    baseIteratee = require('./_baseIteratee'),
     rest = require('./rest');
 
 /** Used as the `TypeError` message for "Functions" methods. */
@@ -23,7 +23,7 @@ var FUNC_ERROR_TEXT = 'Expected a function';
  *   [_.matches({ 'a': 1 }),           _.constant('matches A')],
  *   [_.conforms({ 'b': _.isNumber }), _.constant('matches B')],
  *   [_.constant(true),                _.constant('no match')]
- * ])
+ * ]);
  *
  * func({ 'a': 1, 'b': 2 });
  * // => 'matches A'

@@ -1,5 +1,5 @@
-var baseIteratee = require('./internal/baseIteratee'),
-    basePickBy = require('./internal/basePickBy');
+var baseIteratee = require('./_baseIteratee'),
+    basePickBy = require('./_basePickBy');
 
 /**
  * The opposite of `_.pickBy`; this method creates an object composed of the
@@ -20,9 +20,9 @@ var baseIteratee = require('./internal/baseIteratee'),
  * // => { 'b': '2' }
  */
 function omitBy(object, predicate) {
-  predicate = baseIteratee(predicate);
-  return basePickBy(object, function(value) {
-    return !predicate(value);
+  predicate = baseIteratee(predicate, 2);
+  return basePickBy(object, function(value, key) {
+    return !predicate(value, key);
   });
 }
 

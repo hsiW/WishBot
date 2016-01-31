@@ -1,4 +1,4 @@
-var baseClamp = require('./internal/baseClamp'),
+var baseClamp = require('./_baseClamp'),
     toInteger = require('./toInteger');
 
 /** Used as references for the maximum length and index of an array. */
@@ -14,7 +14,7 @@ var MAX_ARRAY_LENGTH = 4294967295;
  * @memberOf _
  * @category Lang
  * @param {*} value The value to convert.
- * @return {number} Returns the converted integer.
+ * @returns {number} Returns the converted integer.
  * @example
  *
  * _.toLength(3);
