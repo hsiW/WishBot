@@ -1,1 +1,1 @@
-bot: node WishBot.js
+bot: node WishBot.js --harmony
