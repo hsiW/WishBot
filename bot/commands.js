@@ -330,6 +330,39 @@ var commands = {
 				else {bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"")}
 			});
 		}
+	},
+	"weather": {
+		desc: "Get the weather",
+		usage: "[usage]",
+		delete: true,
+		process: function(bot, msg, suffix) {
+			if (suffix) {
+				suffix = suffix.replace(" ", "");
+				var rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
+				request(rURL, function(error, response, body) {
+					if (!error && response.statusCode == 200) {
+						body = JSON.parse(body);
+						if (!body.hasOwnProperty("weather")) { return; }
+						var msgArray = [];
+						msgArray.push("__**Weather for "+body.name+", "+body.sys.country+":**__ • (*"+body.coord.lon+", "+body.coord.lat+"*)")
+						msgArray.push("")
+						msgArray.push("**Current Temperature:** "+Math.round(body.main.temp - 273.15)+"°C / "+Math.round(((body.main.temp - 273.15)* 1.8)+32)+"°F")
+						msgArray.push("**Humidity:** "+body.main.humidity+"%")
+						msgArray.push("**Cloudiness:** "+body.clouds.all+"%")
+						var sunrise = new Date(body.sys.sunrise*1000)
+						var formattedSunrise = (sunrise.getHours()) + ':' + ("0" + sunrise.getMinutes()).substr(-2)
+						var sunset = new Date(body.sys.sunset*1000)
+						var formattedSunset = (sunset.getHours()) + ':' + ("0" + sunset.getMinutes()).substr(-2)
+						msgArray.push("**Sunrise:** "+formattedSunrise+" UTC / **Sunset:** "+formattedSunset+" UTC")
+						bot.sendMessage(msg, msgArray);
+					} else { console.log(error); }
+				});
+		}
+		else
+		{
+			bot.sendMessage(msg.channel, "You need to enter a place to get the weather for.")
+		}
+		}
 	}
 }
 function get_gif(tags, func) {
