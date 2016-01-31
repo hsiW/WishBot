@@ -82,7 +82,7 @@ var commands = {
 		usage: "[none]",
 		description: "Give a random anime quote",
   	delete: true,
-		process: function (bot, msg){bot.sendMessage(msg.channel, quote[Math.floor(Math.random() * (quote.length))]);}
+		process: function (bot, msg){bot.sendMessage(msg, quote[Math.floor(Math.random() * (quote.length))]);}
 	},
 	"vquote": {
 		usage: "[quote message]",
@@ -116,8 +116,8 @@ var commands = {
 		process: function (bot, msg, suffix) {
 			var tags = suffix.split(" ");
 			get_gif(tags, function (id) {
-				if (typeof id !== "undefined") {bot.sendMessage(msg.channel, "http://media.giphy.com/media/" + id + "/giphy.gif [Tags: " + (tags ? tags : "Random GIF") + "]")}
-				else{bot.sendMessage(msg.channel, "Invalid tags, try something different. [Tags: " + (tags ? tags : "Random GIF") + "]")}
+				if (typeof id !== "undefined") {bot.sendMessage(msg, "http://media.giphy.com/media/" + id + "/giphy.gif [Tags: " + (tags ? tags : "Random GIF") + "]")}
+				else{bot.sendMessage(msg, "Invalid tags, try something different. [Tags: " + (tags ? tags : "Random GIF") + "]")}
 			});
 		}
 	},
@@ -145,7 +145,7 @@ var commands = {
 		usage: "[no usage]",
 		description: "puts a lenny face",
   	delete: true,
-		process: function (bot, msg) {bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)")}
+		process: function (bot, msg) {bot.sendMessage(msg, "( ͡° ͜ʖ ͡°)")}
 	},
 	"facelist": {
 		usage: "[no usage]",
@@ -166,8 +166,8 @@ var commands = {
   	delete: true,
 		process: function (bot, msg, suffix)
 		{
-		if(suffix &&  /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix)){bot.sendMessage(msg.channel, cool.faces[suffix])}
-		else{bot.sendMessage(msg.channel, cool.faces[Math.floor(Math.random() * (cool.faces.length))])}
+		if(suffix &&  /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix)){bot.sendMessage(msg, cool.faces[suffix])}
+		else{bot.sendMessage(msg, cool.faces[Math.floor(Math.random() * (cool.faces.length))])}
 		}
 	},
 	"wiki": {
@@ -180,10 +180,10 @@ var commands = {
 			{
         new Wiki().search(suffix,1).then(function(data) {
       	new Wiki().page(data.results[0]).then(function(page)
-				{bot.sendMessage(msg.channel, page.fullurl)});
+				{bot.sendMessage(msg, page.fullurl)});
 			});
 		}
-		else{bot.sendMessage(msg.channel, "You need to enter a topic to be wiki'd!")}
+		else{bot.sendMessage(msg, "You need to enter a topic to be wiki'd!")}
 		}
 	},
 	"hug": {
@@ -191,7 +191,7 @@ var commands = {
         description: "Puts a hug or hugs the mentioned user)",
         delete: true,
         process: function (bot, msg, suffix) {
-            if (!suffix){bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)")}
+            if (!suffix){bot.sendMessage(msg, "(>^_^)> <(^.^<)")}
             else {msg.mentions.map(function (usr) {bot.sendMessage(msg, msg.author + " (>^_^)> <(^.^<) " + "<@" + usr.id + ">");})}
         }
     },
@@ -199,40 +199,40 @@ var commands = {
 		usage: "[no usage]",
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
   	delete: true,
-		process: function (bot, msg) {bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ")}
+		process: function (bot, msg) {bot.sendMessage(msg, "(╯°□°)╯︵ǝɯɐlℲ")}
 	},
 	"botserver": {
 		usage: "[no usage]",
 		description: "Posts a invite to this bots server",
   	delete: true,
-		process: function (bot, msg) {bot.sendMessage(msg.channel, "__**Heres a invite to my server:**__ https://discord.gg/0lBiROCNVaDaE8rR")}
+		process: function (bot, msg) {bot.sendMessage(msg, "__**Heres a invite to my server:**__ https://discord.gg/0lBiROCNVaDaE8rR")}
 	},
 	"sing": {
 		usage: "[no usage]",
 		description: "sings a lovely song",
   	delete: true,
-		process: function (bot, msg){bot.sendMessage(msg.channel, "*🎵sings a beautiful song about Onii-chan🎵*");}
+		process: function (bot, msg){bot.sendMessage(msg, "*🎵sings a beautiful song about Onii-chan🎵*");}
 	},
 	"weedle": {
 		usage: "[no usage]",
 		description: "Weedle Weedle Weedle Wee",
 		delete: true,
-		process: function (bot, msg) {bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee").then(	bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif"))}
+		process: function (bot, msg) {bot.sendMessage(msg,"Weedle Weedle Weedle Wee").then(	bot.sendMessage(msg, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif"))}
 	},
 	"letsplay": {
 		usage: "[game]",
 		description: "Tells everyone to play a game.",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (suffix) {bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!")}
-			else {bot.sendMessage(msg.channel, ":video_game: @everyone, " + msg.author + " would like to play a game!")}
+			if (suffix) {bot.sendMessage(msg, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!")}
+			else {bot.sendMessage(msg, ":video_game: @everyone, " + msg.author + " would like to play a game!")}
 		}
 	},
 	"call": {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
   	delete: true,
-		process: function (bot, msg, suffix) {bot.sendMessage(msg.channel, ":phone: @everyone, " + msg.author + " would like to have a call!")}
+		process: function (bot, msg, suffix) {bot.sendMessage(msg, ":phone: @everyone, " + msg.author + " would like to have a call!")}
 	},
 	"randomquote": {
 		usage: "[none]",
@@ -243,7 +243,7 @@ var commands = {
 		{
 			bot.getChannelLogs("136558567082819584", 100, function(error,messages){
 			if(error){console.log(error); return;}
-			else{bot.sendMessage(msg.channel,messages[Math.floor((Math.random() * messages.length) + 1)])}
+			else{bot.sendMessage(msg,messages[Math.floor((Math.random() * messages.length) + 1)])}
 		});
 	  }
 		else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
@@ -256,7 +256,7 @@ var commands = {
 		process: function (bot, msg, suffix) {
 			youTube.search(suffix, 10, function (error, result)
 			{
-				if (error || !result || !result.items || result.items.length < 1) {bot.sendMessage(msg.channel, "Your search resulted in an error. Please forgive me senpai! ;-;")}
+				if (error || !result || !result.items || result.items.length < 1) {bot.sendMessage(msg, "Your search resulted in an error. Please forgive me senpai! ;-;")}
 				else {
 					if (typeof result.items[0].id.videoId === "undefined")
 					{
@@ -264,12 +264,12 @@ var commands = {
 						{
 							if(typeof result.items[i].id.videoId !== "undefined")
 							{
-									bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[i].id.videoId);
+									bot.sendMessage(msg, "http://www.youtube.com/watch?v=" + result.items[i].id.videoId);
 									return;
 							}
 						}
 					}
-					else{bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId)}
+					else{bot.sendMessage(msg, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId)}
 				}
 			});
 		}
@@ -352,7 +352,7 @@ var commands = {
 		}
 		else
 		{
-			bot.sendMessage(msg.channel, "You need to enter a place to get the weather for.")
+			bot.sendMessage(msg, "You need to enter a place to get the weather for.")
 		}
 		}
 	}
@@ -383,7 +383,7 @@ function rssfeed(bot, msg, url, count, full) {
 	var request = require('request');
 	request(url).pipe(feedparser);
 	feedparser.on('error', function (error) {
-		bot.sendMessage(msg.channel, "failed reading feed: " + error);
+		bot.sendMessage(msg, "failed reading feed: " + error);
 	});
 	var shown = 0;
 	feedparser.on('readable', function () {
@@ -393,13 +393,13 @@ function rssfeed(bot, msg, url, count, full) {
 			return;
 		}
 		var item = stream.read();
-		bot.sendMessage(msg.channel, item.title + " - " + item.link, function () {
+		bot.sendMessage(msg, item.title + " - " + item.link, function () {
 			if (full === true) {
 				var text = htmlToText.fromString(item.description, {
 					wordwrap: false,
 					ignoreHref: true
 				});
-				bot.sendMessage(msg.channel, text);
+				bot.sendMessage(msg, text);
 			}
 		});
 		stream.alreadyRead = true;
