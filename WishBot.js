@@ -5,7 +5,8 @@ var games = require("./bot/games.json").games;
 var options = require("./bot/options.json");
 var commands = require("./bot/commands.js").commands;
 var mod_commands = require("./bot/mod_commands.js").mod_commands;
-var fs = require('fs');
+var admin_commands = require("./bot/admin_commands.js").admin_commands;
+var admins = require("./bot/admins.json").admins;
 
 var cleverbot = require("cleverbot-node");
 var onee = new cleverbot;
@@ -47,22 +48,28 @@ bot.on("message", function (msg) {
 		})
 		return;
 	}
-	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat.")}
-	if (!(msg.channel.isPrivate) && ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix)) && (msg.author.id != bot.user.id)) {
-		var cmdTxt = msg.content.split(" ")[0].substring(1);
-		if ((commands[cmdTxt] && msg.content[0] === options.command_prefix) || (mod_commands[cmdTxt] && msg.content[0] === options.mod_command_prefix && msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles")))
-		{
-			commandsProcessed = commandsProcessed + 1;
-			if (commands[cmdTxt] && msg.content[0] === options.command_prefix){var cmd = commands[cmdTxt]}
-			if (mod_commands[cmdTxt] && msg.content[0] === options.mod_command_prefix){var cmd = mod_commands[cmdTxt]}
-			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - "+warningC(cmdTxt) + " was used by " + userC(msg.author.username));
-			bot.sendMessage("@"+msg.channel.server.name+": #" + msg.channel.name + ": @WishBot - `" + cmdTxt + "` was used by " + msg.author.username).then(cmd.process(bot, msg, suffix, commandsProcessed, talked));
-			if(cmd.delete){bot.deleteMessage(msg)}
-		}
+	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {
+		bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat.")
+		return;
 	}
 	if (msg.channel.id != ("87901288729178112")) {lastMessage = {text:msg.content, lastAuthor:msg.author.id, channel:msg.channel.id}}
 	if (Math.floor((Math.random() * 33) + 1) == 1) {bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
-	else if (msg.author.id != bot.user.id && !(msg.channel.isPrivate)) {console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content)}
+	if ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix) || (msg.content[0] === options.admin_command_prefix)) {
+		var cmdTxt = msg.content.split(" ")[0].substring(1);
+		if ((commands[cmdTxt] && msg.content[0] === options.command_prefix) ||
+		(mod_commands[cmdTxt] && msg.content[0] === options.mod_command_prefix && msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles")) ||
+		(msg.content[0] === options.admin_command_prefix && admin_commands[cmdTxt] && admins.indexOf(msg.author.id) > -1))
+		{
+			commandsProcessed += 1;
+			if (msg.content[0] === options.command_prefix){var cmd = commands[cmdTxt]}
+			if (msg.content[0] === options.mod_command_prefix){var cmd = mod_commands[cmdTxt]}
+			if (msg.content[0] === options.admin_command_prefix){var cmd = admin_commands[cmdTxt]}
+			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - "+warningC(cmdTxt) + " was used by " + userC(msg.author.username));
+			cmd.process(bot, msg, suffix, commandsProcessed, talked)
+			if(cmd.delete){bot.deleteMessage(msg)}
+			return;
+		}
+	}
 });
 
 //Login
