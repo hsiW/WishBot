@@ -331,23 +331,35 @@ var commands = {
 			if (suffix) {
 				suffix = suffix.replace(" ", "");
 				var rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
-				request(rURL, function(error, response, body) {
+				request(rURL, function(error, response, weath) {
 					if (!error && response.statusCode == 200) {
-						body = JSON.parse(body);
-						if (!body.hasOwnProperty("weather")) { return; }
+						weath = JSON.parse(weath);
+						if (!weath.hasOwnProperty("weather")) { return; }
+						var weatherC = ":sunny:";
+						if((weath.weather[0].description.indexOf("rain") > -1)||(weath.weather[0].description.indexOf("drizzle") > -1)){weather = "☔"}
+						else if(weath.weather[0].description.indexOf("snow") > -1){weather = ":snowflake:"}
+						else if(weath.weather[0].description.indexOf("cloud") > -1){weather = ":cloud:"}
+						else if(weath.weather[0].description.indexOf("storm") > -1){weather = "⚡"}
+						var direction = Math.floor((weath.wind.deg / 22.5) + 0.5)
+    				var compass = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
 						var msgArray = [];
-						msgArray.push("__**Weather for "+body.name+", "+body.sys.country+":**__ • (*"+body.coord.lon+", "+body.coord.lat+"*)")
-						msgArray.push("")
-						msgArray.push("**Current Temperature:** "+Math.round(body.main.temp - 273.15)+"°C / "+Math.round(((body.main.temp - 273.15)* 1.8)+32)+"°F")
-						msgArray.push("**Humidity:** "+body.main.humidity+"%")
-						msgArray.push("**Cloudiness:** "+body.clouds.all+"%")
-						var sunrise = new Date(body.sys.sunrise*1000)
+						var sunrise = new Date(weath.sys.sunrise*1000)
 						var formattedSunrise = (sunrise.getHours()) + ':' + ("0" + sunrise.getMinutes()).substr(-2)
-						var sunset = new Date(body.sys.sunset*1000)
+						var sunset = new Date(weath.sys.sunset*1000)
 						var formattedSunset = (sunset.getHours()) + ':' + ("0" + sunset.getMinutes()).substr(-2)
-						msgArray.push("**Sunrise:** "+formattedSunrise+" UTC / **Sunset:** "+formattedSunset+" UTC")
+						msgArray.push("🌎 __**Weather for "+weath.name+", "+weath.sys.country+":**__ • (*"+weath.coord.lon+", "+weath.coord.lat+"*)")
+						msgArray.push("")
+						msgArray.push("**"+weatherC+" Current Temperature:** "+Math.round(weath.main.temp - 273.15)+"°C / "+Math.round(((weath.main.temp - 273.15)* 1.8)+32)+"°F")
+						msgArray.push("**:sweat: Humidity:** "+weath.main.humidity+"%")
+						msgArray.push("**:cloud: Cloudiness:** "+weath.clouds.all+"%")
+						msgArray.push("**💨 Wind Speed:** "+weath.wind.speed+" m/s [*"+compass[(direction % 16)]+"*]")
+						msgArray.push("**:sunrise: Sunrise:** "+formattedSunrise+" UTC / **🌇 Sunset:** "+formattedSunset+" UTC")
 						bot.sendMessage(msg, msgArray);
-					} else { console.log(error); }
+					}
+					else {
+						console.log(error);
+						bot.reply(msg, "There was an error getting the weather, please try again later.")
+					}
 				});
 		}
 		else
