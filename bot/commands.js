@@ -86,7 +86,7 @@ var commands = {
 	},
 	"vquote": {
 		usage: "[quote message]",
-		description: "logs message to quotes chat with voice tag",
+		description: "Logs message to quotes chat with voice tag (Doesn't work on most servers)",
   	delete: true,
 		process: function (bot, msg, suffix) {
 			if(msg.channel.server.id === "87601506039132160"){
@@ -98,7 +98,7 @@ var commands = {
 	},
 	"tquote": {
 		usage: "[quote message]",
-		description: "logs message to quotes chat with text tag",
+		description: "Logs message to quotes chat with text tag (Doesn't work on most servers)",
     	delete: true,
 		process: function (bot, msg, suffix) {
 			if(msg.channel.server.id === "87601506039132160")
@@ -133,7 +133,7 @@ var commands = {
 	},
 	"roll": {
 		usage: "[max value]",
-		description: "returns a random number between 1 and max value. If no max is specified it is 10",
+		description: "Rolls a dice with the number entered, if none entered 6 is used",
   	delete: true,
 		process: function (bot, msg, suffix) {
 			var max = 6;
@@ -145,7 +145,7 @@ var commands = {
 		usage: "[no usage]",
 		description: "puts a lenny face",
   	delete: true,
-		process: function (bot, msg) {bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");}
+		process: function (bot, msg) {bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)")}
 	},
 	"facelist": {
 		usage: "[no usage]",
@@ -155,10 +155,7 @@ var commands = {
 			var msgArray = [];
 			msgArray.push("__Below is a list of the faces you can do with the face comannd:__")
 			msgArray.push("```")
-			for(i = 0; i < cool.faces.length; i++)
-			{
-				msgArray.push(i+": "+cool.faces[i])
-			}
+			for(i = 0; i < cool.faces.length; i++){msgArray.push(i+": "+cool.faces[i])}
 			msgArray.push("```")
 			bot.sendMessage(msg.author, msgArray);
 			}
@@ -169,18 +166,12 @@ var commands = {
   	delete: true,
 		process: function (bot, msg, suffix)
 		{
-		if(suffix &&  /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix))
-		{
-			bot.sendMessage(msg.channel, cool.faces[suffix])
-		}
-		else
-		{
-				bot.sendMessage(msg.channel, cool.faces[Math.floor(Math.random() * (cool.faces.length))])
-		}
+		if(suffix &&  /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix)){bot.sendMessage(msg.channel, cool.faces[suffix])}
+		else{bot.sendMessage(msg.channel, cool.faces[Math.floor(Math.random() * (cool.faces.length))])}
 		}
 	},
 	"wiki": {
-		usage: "[information to be brought up]",
+		usage: "[information to be wiki'd]",
 		description: "Gives you a wikipedia url based on the entered text",
   	delete: true,
 		process: function (bot, msg, suffix)
@@ -196,8 +187,8 @@ var commands = {
 		}
 	},
 	"hug": {
-        usage: "[no usage]",
-        description: "puts a (>^_^)> <(^.^<)",
+        usage: "[user mention]",
+        description: "Puts a hug or hugs the mentioned user)",
         delete: true,
         process: function (bot, msg, suffix) {
             if (!suffix){bot.sendMessage(msg.channel, "(>^_^)> <(^.^<)")}
@@ -224,7 +215,7 @@ var commands = {
 	},
 	"weedle": {
 		usage: "[no usage]",
-		description: "weedle weedle weedle wee",
+		description: "Weedle Weedle Weedle Wee",
 		delete: true,
 		process: function (bot, msg) {bot.sendMessage(msg.channel,"Weedle Weedle Weedle Wee").then(	bot.sendMessage(msg.channel, "http://media.giphy.com/media/h3Jm3lzxXMaY/giphy.gif"))}
 	},
@@ -245,21 +236,22 @@ var commands = {
 	},
 	"randomquote": {
 		usage: "[none]",
-		description: "Tells everyone you want to call.",
+		description: "Gives a random quote from the quotes chat (Doesn't work on most servers)",
   	delete: true,
 		process: function (bot, msg){
-			if(msg.channel.server.id === "87601506039132160"){
+		if(msg.channel.server.id === "87601506039132160")
+		{
 			bot.getChannelLogs("136558567082819584", 100, function(error,messages){
 			if(error){console.log(error); return;}
 			else{bot.sendMessage(msg.channel,messages[Math.floor((Math.random() * messages.length) + 1)])}
 		});
-	}
+	  }
 		else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
-		}
+	}
 	},
 	"youtube": {
 		usage: "[topic]",
-		description: "Probably gives you a link to the first result of the searched term.",
+		description: "Gives you a link to the first result of the searched term.",
   	delete: true,
 		process: function (bot, msg, suffix) {
 			youTube.search(suffix, 10, function (error, result)
