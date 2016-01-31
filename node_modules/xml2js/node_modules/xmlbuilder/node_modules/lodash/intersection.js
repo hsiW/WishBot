@@ -1,7 +1,7 @@
-var arrayMap = require('./internal/arrayMap'),
-    baseIntersection = require('./internal/baseIntersection'),
+var arrayMap = require('./_arrayMap'),
+    baseIntersection = require('./_baseIntersection'),
     rest = require('./rest'),
-    toArrayLikeObject = require('./internal/toArrayLikeObject');
+    toArrayLikeObject = require('./_toArrayLikeObject');
 
 /**
  * Creates an array of unique values that are included in all of the provided
@@ -14,6 +14,7 @@ var arrayMap = require('./internal/arrayMap'),
  * @param {...Array} [arrays] The arrays to inspect.
  * @returns {Array} Returns the new array of shared values.
  * @example
+ *
  * _.intersection([2, 1], [4, 2], [1, 2]);
  * // => [2]
  */

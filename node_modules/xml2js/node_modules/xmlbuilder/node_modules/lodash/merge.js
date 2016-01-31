@@ -1,5 +1,5 @@
-var baseMerge = require('./internal/baseMerge'),
-    createAssigner = require('./internal/createAssigner');
+var baseMerge = require('./_baseMerge'),
+    createAssigner = require('./_createAssigner');
 
 /**
  * Recursively merges own and inherited enumerable properties of source
@@ -30,8 +30,8 @@ var baseMerge = require('./internal/baseMerge'),
  * _.merge(users, ages);
  * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
  */
-var merge = createAssigner(function(object, source) {
-  baseMerge(object, source);
+var merge = createAssigner(function(object, source, srcIndex) {
+  baseMerge(object, source, srcIndex);
 });
 
 module.exports = merge;

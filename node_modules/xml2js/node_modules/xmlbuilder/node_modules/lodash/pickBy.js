@@ -1,5 +1,5 @@
-var baseIteratee = require('./internal/baseIteratee'),
-    basePickBy = require('./internal/basePickBy');
+var baseIteratee = require('./_baseIteratee'),
+    basePickBy = require('./_basePickBy');
 
 /**
  * Creates an object composed of the `object` properties `predicate` returns
@@ -19,7 +19,7 @@ var baseIteratee = require('./internal/baseIteratee'),
  * // => { 'a': 1, 'c': 3 }
  */
 function pickBy(object, predicate) {
-  return object == null ? {} : basePickBy(object, baseIteratee(predicate));
+  return object == null ? {} : basePickBy(object, baseIteratee(predicate, 2));
 }
 
 module.exports = pickBy;
