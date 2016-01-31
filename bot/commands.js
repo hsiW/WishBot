@@ -4,10 +4,10 @@ var request = require('request');
 var xml2js = require('xml2js');
 var qs = require("querystring");
 var YouTube = require('youtube-node');
-var fs = require('fs');
 var Wiki = require('wikijs');
 var quote = require("./animequotes.json").animequotes;
 var fix = require('entities');
+var cool = require('cool-ascii-faces');
 
 var chalk = require("chalk");
 var c = new chalk.constructor({enabled: true});
@@ -89,8 +89,11 @@ var commands = {
 		description: "logs message to quotes chat with voice tag",
   	delete: true,
 		process: function (bot, msg, suffix) {
-			if (!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
-			else{bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)}
+			if(msg.channel.server.id === "87601506039132160"){
+				if (!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
+				else{bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)}
+			}
+			else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
 		}
 	},
 	"tquote": {
@@ -98,8 +101,12 @@ var commands = {
 		description: "logs message to quotes chat with text tag",
     	delete: true,
 		process: function (bot, msg, suffix) {
+			if(msg.channel.server.id === "87601506039132160")
+			{
 			if(!suffix){bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
 			else{bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)}
+		  }
+			else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
 		}
 	},
 	"gif": {
@@ -140,6 +147,38 @@ var commands = {
   	delete: true,
 		process: function (bot, msg) {bot.sendMessage(msg.channel, "( ͡° ͜ʖ ͡°)");}
 	},
+	"facelist": {
+		usage: "[no usage]",
+		description: "gives you a list of the faces you can use with the face command",
+  	delete: true,
+		process: function (bot, msg) {
+			var msgArray = [];
+			msgArray.push("__Below is a list of the faces you can do with the face comannd:__")
+			msgArray.push("```")
+			for(i = 0; i < cool.faces.length; i++)
+			{
+				msgArray.push(i+": "+cool.faces[i])
+			}
+			msgArray.push("```")
+			bot.sendMessage(msg.author, msgArray);
+			}
+	},
+	"face": {
+		usage: "[A number]",
+		description: "Sends an ascii face at random or sends the ascii for the number",
+  	delete: true,
+		process: function (bot, msg, suffix)
+		{
+		if(suffix &&  /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix))
+		{
+			bot.sendMessage(msg.channel, cool.faces[suffix])
+		}
+		else
+		{
+				bot.sendMessage(msg.channel, cool.faces[Math.floor(Math.random() * (cool.faces.length))])
+		}
+		}
+	},
 	"wiki": {
 		usage: "[information to be brought up]",
 		description: "Gives you a wikipedia url based on the entered text",
@@ -170,6 +209,12 @@ var commands = {
 		description: "puts a (╯°□°)╯︵ǝɯɐlℲ",
   	delete: true,
 		process: function (bot, msg) {bot.sendMessage(msg.channel, "(╯°□°)╯︵ǝɯɐlℲ")}
+	},
+	"botserver": {
+		usage: "[no usage]",
+		description: "Posts a invite to this bots server",
+  	delete: true,
+		process: function (bot, msg) {bot.sendMessage(msg.channel, "__**Heres a invite to my server:**__ https://discord.gg/0lBiROCNVaDaE8rR")}
 	},
 	"sing": {
 		usage: "[no usage]",
@@ -202,12 +247,15 @@ var commands = {
 		usage: "[none]",
 		description: "Tells everyone you want to call.",
   	delete: true,
-		process: function (bot, msg)
-		{bot.getChannelLogs("136558567082819584", 100, function(error,messages){
+		process: function (bot, msg){
+			if(msg.channel.server.id === "87601506039132160"){
+			bot.getChannelLogs("136558567082819584", 100, function(error,messages){
 			if(error){console.log(error); return;}
 			else{bot.sendMessage(msg.channel,messages[Math.floor((Math.random() * messages.length) + 1)])}
 		});
 	}
+		else {bot.reply(msg,"I'm sorry but that command doesnt work on this server.")}
+		}
 	},
 	"youtube": {
 		usage: "[topic]",
@@ -281,6 +329,39 @@ var commands = {
 				}
 				else {bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"")}
 			});
+		}
+	},
+	"weather": {
+		desc: "Get the weather",
+		usage: "[usage]",
+		delete: true,
+		process: function(bot, msg, suffix) {
+			if (suffix) {
+				suffix = suffix.replace(" ", "");
+				var rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
+				request(rURL, function(error, response, body) {
+					if (!error && response.statusCode == 200) {
+						body = JSON.parse(body);
+						if (!body.hasOwnProperty("weather")) { return; }
+						var msgArray = [];
+						msgArray.push("__**Weather for "+body.name+", "+body.sys.country+":**__ • (*"+body.coord.lon+", "+body.coord.lat+"*)")
+						msgArray.push("")
+						msgArray.push("**Current Temperature:** "+Math.round(body.main.temp - 273.15)+"°C / "+Math.round(((body.main.temp - 273.15)* 1.8)+32)+"°F")
+						msgArray.push("**Humidity:** "+body.main.humidity+"%")
+						msgArray.push("**Cloudiness:** "+body.clouds.all+"%")
+						var sunrise = new Date(body.sys.sunrise*1000)
+						var formattedSunrise = (sunrise.getHours()) + ':' + ("0" + sunrise.getMinutes()).substr(-2)
+						var sunset = new Date(body.sys.sunset*1000)
+						var formattedSunset = (sunset.getHours()) + ':' + ("0" + sunset.getMinutes()).substr(-2)
+						msgArray.push("**Sunrise:** "+formattedSunrise+" UTC / **Sunset:** "+formattedSunset+" UTC")
+						bot.sendMessage(msg, msgArray);
+					} else { console.log(error); }
+				});
+		}
+		else
+		{
+			bot.sendMessage(msg.channel, "You need to enter a place to get the weather for.")
+		}
 		}
 	}
 }
