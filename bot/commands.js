@@ -71,6 +71,60 @@ var commands = {
    bot.sendMessage(msg, msgArray);
   }
  },
+ "info": {
+  usage: "[none]",
+  description: "Outputs an id",
+  delete: true,
+  process: function(bot, msg, suffix) {
+   //console.log(msg.author);
+   if (!suffix) {
+     var msgArray = [];
+     msgArray.push("You requested info on **" + msg.channel.server.name + "**");
+     msgArray.push("Owner: " + msg.channel.server.owner + " (id: " + msg.channel.server.owner.id + ")\n");
+     msgArray.push("```Server ID: " + msg.channel.server.id + "");
+     msgArray.push("Region: " + msg.channel.server.region + "");
+     msgArray.push("Default channel: #" + msg.channel.server.defaultChannel.name + "");
+     msgArray.push("This channel's id: " + msg.channel.id + "```");
+     var rsO = msg.channel.server.roles;
+     var temp;
+     for (rO of rsO) {
+      temp += (rO.name + ", ")
+     }
+     msgArray.push("```Roles: " + temp.substring(9, temp.length - 2) + "```")
+     msgArray.push("Icon URL: " + msg.channel.server.iconURL + "")
+     bot.sendMessage(msg, msgArray)
+     return;
+   }
+   if(msg.mentions && suffix) {
+    msg.mentions.map(function(usr) {
+     var joinedOn = new Date(msg.channel.server.detailsOfUser(usr).joinedAt)
+     var roles = msg.channel.server.rolesOfUser(usr.id).map(function(role) {
+      return role.name;
+     });
+     roles = roles.join(", ").replace("@", "");
+     var msgArray = [];
+     msgArray.push("Info about **" + usr.username + "**")
+     msgArray.push("ID: `" + usr.id + "`")
+     msgArray.push("Status: " + usr.status)
+     if (usr.game != null) {msgArray.push("Currently playing** " + usr.game.name)}
+     msgArray.push("Currently Playing: " + usr.game.name)
+     msgArray.push("Joined Server On: " + joinedOn.toUTCString())
+     if (roles.length <= 1000) {
+      msgArray.push("Roles: `" + roles + "`")
+     } else {
+      msgArray.push("Roles: `Too many to list`")
+     }
+     msgArray.push("Avatar: " + usr.avatarURL)
+     bot.sendMessage(msg, msgArray)
+     return;
+    })
+   }
+   if(suffix && !msg.mentions)
+   {
+     bot.sendMessage(msg, suffix+ " is not a valid user.")
+   }
+  }
+ },
  "ping": {
   usage: "[none]",
   description: "responds pong, useful for checking if bot is alive",
@@ -341,55 +395,6 @@ var commands = {
    } else {
     msg.mentions.map(function(usr) {
      bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```")
-    })
-   }
-  }
- },
- "info": {
-  usage: "[none]",
-  description: "Outputs an id",
-  delete: true,
-  process: function(bot, msg, suffix) {
-   //console.log(msg.author);
-   if (!suffix) {
-    var joinedOn = new Date(msg.channel.server.detailsOfUser(msg.author).joinedAt)
-    var roles = msg.channel.server.rolesOfUser(msg.author.id).map(function(role) {
-     return role.name;
-    })
-    roles = roles.join(", ").replace("@", "")
-    var msgArray = [];
-    msgArray.push("Info about **" + msg.author.username + "**")
-    msgArray.push("ID: `" + msg.author.id + "`")
-    msgArray.push("Status: " + msg.author.status)
-    msgArray.push("Currently Playing: " + msg.author.game.name)
-    msgArray.push("Joined Server On: " + joinedOn.toUTCString())
-    if (roles.length <= 1000) {
-     msgArray.push("Roles: `" + roles + "`")
-    } else {
-     msgArray.push("Roles: `Too many to list`")
-    }
-    msgArray.push("Avatar: " + msg.author.avatarURL)
-    bot.sendMessage(msg, msgArray)
-   } else {
-    msg.mentions.map(function(usr) {
-     var joinedOn = new Date(msg.channel.server.detailsOfUser(usr).joinedAt)
-     var roles = msg.channel.server.rolesOfUser(usr.id).map(function(role) {
-      return role.name;
-     });
-     roles = roles.join(", ").replace("@", "");
-     var msgArray = [];
-     msgArray.push("Info about **" + usr.username + "**")
-     msgArray.push("ID: `" + usr.id + "`")
-     msgArray.push("Status: " + usr.status)
-     msgArray.push("Currently Playing: " + usr.game.name)
-     msgArray.push("Joined Server On: " + joinedOn.toUTCString())
-     if (roles.length <= 1000) {
-      msgArray.push("Roles: `" + roles + "`")
-     } else {
-      msgArray.push("Roles: `Too many to list`")
-     }
-     msgArray.push("Avatar: " + usr.avatarURL)
-     bot.sendMessage(msg, msgArray)
     })
    }
   }
