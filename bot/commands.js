@@ -119,7 +119,7 @@ var commands = {
   }
  },
  "animequote": {
-  usage: "[none]",
+  usage: "[quote number]",
   description: "Gives a random anime quote",
   delete: true,
   process: function(bot, msg, suffix) {
@@ -198,9 +198,7 @@ var commands = {
   usage: "[no usage]",
   description: "puts a lenny face",
   delete: true,
-  process: function(bot, msg) {
-   bot.sendMessage(msg, "( ͡° ͜ʖ ͡°)")
-  }
+  process: function(bot, msg) {bot.sendMessage(msg, "( ͡° ͜ʖ ͡°)")}
  },
  "faces": {
   usage: "[no usage]",
@@ -218,7 +216,7 @@ var commands = {
   }
  },
  "face": {
-  usage: "[Number between 0-128]",
+  usage: "[Number between 1-129]",
   description: "Sends an ascii face at random or sends the ascii for the number",
   delete: true,
   process: function(bot, msg, suffix) {
@@ -293,7 +291,7 @@ var commands = {
  },
  "letsplay": {
   usage: "[game]",
-  description: "Tells everyone to play a game.",
+  description: "Tells everyone you want to play a game.",
   delete: true,
   process: function(bot, msg, suffix) {
    if (suffix) {
@@ -305,7 +303,7 @@ var commands = {
  },
  "call": {
   usage: "[none]",
-  description: "Tells everyone you want to call.",
+  description: "Tells everyone you want a call.",
   delete: true,
   process: function(bot, msg, suffix) {
    bot.sendMessage(msg, ":phone: @everyone, " + msg.author + " would like to have a call!")
@@ -419,9 +417,10 @@ var commands = {
    });
   }
  },
- "weather": {
-  desc: "Get the weather",
-  usage: "[usage]",
+ "weather":
+ {
+  usage: "[location to get weather from]",
+  description: "Gets the weather",
   delete: true,
   process: function(bot, msg, suffix) {
    if (suffix) {
