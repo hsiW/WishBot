@@ -18,7 +18,7 @@ function correctUsage(cmd) {
 
 var admin_commands = {
  "help": {
-  description: "Sends a DM containing all of these admin_commands.",
+  description: "Sends a PM containing all of these Admin Commands.",
   usage: "[command]",
   delete: true,
   process: function(bot, msg, suffix) {
@@ -28,9 +28,7 @@ var admin_commands = {
     var msgArray = [];
     msgArray.push("**Admin Commands: **");
     msgArray.push("```");
-    Object.keys(admin_commands).sort().forEach(function(cmd) {
-     msgArray.push("" + options.mod_command_prefix + "" + cmd + ": " + admin_commands[cmd].description + "")
-    });
+    Object.keys(admin_commands).sort().forEach(function(cmd) {msgArray.push("" + options.admin_command_prefix + "" + cmd + ": " + admin_commands[cmd].description + "")})
     msgArray.push("```");
     bot.sendMessage(msg.author, msgArray);
    }
@@ -40,47 +38,35 @@ var admin_commands = {
   usage: "[message]",
   description: "bot says message",
   delete: true,
-  process: function(bot, msg, suffix) {
-   bot.sendMessage(msg.channel, suffix)
-  }
+  process: function(bot, msg, suffix) {bot.sendMessage(msg.channel, suffix)}
  },
  "playing": {
   usage: "[game]",
   description: "allows you to set a game for Onee-chan to play. If nothing specified it will be random.",
   delete: true,
   process: function(bot, msg, suffix) {
-   if (suffix) {
-    bot.setPlayingGame(suffix)
-   } else {
-    bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])
-   }
+   if (suffix) {bot.setPlayingGame(suffix)}
+   else {bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
   }
  },
  "restart": {
   usage: "[none]",
   description: "stops the bot",
   delete: true,
-  process: function(bot, msg, suffix) {
-   if (msg.author.id === "87600987040120832") {
+  process: function(bot, msg) {
     setTimeout(function() {
      console.log("@WishBot - Restarted bot.");
      process.exit(0);
     }, 1000);
-   } else {
-    bot.reply(msg, "I CANNOT BE STOPPED BY THE LIKES OF YOU");
    }
-  }
  },
  "setname": {
   usage: "[name]",
   description: "Changes the bots username",
   delete: true,
   process: function(bot, msg, suffix) {
-   if (suffix) {
-    bot.setUsername(suffix).then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC(suffix) + " by " + userC(msg.author.username)))
-   } else {
-    bot.setUsername("Onee-chan").then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC("Onee-chan") + " by " + userC(msg.author.username)))
-   }
+   if (suffix) {bot.setUsername(suffix).then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC(suffix) + " by " + userC(msg.author.username)))}
+   else {bot.setUsername("Onee-chan").then(console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - Username set to " + warningC("Onee-chan") + " by " + userC(msg.author.username)))}
   }
  },
  "servers": {
