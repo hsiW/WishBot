@@ -31,7 +31,7 @@ function correctUsage(cmd) {
 var commands = {
  "help": {
   usage: "[command]",
-  description: "Sends a DM containing all of the commands.",
+  description: "Sends a PM containing all of the commands.",
   delete: true,
   process: function(bot, msg, suffix) {
    if (commands[suffix]) {
@@ -49,31 +49,16 @@ var commands = {
    }
   }
  },
- "about": {
+ /*"about": {
   usage: "[none]",
   description: "Gives info about the server",
   delete: true,
   process: function(bot, msg, suffix) {
-   var msgArray = [];
-   msgArray.push("You requested info on **" + msg.channel.server.name + "**");
-   msgArray.push("Owner: " + msg.channel.server.owner + " (id: " + msg.channel.server.owner.id + ")\n");
-   msgArray.push("```Server ID: " + msg.channel.server.id + "");
-   msgArray.push("Region: " + msg.channel.server.region + "");
-   msgArray.push("Default channel: #" + msg.channel.server.defaultChannel.name + "");
-   msgArray.push("This channel's id: " + msg.channel.id + "```");
-   var rsO = msg.channel.server.roles;
-   var rols /* = "undefined@everyone, "*/ ;
-   for (rO of rsO) {
-    rols += (rO.name + ", ");
-   }
-   msgArray.push("```Roles: " + rols.substring(9, rols.length - 2) + "```");
-   msgArray.push("Icon URL: " + msg.channel.server.iconURL + "");
-   bot.sendMessage(msg, msgArray);
   }
- },
+},*/
  "info": {
-  usage: "[none]",
-  description: "Outputs an id",
+  usage: "[mentioned user]",
+  description: "Gives info on the server or the user mentioned",
   delete: true,
   process: function(bot, msg, suffix) {
    //console.log(msg.author);
@@ -119,7 +104,7 @@ var commands = {
      return;
     })
    }
-   if(suffix && !msg.mentions)
+   if((suffix && !msg.mentions) || msg.everyoneMentioned)
    {
      bot.sendMessage(msg, suffix+ " is not a valid user.")
    }
@@ -127,7 +112,7 @@ var commands = {
  },
  "ping": {
   usage: "[none]",
-  description: "responds pong, useful for checking if bot is alive",
+  description: "PONG!",
   delete: false,
   process: function(bot, msg, suffix) {
    bot.reply(msg, "PONG!")
@@ -135,10 +120,11 @@ var commands = {
  },
  "animequote": {
   usage: "[none]",
-  description: "Give a random anime quote",
+  description: "Gives a random anime quote",
   delete: true,
-  process: function(bot, msg) {
-   bot.sendMessage(msg, quote[Math.floor(Math.random() * (quote.length))]);
+  process: function(bot, msg, suffix) {
+  if (suffix && /^\d+$/.test(suffix) && quote.length >= parseInt(suffix) - 1)bot.sendMessage(msg, quote[suffix - 1])
+  else{bot.sendMessage(msg, quote[Math.floor(Math.random() * (quote.length))])}
   }
  },
  "vquote": {
@@ -163,14 +149,10 @@ var commands = {
   delete: true,
   process: function(bot, msg, suffix) {
    if (msg.channel.server.id === "87601506039132160") {
-    if (!suffix) {
-     bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")
-    } else {
-     bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)
-    }
-   } else {
-    bot.reply(msg, "I'm sorry but that command doesnt work on this server.")
-   }
+    if (!suffix)
+     {bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
+     else {bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)}
+   } else {bot.reply(msg, "I'm sorry but that command doesnt work on this server.")}
   }
  },
  "gif": {
@@ -229,7 +211,7 @@ var commands = {
    msgArray.push("__Below is a list of the faces you can do with the face comannd:__")
    msgArray.push("```")
    for (i = 0; i < cool.faces.length; i++) {
-    msgArray.push(i + ": " + cool.faces[i])
+    msgArray.push(i + ": " + cool.faces[i + 1])
    }
    msgArray.push("```")
    bot.sendMessage(msg.author, msgArray);
@@ -240,8 +222,8 @@ var commands = {
   description: "Sends an ascii face at random or sends the ascii for the number",
   delete: true,
   process: function(bot, msg, suffix) {
-   if (suffix && /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix)) {
-    bot.sendMessage(msg, cool.faces[suffix])
+   if (suffix && /^\d+$/.test(suffix) && cool.faces.length >= parseInt(suffix - 1)) {
+    bot.sendMessage(msg, cool.faces[suffix - 1])
    } else {
     bot.sendMessage(msg, cool.faces[Math.floor(Math.random() * (cool.faces.length))])
    }
