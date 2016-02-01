@@ -49,7 +49,7 @@ var commands = {
    }
   }
  },
- "info": {
+ "about": {
   usage: "[none]",
   description: "Gives info about the server",
   delete: true,
@@ -345,7 +345,7 @@ var commands = {
    }
   }
  },
- "about": {
+ "info": {
   usage: "[none]",
   description: "Outputs an id",
   delete: true,
