@@ -1,10 +1,10 @@
 {
-	"email": "xanizl@icloud.com",
-	"password": "Boudreau18!",
+	"email": "",
+	"password": "",
 	"command_prefix": "-",
 	"mod_command_prefix": "=",
 	"admin_command_prefix": "|",
-	"youtube_api_key": "AIzaSyC533IHgrIBhGxR_S_8EcBE_FHd7gBluq8",
-	"weather_api_key": "92a35e791480fa259da8ee8e487eee96",
-	"private": true
+	"youtube_api_key": "",
+	"weather_api_key": "",
+	"private": false
 }
