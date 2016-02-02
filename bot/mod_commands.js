@@ -132,7 +132,7 @@ var mod_commands = {
 	{
 		usage: "[number of messages from 1 - 100]",
 		description: "Deletes the specified number of messages from the channel",
-  	delete: true,
+  	delete: false,
 		process: function (bot, msg, suffix)
 		{
 			if (suffix && /^\d+$/.test(suffix))
@@ -147,7 +147,7 @@ var mod_commands = {
 					else
 					{
 						bot.startTyping(msg.channel);
-						var deletes = parseInt(suffix, 10);
+						var deletes = parseInt(suffix, 10) + 1;
 						var dones = 0;
 						for (count of messages)
 						{
