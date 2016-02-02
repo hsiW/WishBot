@@ -1,15 +1,17 @@
 {
   "name": "wishbot",
-  "version": "0.0.9",
+  "version": "0.8.2",
   "description": "a bot for discord made by wish",
   "main": "WishBot.js",
   "dependencies": {
     "cleverbot-node": "*",
+    "cool-ascii-faces": "*",
     "discord.js": "*",
     "entities": "*",
     "feedparser": "*",
     "fetch-reddit": "*",
     "giphy-api": "*",
+    "package-info": "^2.2.3",
     "path": "*",
     "request": "*",
     "url": "*",
@@ -17,8 +19,7 @@
     "winston": "*",
     "xml2js": "*",
     "youtube-node": "*",
-    "ytdl-core": "*",
-	"cool-ascii-faces": "*"
+    "ytdl-core": "*"
   },
   "engines": {
     "node": ">=4.2.4"

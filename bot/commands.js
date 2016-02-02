@@ -9,6 +9,21 @@ var quote = require("./animequotes.json").animequotes;
 var fix = require('entities');
 var cool = require('cool-ascii-faces');
 
+function loadMainPackageJSON(attempts) {
+  attempts = attempts || 1;
+  if (attempts > 5) {
+    throw new Error('Can\'t resolve main package.json file');
+  }
+  var mainPath = attempts === 1 ? './' : Array(attempts).join("../");
+  try {
+    return require.main.require(mainPath + 'package.json');
+  } catch (e) {
+    return loadMainPackageJSON(attempts + 1);
+  }
+}
+
+var botVersion = loadMainPackageJSON();
+
 var chalk = require("chalk");
 var c = new chalk.constructor({
  enabled: true
@@ -49,13 +64,6 @@ var commands = {
    }
   }
  },
- /*"about": {
-  usage: "[none]",
-  description: "Gives info about the server",
-  delete: true,
-  process: function(bot, msg, suffix) {
-  }
-},*/
  "info": {
   usage: "[mentioned user]",
   description: "Gives info on the server or the user mentioned",
@@ -305,12 +313,14 @@ var commands = {
   description: "Tells you about the bot",
   delete: true,
   process: function(bot, msg) {
+    console.log(botVersion.version)
    var msgArray = [];
    msgArray.push("Hello!")
-   msgArray.push("I'm WishBot, better know as "+bot.user+".")
+   msgArray.push("I'm WishBot, better known as "+bot.user+".")
    msgArray.push("I was written by Mᴉsɥ using Discord.js.")
    msgArray.push("My \"website\" can be found at `https://github.com/hsiw/Wishbot`")
-   msgArray.push("For more information on what I can do use -help")
+   msgArray.push("I am currently running version "+botVersion.version+"!")
+   msgArray.push("For more information on what I can do use -help.")
    msgArray.push("Thanks!")
    bot.sendMessage(msg, msgArray)
   }
