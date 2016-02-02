@@ -147,7 +147,7 @@ var mod_commands = {
 					else
 					{
 						bot.startTyping(msg.channel);
-						var deletes = parseInt(suffix, 10) + 1;
+						var deletes = parseInt(suffix, 10);
 						var dones = 0;
 						for (count of messages)
 						{
