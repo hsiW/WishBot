@@ -449,12 +449,10 @@ var commands = {
       var sunset = new Date(weath.sys.sunset * 1000)
       var formattedSunset = (sunset.getHours()) + ':' + ("0" + sunset.getMinutes()).substr(-2)
       msgArray.push("🌎 __**Weather for " + weath.name + ", " + weath.sys.country + ":**__ • (*" + weath.coord.lon + ", " + weath.coord.lat + "*)")
-      msgArray.push("")
-      msgArray.push("**" + weatherC + " Current Temperature:** " + Math.round(weath.main.temp - 273.15) + "°C / " + Math.round(((weath.main.temp - 273.15) * 1.8) + 32) + "°F")
-      msgArray.push("**:sweat: Humidity:** " + weath.main.humidity + "%")
-      msgArray.push("**:cloud: Cloudiness:** " + weath.clouds.all + "%")
-      msgArray.push("**💨 Wind Speed:** " + weath.wind.speed + " m/s [*" + compass[(direction % 16)] + "*]")
-      msgArray.push("**:sunrise: Sunrise:** " + formattedSunrise + " UTC / **🌇 Sunset:** " + formattedSunset + " UTC")
+      msgArray.push("**" + weatherC + "Current Weather Conditions:** "+weath.weather[0].description)
+      msgArray.push("**:sweat: Humidity:** " + weath.main.humidity + "% - **🌆 Current Temperature:** " + Math.round(weath.main.temp - 273.15) + "°C / " + Math.round(((weath.main.temp - 273.15) * 1.8) + 32) + "°F")
+      msgArray.push("**:cloud: Cloudiness:** " + weath.clouds.all + "% - **💨 Wind Speed:** " + weath.wind.speed + " m/s [*" + compass[(direction % 16)] + "*]")
+      msgArray.push("**🌄 Sunrise:** " + formattedSunrise + " UTC / **🌇 Sunset:** " + formattedSunset + " UTC")
       bot.sendMessage(msg, msgArray);
      } else {
       console.log(error);
