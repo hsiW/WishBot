@@ -91,7 +91,7 @@ var commands = {
      msgArray.push("Info about **" + usr.username + "**")
      msgArray.push("ID: `" + usr.id + "`")
      msgArray.push("Status: " + usr.status)
-     if (usr.game != null) {msgArray.push("Currently playing** " + usr.game.name)}
+     if (usr.game != null) {msgArray.push("Currently playing: " + usr.game.name)}
      msgArray.push("Joined Server On: " + joinedOn.toUTCString())
      if (roles.length <= 1000) {
       msgArray.push("Roles: `" + roles + "`")
