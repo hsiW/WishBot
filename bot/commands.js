@@ -300,11 +300,26 @@ var commands = {
    }
   }
  },
+ "about": {
+  usage: "[none]",
+  description: "Tells you about the bot",
+  delete: true,
+  process: function(bot, msg) {
+   var msgArray = [];
+   msgArray.push("Hello!")
+   msgArray.push("I'm WishBot, better know as "+bot.user+".")
+   msgArray.push("I was written by Mᴉsɥ using Discord.js.")
+   msgArray.push("My \"website\" can be found at `https://github.com/hsiw/Wishbot`")
+   msgArray.push("For more information on what I can do use -help")
+   msgArray.push("Thanks!")
+   bot.sendMessage(msg, msgArray)
+  }
+ },
  "call": {
   usage: "[none]",
   description: "Tells everyone you want a call.",
   delete: true,
-  process: function(bot, msg, suffix) {
+  process: function(bot, msg) {
    bot.sendMessage(msg, ":phone: @everyone, " + msg.author + " would like to have a call!")
   }
  },

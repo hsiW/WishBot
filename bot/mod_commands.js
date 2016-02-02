@@ -36,6 +36,7 @@ var mod_commands = {
 			}
 		}
 	},
+	
 	"setcolour":
 		{
 			usage: "[mention] + [6 digit hexidecimal colour code]",
