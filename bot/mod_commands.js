@@ -19,7 +19,7 @@ function correctUsage(cmd) {
 var mod_commands = {
 	"help":
 	{
-		description: "Sends a PM containing all of these Mod Commands.",
+		description: "Sends a PM containing all of the Mod Commands.",
 		usage: "[command]",
   	delete: true,
 		process: function (bot, msg, suffix)
@@ -32,11 +32,11 @@ var mod_commands = {
 				msgArray.push("```");
 				Object.keys(mod_commands).sort().forEach(function (cmd){msgArray.push("" + options.mod_command_prefix + "" + cmd + ": " + mod_commands[cmd].description + "")});
 				msgArray.push("```");
+				msgArray.push("Quite a few of these commands require me to have the **Manage Role Permission** to work properly")
 				bot.sendMessage(msg.author, msgArray);
 			}
 		}
 	},
-	
 	"setcolour":
 		{
 			usage: "[mention] + [6 digit hexidecimal colour code]",
@@ -65,7 +65,7 @@ var mod_commands = {
 									bot.addMemberToRole(usr.id, permission)
 										.then(function ()
 										{
-											bot.sendMessage(msg, "Applied the colour "+colour+" to <@" + usr.id + ">.");
+											bot.sendMessage(msg, "Applied the colour "+colour+" to " + usr+", Senpai!");
 											console.log(channelC("#" + msg.channel.name) + ": " + botC("@WishBot") + " - New Role was made " + warningC("Colour ") + colour + " by " + userC(msg.author.username));
 										})
 								})
@@ -97,24 +97,11 @@ var mod_commands = {
 			statArray.push("**Info about " + bot.user + "**");
 			statArray.push("```Bot Uptime: " + Math.round((bot.uptime / 3600000) % 60) + " hour(s), " + Math.round((bot.uptime / 60000) % 60) + " minute(s), and " + Math.round((bot.uptime / 1000) % 60) + " second(s).");
 			statArray.push("Currently connected to " + bot.servers.length + " server(s) and " + bot.channels.length + " channel(s)");
+			statArray.push("Being used by "+bot.users.length+" users")
 			statArray.push("During the current session " + commandsProcessed + " command(s) have been processed.");
 			statArray.push(bot.user.username + " has been talked to " + talked + " time(s)");
 			statArray.push("Currently using " + (Math.round(process.memoryUsage().rss / 1024 / 1000)) + "MB of memory```")
 			bot.sendMessage(msg, statArray);
-		}
-	},
-	"join":
-	{
-		usage: "[invite]",
-		description: "Joins the server it's invited to",
-  	delete: true,
-		process: function (bot, msg, suffix)
-		{
-			bot.joinServer(suffix, function (error, server)
-			{
-				if (error){bot.sendMessage(msg, "Failed to join").then(console.log(errorC("Failed to join server - " + error)))}
-				else{bot.sendMessage(msg, "Successfully joined " + server).then(console.log(warningC("Joined server " + server)))}
-			});
 		}
 	},
 	"topic":
@@ -165,18 +152,9 @@ var mod_commands = {
 					}
 				});
 			}
-			else{bot.reply(msg, "using the delete command requires a interger between 1-100")}
+			else{bot.sendMessage(msg, "Using the delete command requires a number between 1-100, Senpai!")}
 		}
 	}
-	/*,
-	"eval": {
-		usage: "[command]",
-		description: 'Executes arbitrary javascript in the bot process.',
-		delete: false,
-		process: function(bot,msg,suffix) {
-				bot.sendMessage(msg.channel, eval(suffix,bot));
-		}
-	}*/
 };
 
 exports.mod_commands = mod_commands;
