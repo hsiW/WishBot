@@ -1,11 +1,11 @@
-var options = require("./options.json");
+var options = require("./options/options.json");
 var Discord = require("discord.js");
 var request = require('request');
 var xml2js = require('xml2js');
 var qs = require("querystring");
 var YouTube = require('youtube-node');
 var Wiki = require('wikijs');
-var quote = require("./animequotes.json").animequotes;
+var quote = require("./options/animequotes.json").animequotes;
 var fix = require('entities');
 var cool = require('cool-ascii-faces');
 
@@ -226,8 +226,8 @@ var commands = {
    var msgArray = [];
    msgArray.push("__Below is a list of the faces you can do with the face comannd:__")
    msgArray.push("```")
-   for (i = 0; i < cool.faces.length; i++) {
-    msgArray.push(i + ": " + cool.faces[i + 1])
+   for (i = 1; i < (cool.faces.length - 1); i++) {
+    msgArray.push(i + ": " + cool.faces[i-1])
    }
    msgArray.push("```")
    bot.sendMessage(msg.author, msgArray);

@@ -6,5 +6,7 @@
 	"admin_command_prefix": "|",
 	"youtube_api_key": "",
 	"weather_api_key": "",
-	"private": false
+	"MAL_user": "",
+	"MAL_pass": "",
+	"private": true
 }
