@@ -1,9 +1,10 @@
 {
   "name": "wishbot",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "description": "a bot for discord made by wish",
   "main": "WishBot.js",
   "dependencies": {
+    "chalk": "*",
     "cleverbot-node": "*",
     "cool-ascii-faces": "*",
     "discord.js": "*",
