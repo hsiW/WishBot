@@ -36,7 +36,9 @@ var errorC = c.red.bold;
 var botC = c.magenta.bold;
 
 var youTube = new YouTube();
-youTube.setKey(options.youtube_api_key);
+if(options.private){youTube.setKey(process.env.youtube_api_key)}
+else {youTube.setKey(options.youtube_api_key)}
+
 
 function correctUsage(cmd) {
  var msg = "Usage: " + options.command_prefix + "" + cmd + " " + commands[cmd].usage;
@@ -60,6 +62,7 @@ var commands = {
     });
     20
     msgArray.push("```");
+    msgArray.push("Info on Mod Commands can be found through `=help` which requires the user to have the **Manage Roles Permission** on the current server")
     bot.sendMessage(msg.author, msgArray);
    }
   }
@@ -72,17 +75,19 @@ var commands = {
    //console.log(msg.author);
    if (!suffix) {
      var msgArray = [];
-     msgArray.push("You requested info on **" + msg.channel.server.name + "**");
-     msgArray.push("Owner: " + msg.channel.server.owner + " (id: " + msg.channel.server.owner.id + ")\n");
-     msgArray.push("```Server ID: " + msg.channel.server.id + "");
-     msgArray.push("Region: " + msg.channel.server.region + "");
-     msgArray.push("Default channel: #" + msg.channel.server.defaultChannel.name + "");
-     msgArray.push("This channel's id: " + msg.channel.id + "```");
+     msgArray.push("__Info about the Server:__ `" + msg.channel.server.name + "`");
+     msgArray.push("")
+     msgArray.push("**Owner:** `" + msg.channel.server.owner.name + "` - ID: `" + msg.channel.server.owner.id + "`");
+     msgArray.push("**Server ID:** " + msg.channel.server.id);
+     msgArray.push("**Region:** " + msg.channel.server.region);
+     msgArray.push("**Default Chat Channel:** #" + msg.channel.server.defaultChannel.name);
+     msgArray.push("**This channel's id:** " + msg.channel.id);
      var rsO = msg.channel.server.roles;
      var temp;
      for (rO of rsO) {
       temp += (rO.name + ", ")
      }
+     temp = temp.replace("@", "");
      msgArray.push("```Roles: " + temp.substring(9, temp.length - 2) + "```")
      msgArray.push("Icon URL: " + msg.channel.server.iconURL + "")
      bot.sendMessage(msg, msgArray)
@@ -122,7 +127,7 @@ var commands = {
   description: "PONG!",
   delete: false,
   process: function(bot, msg, suffix) {
-   bot.reply(msg, "PONG!")
+   bot.sendMessage(msg, "PONG!")
   }
  },
  "animequote": {
@@ -146,7 +151,7 @@ var commands = {
      bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix)
     }
    } else {
-    bot.reply(msg, "I'm sorry but that command doesnt work on this server.")
+    bot.sendMessage(msg, "I'm sorry but that command doesnt work on this server.")
    }
   }
  },
@@ -159,7 +164,7 @@ var commands = {
     if (!suffix)
      {bot.reply(msg, "you'll need to have a quote to quote something, Senpai.")}
      else {bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix)}
-   } else {bot.reply(msg, "I'm sorry but that command doesnt work on this server.")}
+   } else {bot.sendMessage(msg, "I'm sorry but that command doesnt work on this server.")}
   }
  },
  "gif": {
@@ -170,9 +175,9 @@ var commands = {
    var tags = suffix.split(" ");
    get_gif(tags, function(id) {
     if (typeof id !== "undefined") {
-     bot.sendMessage(msg, "http://media.giphy.com/media/" + id + "/giphy.gif [Tags: " + (tags ? tags : "Random GIF") + "]")
+     bot.sendMessage(msg, "Using the tags **(Tags: " + (tags ? tags : "Random GIF") + ")** I found the following gif for you Senpai, \nhttp://media.giphy.com/media/" + id + "/giphy.gif ")
     } else {
-     bot.sendMessage(msg, "Invalid tags, try something different. [Tags: " + (tags ? tags : "Random GIF") + "]")
+     bot.sendMessage(msg, "Invalid tags Senpai, please try something different.")
     }
    });
   }
@@ -198,7 +203,7 @@ var commands = {
    if (suffix) {
     max = suffix
    }
-   bot.reply(msg, "you rolled a " + (Math.floor(Math.random() * max) + 1) + "! 🎲")
+   bot.sendMessage(msg, msg.sender.name+" rolled a **" + (Math.floor(Math.random() * max) + 1) + "**! 🎲")
   }
  },
  "lenny": {
@@ -206,7 +211,13 @@ var commands = {
   description: "puts a lenny face",
   delete: true,
   process: function(bot, msg) {bot.sendMessage(msg, "( ͡° ͜ʖ ͡°)")}
- },
+},
+"wewlad": {
+ usage: "[no usage]",
+ description: "Sends a wew lad image to the current channel(I'm so sorry)",
+ delete: true,
+ process: function(bot, msg) {bot.sendMessage(msg, "https://blazeti.me/wewlad/wewladtoast.png")}
+},
  "faces": {
   usage: "[no usage]",
   description: "gives you a list of the faces you can use with the face command",
@@ -242,7 +253,7 @@ var commands = {
    if (suffix) {
     new Wiki().search(suffix, 1).then(function(data) {
      new Wiki().page(data.results[0]).then(function(page) {
-      bot.sendMessage(msg, page.fullurl)
+      bot.sendMessage(msg,"I searched for **"+suffix+"** and found this Senpai, \n"+page.fullurl)
      });
     });
    } else {
@@ -259,7 +270,22 @@ var commands = {
     bot.sendMessage(msg, "(>^_^)> <(^.^<)")
    } else {
     msg.mentions.map(function(usr) {
-     bot.sendMessage(msg, msg.author + ", (>^_^)> <(^.^<) " + "<@" + usr.id + ">");
+     bot.sendMessage(msg, "**"+msg.author.name + "**, (>^_^)> <(^.^<) " + usr);
+    })
+   }
+  }
+ },
+ "smite": {
+  usage: "[user mention]",
+  description: "Smites the mentioned user",
+  delete: true,
+  process: function(bot, msg, suffix) {
+   if (!suffix)
+   {
+    bot.sendMessage(msg,"**"+msg.sender.name+"** has smited themself using power granted to Bluee by the Cabbage Phoenix.")
+   } else {
+    msg.mentions.map(function(usr) {
+     bot.sendMessage(msg, usr+" has been smited using the power granted to Bluee by the Cabbage Phoenix.")
     })
    }
   }
@@ -302,9 +328,9 @@ var commands = {
   delete: true,
   process: function(bot, msg, suffix) {
    if (suffix) {
-    bot.sendMessage(msg, ":video_game: @everyone, " + msg.author + " would like to play " + suffix + "!")
+    bot.sendMessage(msg, ":video_game: @everyone, **" + msg.author.name + "** would like to play " + suffix + "!")
    } else {
-    bot.sendMessage(msg, ":video_game: @everyone, " + msg.author + " would like to play a game!")
+    bot.sendMessage(msg, ":video_game: @everyone, **" + msg.author.name + "** would like to play a game!")
    }
   }
  },
@@ -313,7 +339,6 @@ var commands = {
   description: "Tells you about the bot",
   delete: true,
   process: function(bot, msg) {
-    console.log(botVersion.version)
    var msgArray = [];
    msgArray.push("Hello!")
    msgArray.push("I'm WishBot, better known as "+bot.user+".")
@@ -330,7 +355,7 @@ var commands = {
   description: "Tells everyone you want a call.",
   delete: true,
   process: function(bot, msg) {
-   bot.sendMessage(msg, ":phone: @everyone, " + msg.author + " would like to have a call!")
+   bot.sendMessage(msg, ":phone: @everyone, **" + msg.author.name + "** would like to have a call!")
   }
  },
  "randomquote": {
@@ -348,7 +373,7 @@ var commands = {
      }
     });
    } else {
-    bot.reply(msg, "I'm sorry but that command doesnt work on this server.")
+    bot.sendMessage(msg, "I'm sorry but that command doesnt work on this server.")
    }
   }
  },
@@ -381,24 +406,25 @@ var commands = {
   delete: true,
   process: function(bot, msg, suffix) {
    if (!suffix || !msg.mentions) {
-    bot.reply(msg, msg.author.avatarURL);
+    bot.sendMessage(msg,"**"+msg.sender.name+"'s** avatar is "+msg.author.avatarURL);
    } else {
     msg.mentions.map(function(usr) {
-     bot.reply(msg, usr.username + "'s avatar is " + usr.avatarURL)
+     bot.sendMessage(msg,"**"+usr.username + "'s** avatar is " + usr.avatarURL)
     })
    }
   }
  },
+
  "id": {
   usage: "outputs the id of the user of the command or the person linked.",
   description: "Outputs an id",
   delete: true,
   process: function(bot, msg, suffix) {
    if (!suffix) {
-    bot.reply(msg, "your id is ```" + msg.author.id + "```")
+    bot.sendMessage(msg, msg.sender.name+"'s id is `" + msg.author.id + "`, Senpai")
    } else {
     msg.mentions.map(function(usr) {
-     bot.reply(msg, usr.username + "'s id is ```" + usr.id + "```")
+     bot.sendMessage(msg, usr.username + "'s User ID is `" + usr.id + "`, Senpai")
     })
    }
   }
@@ -410,36 +436,46 @@ var commands = {
   process: function(bot, msg, suffix) {
    var anime = msg.content.split(" ").slice(1).join("+");
    var apiURL = "http://myanimelist.net/api/anime/search.xml?q=" + anime;
+   if(options.private)
+   {
+     var user = process.env.MAL_user;
+     var pass = process.env.MAL_pass;
+   }
+   else
+   {
+     var user = options.MAL_user;
+     var pass = options.MAL_pass;
+   }
    request(apiURL, {
-    "auth": {
-     "user": "hsiw",
-     "pass": "RrzY3ykoK>4^^SKUK6sHCOwZ^mwY#1",
-     "sendImmediately": true
-    }
-   }, function(error, response, body) {
-    if (error) {
-     console.log(errorC(error));
-    }
-    if (!error && response.statusCode == 200) {
-     xml2js.parseString(body, function(err, result) {
-      var animeArray = [];
-      var synopsis = result.anime.entry[0].synopsis.toString();
-      synopsis = synopsis.replace(/<br \/>/g, " ");
-      synopsis = synopsis.replace(/\[(.{1,10})\]/g, "");
-      synopsis = synopsis.replace(/\r?\n|\r/g, " ");
-      synopsis = synopsis.replace(/\[(i|\/i)\]/g, "*");
-      synopsis = synopsis.replace(/\[(b|\/b)\]/g, "**");
-      synopsis = fix.decodeHTML(synopsis);
-      animeArray.push("__**" + result.anime.entry[0].title + "**__ - __**" + result.anime.entry[0].english + "**__ • *" + result.anime.entry[0].start_date + "*  to *" + result.anime.entry[0].end_date + "*\n");
-      animeArray.push("**Type:** *" + result.anime.entry[0].type + "*  **Episodes:** *" + result.anime.entry[0].episodes + "*  **Score:** *" + result.anime.entry[0].score + "*");
-      animeArray.push(synopsis);
-      bot.sendMessage(msg, animeArray);
-     });
-    } else {
-     bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"")
-    }
-   });
-  }
+       "auth": {
+        "user": user,
+        "pass": pass,
+        "sendImmediately": true
+       }
+      }, function(error, response, body) {
+       if (error) {
+        console.log(errorC(error));
+       }
+       if (!error && response.statusCode == 200) {
+        xml2js.parseString(body, function(err, result) {
+         var animeArray = [];
+         var synopsis = result.anime.entry[0].synopsis.toString();
+         synopsis = synopsis.replace(/<br \/>/g, " ");
+         synopsis = synopsis.replace(/\[(.{1,10})\]/g, "");
+         synopsis = synopsis.replace(/\r?\n|\r/g, " ");
+         synopsis = synopsis.replace(/\[(i|\/i)\]/g, "*");
+         synopsis = synopsis.replace(/\[(b|\/b)\]/g, "**");
+         synopsis = fix.decodeHTML(synopsis);
+         animeArray.push("__**" + result.anime.entry[0].title + "**__ - __**" + result.anime.entry[0].english + "**__ • *" + result.anime.entry[0].start_date + "*  to *" + result.anime.entry[0].end_date + "*\n");
+         animeArray.push("**Type:** *" + result.anime.entry[0].type + "*  **Episodes:** *" + result.anime.entry[0].episodes + "*  **Score:** *" + result.anime.entry[0].score + "*");
+         animeArray.push(synopsis);
+         bot.sendMessage(msg, animeArray);
+        });
+       } else {
+        bot.sendMessage(msg, "No anime found for: \"" + suffix + "\"")
+       }
+      });
+     }
  },
  "weather":
  {
@@ -449,7 +485,13 @@ var commands = {
   process: function(bot, msg, suffix) {
    if (suffix) {
     suffix = suffix.replace(" ", "");
-    var rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
+    if(options.private)
+    {
+      var rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + process.env.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + process.env.weather_api_key;
+    }
+    else {
+      var rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
+    }
     request(rURL, function(error, response, weath) {
      if (!error && response.statusCode == 200) {
       weath = JSON.parse(weath);
@@ -458,13 +500,13 @@ var commands = {
       }
       var weatherC = ":sunny:";
       if ((weath.weather[0].description.indexOf("rain") > -1) || (weath.weather[0].description.indexOf("drizzle") > -1)) {
-       weather = "☔"
+       weatherC = "☔"
       } else if (weath.weather[0].description.indexOf("snow") > -1) {
-       weather = ":snowflake:"
-      } else if (weath.weather[0].description.indexOf("cloud") > -1) {
-       weather = ":cloud:"
+       weatherC = ":snowflake:"
+      } else if (weath.weather[0].description.indexOf("clouds") > -1) {
+       weatherC = ":cloud:"
       } else if (weath.weather[0].description.indexOf("storm") > -1) {
-       weather = "⚡"
+       weatherC = "⚡"
       }
       var direction = Math.floor((weath.wind.deg / 22.5) + 0.5)
       var compass = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
@@ -481,7 +523,7 @@ var commands = {
       bot.sendMessage(msg, msgArray);
      } else {
       console.log(error);
-      bot.reply(msg, "There was an error getting the weather, please try again later.")
+      bot.sendMessage(msg, "There was an error getting the weather, please try again later.")
      }
     });
    } else {
