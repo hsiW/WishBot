@@ -1,5 +1,5 @@
-var options = require("./options.json");
-var games = require("./games.json").games;
+var options = require("./options/options.json");
+var games = require("./options/games.json").games;
 var Discord = require("discord.js");
 
 var chalk = require("chalk");
