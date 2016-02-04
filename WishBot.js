@@ -20,8 +20,8 @@ var userC = c.cyan.bold;
 var warningC = c.yellow.bold;
 var errorC = c.red.bold;
 var botC = c.magenta.bold;
+var welcome = [];
 
-var lastMessage = new Object();//used to store the last message for use in spam detection
 var commandsProcessed = 0;//used to count the ammount of commands processed in the current session
 var talked = 0;//used to count how many times people talked to WishBot in the current session
 
@@ -30,14 +30,32 @@ bot.on("ready", function ()
 {
 	bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))]);//randomly sets a game
 	console.log(botC("@WishBot")+" - Ready to begin! Serving in " + channelC(bot.channels.length) + " channels");//tells you that the bot is ready as well as in how many channels
+	welcome.push("Hello!")
+	welcome.push("I'm WishBot, better known as "+bot.user+".")
+	welcome.push("I was written by Mᴉsɥ using Discord.js.")
+	welcome.push("My \"website\" can be found at `https://github.com/hsiw/Wishbot`")
+	welcome.push("For more information on what I can do use -help.")
+	welcome.push("Thanks!")
 });
 
 //Does this stuff when the bot detects a message, can be in a channel its part of or through a private chat
 bot.on("message", function (msg) {
-	if (Math.floor((Math.random() * 66) + 1) == 1) {bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
-	if (msg.channel.isPrivate && msg.author.id != bot.user.id) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat."); return;}
-	if (msg.content === lastMessage.text && msg.author.id === lastMessage.lastAuthor  && msg.channel.id === lastMessage.channel){bot.deleteMessage(msg).then(console.log(serverC(botC("@WishBot")+" - Deleted message from " + userC(msg.author.name) + " because it was a duplicate message.")))}
-  if (msg.channel.id != ("87901288729178112")) {lastMessage = {text:msg.content, lastAuthor:msg.author.id, channel:msg.channel.id}}
+	if (Math.floor((Math.random() * 99) + 1) == 1) {bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
+	if (msg.channel.isPrivate && msg.author.id != bot.user.id && (/(^https?:\/\/discord\.gg\/[A-Za-z0-9]+$|^https?:\/\/discordapp\.com\/invite\/[A-Za-z0-9]+$)/.test(msg.content)))
+	{
+		bot.joinServer(msg.content, function (error, server)
+		{
+			if (error){bot.sendMessage(msg, "There was an error connecting to that server")}
+			else{
+					bot.sendMessage(msg.author, "Successfully joined "+server.name)
+			    bot.sendMessage(server.defaultChannel, welcome)
+					console.log(serverC("@"+server.name+":")+channelC(" #" + server.defaultChannel.name) + ": " + userC("@WishBot") + " - Joined Server!")
+					console.log(botC("@WishBot")+" - Now Serving in " + channelC(bot.channels.length) + " channels")
+			}
+		});
+		return;
+	}
+	if (msg.channel.isPrivate && msg.author.id != bot.user.id && (msg.content[0] === options.command_prefix || msg.content[0] === options.mod_command_prefix || msg.content[0] === options.admin_command_prefix)) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat."); return;}
 	if(msg.author.id === bot.user.id){return;}
 	var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 	if (!(msg.channel.isPrivate) && (msg.content.indexOf(bot.user.mention()) == 0)) {
@@ -67,16 +85,36 @@ bot.on("message", function (msg) {
 		}
 	}
 });
+
+bot.on("serverDeleted", function(Serverstuff) {
+	console.log(botC("@WishBot")+" - Left server " + serverC(Serverstuff.name));
+	console.log(botC("@WishBot")+" - Now Serving in " + channelC(bot.channels.length) + " channels");
+});
+
 //Login
-bot.login(options.email, options.password);
-console.log("Logged in using " + warningC(options.email));
+if(options.private)
+{
+	bot.login(process.env.email, process.env.password)
+	console.log("Logged in using " + warningC(process.env.email))
+}
+else
+{
+	bot.login(options.email, options.password)
+	console.log("Logged in using " + warningC(options.email))
+}
+
 //If disconnected try to reconnect
 bot.on("disconnected", function () {
 console.log(errorC("Disconnected"));
-		setTimeout(function(){
-			console.log(warningC("Attempting to re-connect..."));
-			bot.login(options.email, options.password, function (err, token) {
-			if (err) { console.log(err); process.exit(0); }
-			if (!token) { console.log(errorC("Failed to re-connect")); process.exit(0); }
-		});}, 33333);
+if(!options.private){process.exit(0);}
+else
+{
+	setTimeout(function(){
+		console.log(warningC("Attempting to re-connect..."));
+		bot.login(options.email, options.password, function (err, token) {
+		if (err) { console.log(err); process.exit(0); }
+		if (!token) { console.log(errorC("Failed to re-connect")); process.exit(0); }
+	});}, 33333);
+}
+
 });
