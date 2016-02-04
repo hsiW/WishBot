@@ -1,1 +1,0 @@
-bot: node WishBot.js
