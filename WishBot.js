@@ -1,12 +1,12 @@
 //Required files
 var Discord = require("discord.js");
 var bot = new Discord.Client();
-var games = require("./bot/games.json").games;
-var options = require("./bot/options.json");
-var commands = require("./bot/commands.js").commands;
-var mod_commands = require("./bot/mod_commands.js").mod_commands;
-var admin_commands = require("./bot/admin_commands.js").admin_commands;
-var admins = require("./bot/admins.json").admins;
+var games = require("./options/games.json").games;
+var options = require("./options/options.json");
+var commands = require("./commands.js").commands;
+var mod_commands = require("./mod_commands.js").mod_commands;
+var admin_commands = require("./admin_commands.js").admin_commands;
+var admins = require("./options/admins.json").admins;
 //Setup cleverbot
 var cleverbot = require("cleverbot-node");
 var onee = new cleverbot;
@@ -30,12 +30,6 @@ bot.on("ready", function ()
 {
 	bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))]);//randomly sets a game
 	console.log(botC("@WishBot")+" - Ready to begin! Serving in " + channelC(bot.channels.length) + " channels");//tells you that the bot is ready as well as in how many channels
-	welcome.push("Hello!")
-	welcome.push("I'm WishBot, better known as "+bot.user+".")
-	welcome.push("I was written by Mᴉsɥ using Discord.js.")
-	welcome.push("My \"website\" can be found at `https://github.com/hsiw/Wishbot`")
-	welcome.push("For more information on what I can do use -help.")
-	welcome.push("Thanks!")
 });
 
 //Does this stuff when the bot detects a message, can be in a channel its part of or through a private chat
@@ -46,19 +40,27 @@ bot.on("message", function (msg) {
 		bot.joinServer(msg.content, function (error, server)
 		{
 			if (error){bot.sendMessage(msg, "There was an error connecting to that server")}
-			else{
-					bot.sendMessage(msg.author, "Successfully joined "+server.name)
-			    bot.sendMessage(server.defaultChannel, welcome)
-					console.log(serverC("@"+server.name+":")+channelC(" #" + server.defaultChannel.name) + ": " + userC("@WishBot") + " - Joined Server!")
-					console.log(botC("@WishBot")+" - Now Serving in " + channelC(bot.channels.length) + " channels")
+			else
+			{
+				welcome.push("Hello!")
+				welcome.push("I'm WishBot, better known as "+bot.user+".")
+				welcome.push("I was written by Mᴉsɥ using Discord.js.")
+				welcome.push("My \"website\" can be found at `https://github.com/hsiw/Wishbot`")
+				welcome.push("If I was wrongfully invited please feel free to kick me.")
+				welcome.push("For more information on what I can do use -help.")
+				welcome.push("Thanks!")
+				bot.sendMessage(msg.author, "Successfully joined "+server.name)
+			  bot.sendMessage(server.defaultChannel, welcome)
+				console.log(serverC("@"+server.name+":")+channelC(" #" + server.defaultChannel.name) + ": " + userC("@WishBot") + " - Joined Server!")
+				console.log(botC("@WishBot")+" - Now Serving in " + channelC(bot.channels.length) + " channels")
 			}
 		});
 		return;
 	}
-	if (msg.channel.isPrivate && msg.author.id != bot.user.id && (msg.content[0] === options.command_prefix || msg.content[0] === options.mod_command_prefix || msg.content[0] === options.admin_command_prefix)) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat."); return;}
-	if(msg.author.id === bot.user.id){return;}
+	if (msg.channel.isPrivate && (msg.content[0] === options.command_prefix || msg.content[0] === options.mod_command_prefix || msg.content[0] === options.admin_command_prefix)) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat."); return;}
+	if(msg.author.id === bot.user.id || msg.channel.isPrivate){return;}
 	var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
-	if (!(msg.channel.isPrivate) && (msg.content.indexOf(bot.user.mention()) == 0)) {
+	if (msg.content.indexOf(bot.user.mention()) == 0) {
 		console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
 		bot.startTyping(msg.channel);
 		talked += 1;
