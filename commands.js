@@ -6,6 +6,7 @@ var qs = require("querystring");
 var YouTube = require('youtube-node');
 var Wiki = require('wikijs');
 var quote = require("./options/animequotes.json").animequotes;
+var pun = require("./options/puns.json").puns;
 var fix = require('entities');
 var cool = require('cool-ascii-faces');
 
@@ -62,7 +63,7 @@ var commands = {
     });
     20
     msgArray.push("```");
-    msgArray.push("Info on Mod Commands can be found through `=help` which requires the user to have the **Manage Roles Permission** on the current server")
+    msgArray.push("Info on Admin Commands can be found through `=help` which requires the user to have the **Manage Roles Permission** on the current server")
     bot.sendMessage(msg.author, msgArray);
    }
   }
@@ -139,6 +140,15 @@ var commands = {
   else{bot.sendMessage(msg, quote[Math.floor(Math.random() * (quote.length))])}
   }
  },
+ "pun": {
+  usage: "[pun number]",
+  description: "Gives a random pun",
+  delete: true,
+  process: function(bot, msg, suffix) {
+  if (suffix && /^\d+$/.test(suffix) && pun.length >= parseInt(suffix) - 1)bot.sendMessage(msg, pun[suffix - 1])
+  else{bot.sendMessage(msg, pun[Math.floor(Math.random() * (pun.length))])}
+  }
+ },
  "vquote": {
   usage: "[quote message]",
   description: "Logs message to quotes chat with voice tag (Doesn't work on most servers)",
@@ -175,7 +185,7 @@ var commands = {
    var tags = suffix.split(" ");
    get_gif(tags, function(id) {
     if (typeof id !== "undefined") {
-     bot.sendMessage(msg, "Using the tags **(Tags: " + (tags ? tags : "Random GIF") + ")** I found the following gif for you Senpai, \nhttp://media.giphy.com/media/" + id + "/giphy.gif ")
+     bot.sendMessage(msg, "Using the tags **(Tags: " + (tags ? tags : "Random GIF") + " )** I found the following gif for you Senpai, \nhttp://media.giphy.com/media/" + id + "/giphy.gif ")
     } else {
      bot.sendMessage(msg, "Invalid tags Senpai, please try something different.")
     }
