@@ -4,8 +4,8 @@ var bot = new Discord.Client();
 var games = require("./options/games.json").games;
 var options = require("./options/options.json");
 var commands = require("./commands.js").commands;
-var mod_commands = require("./mod_commands.js").mod_commands;
 var admin_commands = require("./admin_commands.js").admin_commands;
+var elite_commands = require("./elite_commands.js").elite_commands;
 var admins = require("./options/admins.json").admins;
 //Setup cleverbot
 var cleverbot = require("cleverbot-node");
@@ -45,9 +45,10 @@ bot.on("message", function (msg) {
 				welcome.push("Hello!")
 				welcome.push("I'm WishBot, better known as "+bot.user+".")
 				welcome.push("I was written by Mᴉsɥ using Discord.js.")
-				welcome.push("My \"website\" can be found at `https://github.com/hsiw/Wishbot`")
+				welcome.push("For information on what I can do use `-help`")
+				welcome.push("Admin Commands can be found by using `=help`")
+				welcome.push("I was invited by **"+msg.sender.name+"**.")
 				welcome.push("If I was wrongfully invited please feel free to kick me.")
-				welcome.push("For more information on what I can do use -help.")
 				welcome.push("Thanks!")
 				bot.sendMessage(msg.author, "Successfully joined "+server.name)
 			  bot.sendMessage(server.defaultChannel, welcome)
@@ -55,9 +56,10 @@ bot.on("message", function (msg) {
 				console.log(botC("@WishBot")+" - Now Serving in " + channelC(bot.channels.length) + " channels")
 			}
 		});
+		welcome = [];
 		return;
 	}
-	if (msg.channel.isPrivate && (msg.content[0] === options.command_prefix || msg.content[0] === options.mod_command_prefix || msg.content[0] === options.admin_command_prefix)) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat."); return;}
+	if (msg.channel.isPrivate && (msg.content[0] === options.command_prefix || msg.content[0] === options.admin_command_prefix)) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat."); return;}
 	if(msg.author.id === bot.user.id || msg.channel.isPrivate){return;}
 	var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 	if (msg.content.indexOf(bot.user.mention()) == 0) {
@@ -70,16 +72,17 @@ bot.on("message", function (msg) {
 		})
 		return;
 	}
-	if ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.mod_command_prefix) || (msg.content[0] === options.admin_command_prefix)) {
+	if(msg.content.substring(0,5) === "=help" && !msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles")){ bot.sendMessage(msg.author, "Using Admin Commands requires the **Manage Roles** Permission"); bot.deleteMessage(msg); return; }
+	if ((msg.content[0] === options.command_prefix) || (msg.content[0] === options.admin_command_prefix) || (msg.content[0] === options.elite_command_prefix)) {
 		var cmdTxt = (msg.content.split(" ")[0].substring(1)).toLowerCase();
 		if ((commands[cmdTxt] && msg.content[0] === options.command_prefix) ||
-		(mod_commands[cmdTxt] && msg.content[0] === options.mod_command_prefix && msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles")) ||
-		(msg.content[0] === options.admin_command_prefix && admin_commands[cmdTxt] && admins.indexOf(msg.author.id) > -1))
+		(admin_commands[cmdTxt] && msg.content[0] === options.admin_command_prefix && msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles")) ||
+		(msg.content[0] === options.elite_command_prefix && elite_commands[cmdTxt] && admins.indexOf(msg.author.id) > -1))
 		{
 			if (msg.content[0] === options.command_prefix){var cmd = commands[cmdTxt]}
-			if (msg.content[0] === options.mod_command_prefix){var cmd = mod_commands[cmdTxt]}
 			if (msg.content[0] === options.admin_command_prefix){var cmd = admin_commands[cmdTxt]}
-			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - "+warningC(cmdTxt) + " was used by " + userC(msg.author.username))
+			if (msg.content[0] === options.elite_command_prefix){var cmd = elite_commands[cmdTxt]}
+			console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - "+warningC(msg.content[0]+""+cmdTxt) + " was used by " + userC(msg.author.username))
 			commandsProcessed += 1;
 			cmd.process(bot, msg, suffix, commandsProcessed, talked)
 			if(cmd.delete){bot.deleteMessage(msg)}
