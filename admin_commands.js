@@ -38,7 +38,8 @@ var admin_commands = {
 					if(temp.length = [6] && msg.mentions.length === 1)
 					{
 						temp = parseInt("0x"+temp,16);
-						bot.createRole(msg.channel.server,{position: [2], permissions: [0], name: "Colour " + colour, color: temp}).then(function (permission){bot.addMemberToRole(msg.mentions[0].id, permission).then(function (){bot.sendMessage(msg, "Applied the colour "+colour+" to " + usr+", Senpai!");})})
+						bot.createRole(msg.channel.server,{position: [2], permissions: [0], name: "Colour " + colour, color: temp}).then(function (permission){bot.addMemberToRole(msg.mentions[0].id, permission).then(function ()
+							{bot.sendMessage(msg, "Applied the colour "+colour+" to " + msg.mentions[0]+", Senpai!");})})
 					});
 					}
 				}
