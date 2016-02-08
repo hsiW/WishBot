@@ -40,7 +40,6 @@ var admin_commands = {
 						temp = parseInt("0x"+temp,16);
 						bot.createRole(msg.channel.server,{position: [2], permissions: [0], name: "Colour " + colour, color: temp}).then(function (permission){bot.addMemberToRole(msg.mentions[0].id, permission).then(function ()
 							{bot.sendMessage(msg, "Applied the colour "+colour+" to " + msg.mentions[0]+", Senpai!");})})
-					});
 					}
 				}
 				else{bot.sendMessage(msg.author, correctUsage("setcolour")).then(bot.sendMessage(msg.author, "You can use http://www.colorpicker.com/ to get a hex colour code"));}
