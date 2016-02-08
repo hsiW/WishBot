@@ -83,7 +83,7 @@ var admin_commands = {
 						if(msg.mentions.length === 1){mentioned = true; var person = msg.mentions[0];}
 								for (i = 0; i <= 100; i++)
 								{
-									if(toDelete <= 0){bot.stopTyping(msg.channel); bot.sendMessage(msg, "Finished deleting **"+dones - 1+"** messages in "+msg.channel+".") return;}
+									if(toDelete <= 0){bot.stopTyping(msg.channel); bot.sendMessage(msg, "Finished deleting **"+dones - 1+"** messages in "+msg.channel+"."); return;}
 									if(mentioned && messages[i].author.id === person.id){bot.deleteMessage(messages[i]); dones++; toDelete--;}
 									else if(!mentioned){bot.deleteMessage(messages[i]); dones++; toDelete--;}
 								}
