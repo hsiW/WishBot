@@ -1,4 +1,5 @@
 var options = require("./options/options.json");
+var prefix = require("./options/options.json").prefixes;
 var games = require("./options/games.json").games;
 var Discord = require("discord.js");
 
@@ -12,7 +13,7 @@ var errorC = c.red.bold;
 var botC = c.magenta.bold;
 
 function correctUsage(cmd) {
- var msg = "Usage: " + options.elite_command_prefix + "" + cmd + " " + elite_commands[cmd].usage;
+ var msg = "Usage: " + prefix[2] + "" + cmd + " " + elite_commands[cmd].usage;
  return msg;
 }
 
@@ -28,7 +29,7 @@ var elite_commands = {
     var msgArray = [];
     msgArray.push("**Elite Commands: **");
     msgArray.push("```");
-    Object.keys(elite_commands).sort().forEach(function(cmd) {msgArray.push("" + options.elite_command_prefix + "" + cmd + ": " + elite_commands[cmd].description + "")})
+    Object.keys(elite_commands).sort().forEach(function(cmd) {msgArray.push("" + prefix[2] + "" + cmd + ": " + elite_commands[cmd].description + "")})
     msgArray.push("```");
     bot.sendMessage(msg.author, msgArray);
    }
