@@ -76,14 +76,14 @@ var commands = {
 				return;
 			}
 			if (msg.mentions.length === 1 && suffix) {
-					var joinedOn = new Date(msg.channel.server.detailsOfUser(usr).joinedAt)
+					var joinedOn = new Date(msg.channel.server.detailsOfUser(msg.mentions[0]).joinedAt)
 					var roles = msg.channel.server.rolesOfUser(msg.mentions[0].id).map(function (role) {return role.name;});
 					roles = roles.join(", ").replace("@", "");
 					var msgArray = [];
 					msgArray.push("Info about **" + msg.mentions[0].username + "**")
 					msgArray.push("ID: `" + msg.mentions[0].id + "`")
 					msgArray.push("Status: " + msg.mentions[0].status)
-					if (usr.game != null) {msgArray.push("Currently playing: " + msg.mentions[0].game.name)}
+					if (msg.mentions[0].game != null) {msgArray.push("Currently playing: " + msg.mentions[0].game.name)}
 					msgArray.push("Joined Server On: " + joinedOn.toUTCString())
 					if (roles.length <= 1000) {msgArray.push("Roles: `" + roles + "`");}
 					else {msgArray.push("Roles: `Too many to list`");}
@@ -108,6 +108,22 @@ var commands = {
 					bot.sendMessage(msg.author, msgArray)
 				}
 			});
+		}
+	},
+	"poke": {
+		usage: "[user mention]", description: "Pokes the mentioned user", delete: true,
+		process: function (bot, msg, suffix) {
+			var randomPoke = Math.random() < 0.5 ? "http://i.imgur.com/J4Vr0Hg.gif" : "http://i.imgur.com/6KpNE1V.gif";
+			if (!suffix) {bot.sendMessage(msg, bot.user+" was poked by **"+msg.author.name+"**\n"+randomPoke);}
+			if(suffix && msg.mentions.length === 1) {bot.sendMessage(msg, msg.mentions[0]+" was poked by **"+msg.author.name+"**\n"+randomPoke);}
+		}
+	},
+	"pet": {
+		usage: "[user mention]", description: "Pet the mentioned user", delete: true,
+		process: function (bot, msg, suffix) {
+			var randomPoke = Math.random() < 0.5 ? "http://i.imgur.com/f7ByidM.gif" : "http://i.imgur.com/LUpk6b6.gif";
+			if (!suffix) {bot.sendMessage(msg, bot.user+" was petted by **"+msg.author.name+"**\n"+randomPoke);}
+			if(suffix && msg.mentions.length === 1) {bot.sendMessage(msg, msg.mentions[0]+" was petted by **"+msg.author.name+"**\n"+randomPoke);}
 		}
 	},
 	"ping": {
@@ -219,7 +235,7 @@ var commands = {
 		}
 	},
 	"hug": {
-		usage: "[user mention]", description: "Puts a hug or hugs the mentioned user)", delete: true,
+		usage: "[user mention]", description: "Puts a hug or hugs the mentioned user", delete: true,
 		process: function (bot, msg, suffix) {
 			if (!suffix) {bot.sendMessage(msg, "(>^_^)> <(^.^<)");}
 			if(suffix && msg.mentions.length === 1) {bot.sendMessage(msg, msg.mentions[0] + ", (>^_^)> <(^.^<) ,**" +msg.author.name+"**");}
