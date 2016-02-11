@@ -19,13 +19,13 @@ var talked = 0;
 
 bot.on("ready", function (){bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))]);console.log(botC("@WishBot")+" - Ready to begin! Serving in " + channelC(bot.channels.length) + " channels");});
 bot.on("message", function (msg) {
-	if (Math.floor((Math.random() * 99) + 1) == 1) {bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}
 	if (msg.channel.isPrivate && (msg.content[0] === prefix[0] || msg.content[0] === prefix[1])) {bot.sendMessage(msg.author, bot.user + " does not accept commands through private chat."); return;}
 	if (msg.channel.isPrivate && msg.author.id != bot.user.id && (/(^https?:\/\/discord\.gg\/[A-Za-z0-9]+$|^https?:\/\/discordapp\.com\/invite\/[A-Za-z0-9]+$)/.test(msg.content))){invite(msg); return;}
 	if(msg.author.id === bot.user.id || msg.channel.isPrivate || !(prefix.indexOf(msg.content[0]) > -1 || (msg.content.indexOf(bot.user.mention()) == 0))){return;}
 	var suffix = msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2);
 	if (msg.content.indexOf(bot.user.mention()) == 0) {
-		console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + msg.content);
+		var text = (msg.cleanContent.split(' ').length > 1) ? msg.cleanContent.substring(msg.cleanContent.indexOf(' ') + 1).replace('@', '') : false;
+		console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": " + userC(msg.author.username) + " - " + text);
 		bot.startTyping(msg.channel);
 		onee.write(suffix, function (response) {console.log(serverC("@"+msg.channel.server.name+":")+channelC(" #" + msg.channel.name) + ": "+botC("@WishBot")+" - 💭 - " + response.message);
 		bot.sendMessage(msg, "💭 - " + response.message).then(bot.stopTyping(msg.channel));
@@ -89,3 +89,5 @@ else{setTimeout(function(){
 		if (!token) { console.log(errorC("Failed to re-connect")); process.exit(0); }
 	});}, 33333);
 }});
+
+setTimeout(function(){bot.setPlayingGame(games[Math.floor(Math.random() * (games.length))])}, 999999);
