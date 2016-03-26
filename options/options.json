@@ -1,14 +1,12 @@
 {
-	"email": "",
-	"password": "",
+	"token": "",
+	"private": true,
 	"youtube_api_key": "",
 	"weather_api_key": "",
 	"MAL_user": "",
 	"MAL_pass": "",
-	"private": true,
 	"prefixes": [
 		"-",
-		"=",
 		"|"
 	]
 }

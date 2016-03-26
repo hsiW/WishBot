@@ -1,42 +1,40 @@
 {
-  "name": "wishbot",
-  "version": "0.9.0",
-  "description": "a bot for discord made by wish",
+  "name": "wisbot",
+  "version": "2.0.0",
+  "description": "A re-write of the Onee-chan bot by Wish",
   "main": "WishBot.js",
   "dependencies": {
-    "chalk": "*",
-    "cleverbot-node": "*",
-    "cool-ascii-faces": "*",
-    "discord.js": "*",
-    "entities": "*",
-    "feedparser": "*",
-    "fetch-reddit": "*",
-    "giphy-api": "*",
-    "package-info": "^2.2.3",
-    "path": "*",
-    "request": "*",
-    "url": "*",
-    "wikijs": "*",
-    "winston": "*",
-    "xml2js": "*",
-    "youtube-node": "*",
-    "ytdl-core": "*"
-  },
-  "engines": {
-    "node": ">=4.2.4"
-  },
-  "scripts": {
-    "test": "-help"
+    "JSONStream": "^1.1.1",
+    "chalk": "^1.1.1",
+    "cleverbot-node": "^0.2.1",
+    "concat-stream": "^1.5.1",
+    "discord.js": "^6.1.0",
+    "entities": "^1.1.1",
+    "cool-ascii-faces": "^1.3.4",
+    "feedparser": "^1.1.4",
+    "giphy-api": "^1.1.15",
+    "imgur-search": "^1.0.1",
+    "request": "^2.69.0",
+    "strawpoll": "^1.0.5",
+    "wikijs": "^0.1.3",
+    "wolfram": "0.3.2",
+    "winston": "^2.2.0",
+    "xml2js": "^0.4.16",
+    "youtube-node": "^1.3.0",
+    "postgresql-orm": "*",
+    "pg": "*"
   },
   "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hsiw/Wishbot.git"
+  "scripts": {
+    "test": "-help"
   },
   "keywords": [
     "bot",
     "discord"
   ],
+  "engines": {
+		"node": "5.7.0"
+	},
   "author": "Wish",
-  "license": "UNLICENSED"
+  "license": "ISC"
 }
