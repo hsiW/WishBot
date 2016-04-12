@@ -4,6 +4,7 @@ var management = {
   "ban": {
 		usage: "Bans the mentioned user from the server\n`ban [mentioned user]",
 		delete: true,
+    cooldown: 15,
 		process: function(bot, msg, suffix) {
       if (!suffix || msg.mentions != 1) {
 				bot.sendMessage(msg, "**"+msg.author.name+"**-senpai I am unable to ban "+suffix+".");
@@ -17,6 +18,7 @@ var management = {
   "kick": {
 		usage: "Kicks the mentioned user from the server\n`kick [mentioned user]",
 		delete: true,
+    cooldown: 15,
 		process: function(bot, msg, suffix) {
       if (!suffix || msg.mentions != 1) {
 				bot.sendMessage(msg, "**"+msg.author.name+"**-senpai I am unable to kick "+suffix+".");
@@ -30,6 +32,7 @@ var management = {
   "topic": {
 		usage: "Sets the current channel's topic to the mentioned text\n`topic [text]",
 		delete: true,
+    cooldown: 15,
 		process: function(bot, msg, suffix) {
       if(!suffix){bot.sendMessage(msg, "You need to enter something to change the topic to, **"+msg.author.name+"**-senpai");}
 			bot.setChannelTopic(msg.channel, suffix);

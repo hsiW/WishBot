@@ -1,7 +1,10 @@
-var ORM = require('postgresql-orm')
+var ORM = require('postgresql-orm');
 var admins = require("./../options/admins.json").admins;
+var chalk = require("chalk"), c = new chalk.constructor({enabled: true});
+var serverC = c.black.bold, channelC = c.green.bold, userC = c.cyan.bold, warningC = c.yellow.bold, errorC = c.red.bold, botC = c.magenta.bold;
+var options = require("./../options/options.json");
 
-ORM.setup('postgres://nejlpidrnxazcv:CIQDTSP8TqxNkpcPGz5lqjZyYj@ec2-107-22-248-209.compute-1.amazonaws.com:5432/d1rned140s0nod')
+ORM.setup(options.database_url);
 
 var serverSettingsDefinition = {
 	name: 'servers', // will match table with name 'servers'
@@ -42,34 +45,34 @@ var serverSettingsDefinition = {
 	}
 }
 
-var serverSettings = ORM.define(serverSettingsDefinition)
 
+var serverSettings = ORM.define(serverSettingsDefinition);
 
-function add(msg){
-	serverSettings.create({serverID: msg.channel.server.id, Admin: false, Cleverbot: true, Interactions: true, Management: true, Misc: true, Mod: true, Search: true, Utilities: true, WordPlay: true, Prefix: '-'}, function(err, createdEntity){})
-	console.log("Added "+msg.channel.server.name+" to Database.");
+function add(msg, callback){
+	serverSettings.create({serverID: msg.channel.server.id, Admin: false, Cleverbot: true, Interactions: true, Management: true, Misc: true, Mod: true, Search: true, Utilities: true, WordPlay: true, Prefix: '-'}, function(err, createdEntity) {
+		if(err){
+			callback(err, null);
+			return;
+		}
+		callback(null, createdEntity)
+	});
 }
 
-function load(bot, msg){
+exports.load = function(bot, msg){
 	serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
 		console.log(loadedEntity);
-		bot.sendMessage(msg, loadedEntity.Admin);
 	})
 }
 
-exports.remove = function(bot, msg){
+function remove(bot, msg){
 	serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
-		serverSettings.delete(loadedEntity,function(err){
-			bot.sendMessage(msg, "Server removed from database")
+		serverSettings.delete(loadedEntity, function(err){
+				if(err) bot.sendMessage(msg, "```"+err+"```");
+				else bot.sendMessage(msg, "Server removed from database");
 		})
 	})
 }
-
-/*exports.Settings = function(msg){
-	serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
-		return loadedEntity;
-	});
-}*/
+exports.remove = remove;
 
 exports.Settings = function(msg, callback){
     serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
@@ -78,18 +81,25 @@ exports.Settings = function(msg, callback){
     });
 }
 
-function prefixChange(bot,msg, suffix, postSuffix){
+function prefixChange(bot,msg, suffix){
 		serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
 			if(loadedEntity === null){
-				add(msg);
-				prefixChange(bot, msg, suffix, postSuffix);
+				add(msg, function(err, entity){
+					if(err){
+						bot.sendMessage(msg, "There was an error doing that, please try again later");
+						console.log(err);
+						return;
+					}
+					console.log(serverC(msg.channel.server.name)+" - "+botC("@WishBot")+" - "+errorC("Added Server To Database"));
+					prefixChange(bot, msg, suffix);
+				})
 			}
 			else{
-				serverSettings.update({id: loadedEntity.id, Prefix: postSuffix}, function(err, updatedEntity) {
+				serverSettings.update({id: loadedEntity.id, Prefix: suffix}, function(err, updatedEntity) {
 					serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
 						if(loadedEntity.Prefix !== suffix)
 						{
-							prefixChange(bot,msg,suffix, suffix);
+							prefixChange(bot,msg, suffix);
 						}
 						else {
 							bot.sendMessage(msg, "**"+msg.author.name+"**-senpai has changed the General Command Prefix to `"+updatedEntity.Prefix+"`.");
@@ -110,9 +120,16 @@ function toggle(bot, msg, suffix){
 	serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
 		var temp;
 		if(loadedEntity === null){
-			add(msg);
-			toggle(bot, msg, suffix);
-			}
+			add(msg, function(err, entity){
+				if(err){
+					bot.sendMessage(msg, "There was an error doing that, please try again latter");
+					console.log(err);
+					return;
+				}
+				console.log(serverC(msg.channel.server.name)+" - "+botC("@WishBot")+" - "+errorC("Added Server To Database"));
+				toggle(bot, msg, suffix);
+			})
+		}
 		else if(suffix.toLowerCase() === "admin" && admins.indexOf(msg.author.id) > -1){
 			temp = !loadedEntity.Admin;
 			serverSettings.update({id: loadedEntity.id, Admin: !loadedEntity.Admin}, function(err, updatedEntity) {
@@ -169,7 +186,7 @@ function toggle(bot, msg, suffix){
 		}
 		else if (suffix.toLowerCase() === "searches") {
 			temp = !loadedEntity.Search;
-			serverSettings.update({id: loadedEntity.id, Search: !loadedEntity.Utilities}, function(err, updatedEntity) {
+			serverSettings.update({id: loadedEntity.id, Search: !loadedEntity.Search}, function(err, updatedEntity) {
 				serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
 				if(loadedEntity.Search !== temp){toggle(bot,msg,suffix)}
 				else bot.sendMessage(msg, "**"+msg.author.name+"**-senpai toggled the Search Module to `"+updatedEntity.Search+"`.");
@@ -181,7 +198,7 @@ function toggle(bot, msg, suffix){
 			serverSettings.update({id: loadedEntity.id, Utilities: !loadedEntity.Utilities}, function(err, updatedEntity) {
 				serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
 				if(loadedEntity.Utilities !== temp){toggle(bot,msg,suffix)}
-				else bot.sendMessage(msg, "You toggled the Utilities Module to `"+updatedEntity.Utilities+"`.");
+				else bot.sendMessage(msg, "**"+msg.author.name+"**-senpai toggled the Utilities Module to `"+updatedEntity.Utilities+"`.");
 			});
 		});
 		}
@@ -189,7 +206,7 @@ function toggle(bot, msg, suffix){
 			temp = !loadedEntity.WordPlay;
 			serverSettings.update({id: loadedEntity.id, WordPlay: !loadedEntity.WordPlay}, function(err, updatedEntity) {
 				serverSettings.load({serverID: msg.channel.server.id}, function(err, loadedEntity){
-				if(loadedEntity.WordPlay !== temp){toggleloadedEntity(bot,msg,suffix)}
+				if(loadedEntity.WordPlay !== temp){toggle(bot,msg,suffix)}
 				else bot.sendMessage(msg, "**"+msg.author.name+"**-senpai toggled the WordPlay Module to `"+updatedEntity.WordPlay+"`.");
 			});
 		});
@@ -200,28 +217,6 @@ function toggle(bot, msg, suffix){
 	})
 }
 
-/*
-serverSettings.createTable(function(err) {
-	console.log(err);
-})
-
-// save or update, depending on the presence of an 'id' attribute
-serverSettings.save({firstName: 'John'}, function(err, savedEntity) {
-})
-
-serverSettings.create({firstName: 'John'}, function(err, createdEntity) {
-	// do smthg
-})
-
-serverSettings.update({id: 123, lastName: 'Doe'}, function(err, updatedEntity) {
-	// do smthg
-})
-
-serverSettings.load({id: 123}, function(err, loadedEntity) {
-	// do smthg
-})
-*/
 exports.prefixChange = prefixChange;
 exports.toggle = toggle;
-exports.load = load;
 exports.add = add;
