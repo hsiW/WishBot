@@ -168,6 +168,45 @@ var utilities = {
 			var answer = math.eval(suffix);
 			bot.sendMessage(msg,"**"+msg.author.name+"** here is the answer to that calculation: ```"+answer+"```");
 		}
+	},
+  "clean": {
+		usage: "Cleans the mentioned number of this bots messages from the current channel.\n`delete [# from 1-100]`",
+		delete: true,
+    cooldown: 5,
+		process: function(bot, msg, suffix) {
+			if (/^\d+$/.test((suffix.split(" ")[0]))) {
+				bot.getChannelLogs(msg.channel, 250, function(error, messages) {
+					if (error) {
+						console.log("there was an error getting the logs");
+						return;
+					} else {
+						var toDelete = parseInt((suffix.split(" ")[0]), 10)
+						var dones = 0;
+						for (i = 0; i <= 100; i++) {
+							if (toDelete <= 0) {
+								bot.sendMessage(msg, "Finished cleaning **" + dones + "** messages in " + msg.channel + ".", function(error, sentMessage) {
+									bot.deleteMessage(sentMessage, {
+										"wait": 5000
+									})
+								});
+								return;
+							}
+							if (messages[i].author.id === bot.user.id) {
+								bot.deleteMessage(messages[i]);
+								dones++;
+								toDelete--;
+							}
+						}
+					}
+				});
+			} else {
+				bot.sendMessage(msg, "Using the clean command requires a number between 1-100, **" + msg.author.username + "**-senpai.", function(error, sentMessage) {
+					bot.deleteMessage(sentMessage, {
+						"wait": 5000
+					})
+				})
+			}
+		}
 	}
 };
 exports.utilities = utilities;

@@ -72,6 +72,25 @@ var admin = {
 			bot.sendMessage(msg, msgArray);
 		}
 	},
+	"searchallusers": {
+		usage: "",
+		delete: true,
+		process: function(bot, msg, suffix) {
+			var nameRegex = new RegExp(suffix,"i");
+			var usersCache = bot.users.getAll('name', nameRegex);
+			var msgArray = ["__**Found These Users:**__"];
+			for (i = 0; i < usersCache.length; i++)
+			{
+				if(i === 10){
+					msgArray.push("And "+(usersCache.length - i)+" more users...");
+					break;
+				}
+				msgArray.push(usersCache[i].username+" #*"+usersCache[i].discriminator+"*");
+			}
+
+			bot.sendMessage(msg, msgArray);
+		}
+	},
 	"searchservers": {
 		usage: "",
 		delete: true,

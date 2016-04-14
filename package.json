@@ -1,6 +1,6 @@
 {
   "name": "wisbot",
-  "version": "2.1.5",
+  "version": "2.0.0",
   "description": "A re-write of the Onee-chan bot by Wish",
   "main": "WishBot.js",
   "dependencies": {
