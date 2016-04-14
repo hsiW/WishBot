@@ -52,7 +52,7 @@ var mod = {
 				statArray.push("```ruby\nTotal Server(s): "+bot.servers.length)
 				statArray.push("Total Channel(s): "+(bot.channels.length + bot.privateChannels.length));
 				statArray.push("Total User(s): "+bot.users.length+"");
-				statArray.push("Memory Usage: " + (Math.round(process.memoryUsage().rss / 1024 / 1000)) + "MB")
+				statArray.push("Memory Usage: " + (process.memoryUsage().rss / 1024 / 1000).toFixed(2) + "MB")
 				var commandUsage = 0;
 				for(i = 0; i < cmdUsage.length; i++){commandUsage = commandUsage + cmdUsage[i];}
 				statArray.push("Command Total: "+commandUsage+"("+(commandUsage/(Math.round(bot.uptime / 60000))).toFixed(2)+"/m)```");
@@ -83,45 +83,6 @@ var mod = {
 				}
 			} else {
 				bot.sendMessage(msg.author, "You can use http://www.colorpicker.com/ to get a hex colour code");
-			}
-		}
-	},
-	"delete": {
-		usage: "[number of messages to delete from 1 - 100]",
-		delete: true,
-    cooldown: 5,
-		process: function(bot, msg, suffix) {
-			if (/^\d+$/.test((suffix.split(" ")[0]))) {
-				bot.getChannelLogs(msg.channel, 250, function(error, messages) {
-					if (error) {
-						console.log("there was an error getting the logs");
-						return;
-					} else {
-						var toDelete = parseInt((suffix.split(" ")[0]), 10)
-						var dones = 0;
-						for (i = 0; i <= 100; i++) {
-							if (toDelete <= 0) {
-								bot.sendMessage(msg, "Finished deleting **" + dones + "** messages in " + msg.channel + ".", function(error, sentMessage) {
-									bot.deleteMessage(sentMessage, {
-										"wait": 5000
-									})
-								});
-								return;
-							}
-							if (messages[i].author.id === bot.user.id) {
-								bot.deleteMessage(messages[i]);
-								dones++;
-								toDelete--;
-							}
-						}
-					}
-				});
-			} else {
-				bot.sendMessage(msg, "Using the delete command requires a number between 1-100, **" + msg.author.username + "**-senpai.", function(error, sentMessage) {
-					bot.deleteMessage(sentMessage, {
-						"wait": 5000
-					})
-				})
 			}
 		}
 	}
