@@ -1,15 +1,10 @@
 {
-	"token": "",
-	"database_url":"",
-	"ignored_url":"",
-	"carbon_key" : "",
-	"youtube_api_key": "",
-	"weather_api_key": "",
-	"imgur_id":"",
-	"MAL_user": "",
-	"MAL_pass": "",
-	"prefixes": [
-		"-",
-		"="
-	]
+    "token": "",
+    "carbon_key": "",
+    "youtube_api_key": "",
+    "weather_api_key": "",
+    "imgur_id": "",
+    "MAL_user": "",
+    "MAL_pass": "",
+    "prefix": "-"
 }
