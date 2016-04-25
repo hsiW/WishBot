@@ -1,72 +1,45 @@
-var ORM = require('postgresql-orm');
-var options = require("./../options/options.json");
-var chalk = require("chalk"), c = new chalk.constructor({enabled: true});
-var serverC = c.black.bold, channelC = c.green.bold, userC = c.cyan.bold, warningC = c.yellow.bold, errorC = c.red.bold, botC = c.magenta.bold;
-ORM.setup(options.ignored_url);
+ignoredUsers = require('./../database/IgnoredUsers.json')
+var fs = require('fs');
 
-var userSettingsDefinition = {
-	name: 'users',
-	attributes:{
-		userID:{
-			type: 'character varying'
-		}
-	}
-}
-
-var userSettings = ORM.define(userSettingsDefinition);
-
-function add(suffix, callback){
-  userSettings.load({userID: suffix}, function(err, loadedUser){
-    if(loadedUser !== null) return;
-    else{
-    userSettings.create({userID: suffix}, function(err, createdEntity) {
-		if(err){
-			callback(err, null);
-			return;
-		}
-		callback(null, createdEntity)
-	});
-}
-});
-}
-
-function ignore(bot, msg, suffix){
-  add(suffix, function(err, entity){
-    if(err){
-      bot.sendMessage(msg, "There was an error doing that, please try again later");
-      console.log(err);
-      return;
+exports.add = function(bot, msg, id) {
+    if (!ignoredUsers.hasOwnProperty(id)) {
+        ignoredUsers[id] = {};
+        console.log(botC("@WishBot") + " - " + warningC("Added Ignore to ") + errorC(id));
+        bot.sendMessage(msg, "🆗");
+        saveIgnores();
+    } else {
+        bot.sendMessage(msg, "That user has already been ignored.", function(error, sentMessage) {
+            bot.deleteMessage(sentMessage, {
+                "wait": 5000
+            })
+        });
     }
-    console.log(userC(suffix)+" - "+botC("@WishBot")+" - "+errorC("Added User to Ignore"));
-  })
+
 }
 
-exports.ignore = ignore;
-
-function unignore(bot, msg, suffix){
-  userSettings.load({userID: suffix}, function(err, loadedEntity){
-    if (loadedEntity === null) {
-      bot.sendMessage(msg, "`"+suffix+"` is not currently being ignored.")
+exports.remove = function(bot, msg, id) {
+    if (ignoredUsers.hasOwnProperty(id)) {
+        delete ignoredUsers[id];
+        console.log(botC("@WishBot") + " - " + warningC("Removed Ignore from ") + errorC(id));
+        bot.sendMessage(msg, "🆗");
+        saveIgnores();
+    } else {
+        bot.sendMessage(msg, "That users isn't currently being ignored.", function(error, sentMessage) {
+            bot.deleteMessage(sentMessage, {
+                "wait": 5000
+            })
+        });
     }
-    else {
-      userSettings.delete(loadedEntity, function(err){
-        if(!err) bot.sendMessage(msg, "Successfully removed `"+suffix+"` from ignore.")
-        else bot.sendMessage(msg, "ERROR: ```"+err+"```")
-      })
+
+}
+
+function saveIgnores() {
+    fs.writeFile(__dirname + '/../database/IgnoredUsers-temp.json', JSON.stringify(ignoredUsers, null, 4), error => {
+            if (error) console.log(error)
+            else {
+                fs.rename(__dirname + '/../database/IgnoredUsers-temp.json', __dirname + '/../database/IgnoredUsers.json', e => {
+                    if (e) console.log(e);
+                });
+            }
+        });
     }
-  })
-}
-
-exports.unignore = unignore;
-
-exports.create = function(){
-	userSettings.createTable(function(err) {
-		console.log(err);
-	})
-}
-exports.Settings = function(msg, callback){
-    userSettings.load({userID: msg.author.id}, function(err, loadedEntity){
-        if (err) return console.log(err)
-        if (typeof(callback) === 'function') callback(loadedEntity);
-    });
-}

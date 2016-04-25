@@ -1,41 +1,37 @@
 {
-  "name": "wisbot",
-  "version": "2.0.0",
-  "description": "A re-write of the Onee-chan bot by Wish",
+  "name": "wishbot",
+  "version": "3.0.0",
   "main": "WishBot.js",
-  "dependencies": {
-    "JSONStream": "^1.1.1",
-    "chalk": "^1.1.1",
-    "cleverbot-node": "^0.2.1",
-    "concat-stream": "^1.5.1",
-    "discord.js": "^6.1.0",
-    "entities": "^1.1.1",
-    "cool-ascii-faces": "^1.3.4",
-    "feedparser": "^1.1.4",
-    "giphy-api": "^1.1.15",
-    "imgur-search": "^1.0.1",
-    "request": "^2.69.0",
-    "strawpoll": "^1.0.5",
-    "wikijs": "^0.1.3",
-    "winston": "^2.2.0",
-    "xml2js": "^0.4.16",
-    "youtube-node": "^1.3.0",
-    "postgresql-orm": "*",
-    "pg": "*",
-	"google": "*",
-	"mathjs": "*"
-  },
-  "devDependencies": {},
   "scripts": {
-    "test": "-help"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsiw/WishBot.git"
   },
   "keywords": [
-    "bot",
     "discord"
   ],
-  "engines": {
-		"node": "5.7.0"
-	},
-  "author": "Wish",
-  "license": "ISC"
+  "author": "hsiW",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hsiw/WishBot/issues"
+  },
+  "homepage": "https://github.com/hsiw/WishBot#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "cleverbot-node": "^0.2.1",
+    "cool-ascii-faces": "^1.3.4",
+    "entities": "^1.1.1",
+    "discord.js": "^7.0.1",
+    "google": "^2.0.0",
+    "mathjs": "^3.2.0",
+    "request": "^2.72.0",
+    "require-all": "^2.0.0",
+    "wikijs": "^0.1.3",
+    "xml2js": "^0.4.16",
+    "youtube-node": "^1.3.0"
+  },
+  "devDependencies": {},
+  "description": "A discordjs bot made because I was bored."
 }

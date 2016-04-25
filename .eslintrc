@@ -1,0 +1,33 @@
+{
+	"ecmaVersion": 6,
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"ecmaFeatures": {
+		"modules": true
+	},
+	"rules": {
+		"no-console": 0,
+		"no-control-regex": 0,
+		"no-redeclare": 0,
+		"no-inner-declarations": 0,
+	},
+	"globals": {
+	"serverSettings",
+	"Commands",
+	"CustomCommands",
+	"Database",
+	"UsageCheck",
+	"ignoredUsers",
+	"c",
+	"admins",
+	"serverC",
+	"channelC",
+	"userC",
+	"warningC",
+	"errorC",
+	"botC"
+	},
+	extends: "eslint:recommended"
+}
