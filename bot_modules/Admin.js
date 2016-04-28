@@ -74,7 +74,7 @@ var admin = {
             var msgString = "```markdown\n### Found These User(s): ###";
             for (i = 0; i < usersCache.length; i++) {
                 if (i === 10) {
-                    msgString += "And " + (usersCache.length - i) + " more users...";
+                    msgString += "\nAnd " + (usersCache.length - i) + " more users...";
                     break;
                 }
                 msgString += "\n[" + (i + 1) + "]: " + usersCache[i].username + " #" + usersCache[i].discriminator;
@@ -93,15 +93,15 @@ var admin = {
             var msgString = ["```markdown\n### Found These servers(s): ###"];
             for (i = 0; i < serverCache.length; i++) {
                 if (i === 25) {
-                    msgString += "And " + (serverCache.length - i) + " more servers...";
+                    msgString += "\nAnd " + (serverCache.length - i) + " more servers...";
                     break;
                 }
                 var bots = serverCache[i].members.getAll('bot', true).length;
                 var people = serverCache[i].members.length - bots;
-                msgString += "\n[" + (i + 1) + "]: " + serverCache[i].name + " - " + bots + "/" +people+" "+((bots/people)*100).toFixed(2)+"%";
+                msgString += "\n[" + (i + 1) + "]: " + serverCache[i].name + " - " + bots + "/" + people + " " + ((bots / serverCache[i].members.length) * 100).toFixed(2) + "%";
             }
 
-            bot.sendMessage(msg, msgString+"```");
+            bot.sendMessage(msg, msgString + "```");
         }
     },
     "leaveserver": {
@@ -109,7 +109,13 @@ var admin = {
         delete: true,
         type: "admin",
         process: function(bot, msg, suffix) {
-            bot.leaveServer(bot.servers.get('id', suffix));
+            if (/^\d+$/.test(suffix)) {
+                bot.leaveServer(bot.servers.get('id', suffix));
+                bot.sendMessage(msg, "🆗");
+            } else {
+                bot.leaveServer(bot.servers.get('name', suffix));
+                bot.sendMessage(msg, "🆗");
+            }
         }
     },
     "usage": {
@@ -169,6 +175,15 @@ var admin = {
                 bot.sendMessage(msg, "Cannot add " + suffix + " to ignore.")
             }
             Ignored.remove(bot, msg, userID);
+        }
+    },
+    "inactiveleave": {
+        usage: "",
+        delete: true,
+        type: "admin",
+        process: function(bot, msg) {
+            Database.checkInactivity(bot);
+            Database.removeInactive(bot, msg);
         }
     },
     "eval": {

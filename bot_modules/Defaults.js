@@ -39,7 +39,7 @@ var defaults = {
             } else {
                 var helpMsg = "__**General Commands:**__\n";
                 helpMsg += "\n**Cleverbot: **`chat`, `@" + bot.user.name + "`";
-                helpMsg += "\n**Custom:** `chan`, `chan read`, `chan write`, `chan edit`, `chan remove`\n"
+                helpMsg += "\n**Chan's:** `chan`, `chan read`, `chan write`, `chan edit`, `chan delete`\n"
                 helpMsg += "**Default: **";
                 helpMsg += Object.keys(defaults).sort().map(cmd => "`" + cmd + "`").join(", ");
                 helpMsg += "\n**Interactions: **";
@@ -142,7 +142,12 @@ var defaults = {
                 if (Commands[suffix].noToggle) bot.sendMessage(msg, "I'm sorry, **" + msg.author.name + "**-senpai but that command is not togglable.")
                 else Database.toggle(bot, msg, suffix);
             } else if ((msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) && (suffix === "unflip" || suffix === "welcome")) Database.toggle(bot, msg, suffix)
-            else bot.sendMessage(msg, "This command requires the `manageRoles` premission to be used, Sorry.")
+            else if((msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) && !(Commands.hasOwnProperty(suffix))){
+                bot.sendMessage(msg, "Thats not a valid toggle, please use `welcome`, `unflip`, or any command name.")
+            }
+            else if(!(msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1)){
+                bot.sendMessage(msg, "That command requires the `manageRoles` permission, sorry!")
+            }
         }
     },
     "uptime": {

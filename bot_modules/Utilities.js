@@ -45,6 +45,47 @@ var utilities = {
             } else bot.sendFile(msg, msg.author.avatarURL, null, "**" + msg.sender.name + "'s** avatar is ");
         }
     },
+    "servericon": {
+        usage: "Prints the server icon of the current server",
+        delete: true,
+        cooldown: 5,
+        type: "utilities",
+        process: function(bot, msg) {
+            bot.sendFile(msg, msg.channel.server.iconURL, null, "**" + msg.channel.server.name + "'s** icon is ");
+        }
+    },
+    "searchdiscrim": {
+        usage: "Prints a list of users matching the mentioned discriminator\n`searchdiscrim [4 digit discriminator]`",
+        delete: true,
+        type: "utilities",
+        process: function(bot, msg, suffix) {
+            var usersCache = bot.users.getAll('discriminator', suffix);
+            var msgString = "```markdown\n### Found These User(s): ###";
+            for (i = 0; i < usersCache.length; i++) {
+                if (i === 10) {
+                    msgString += "\nAnd " + (usersCache.length - i) + " more users...";
+                    break;
+                }
+                msgString += "\n[" + (i + 1) + "]: " + usersCache[i].username;
+            }
+            bot.sendMessage(msg, msgString + "```");
+        }
+    },
+    "channelinfo": {
+        usage: "Outputs info about the current channel",
+        delete: true,
+        cooldown: 5,
+        type: "utilities",
+        process: function(bot, msg) {
+            var toSend = "```ruby\n";
+            toSend += "Name: \"" + msg.channel.name + "\"";
+            toSend += "\nID: " + msg.channel.id;
+            toSend += "\nPosition: #" + msg.channel.position;
+            toSend += "\nType: " + msg.channel.type;
+            toSend += "\n```**Topic:** " + msg.channel.topic;
+            bot.sendMessage(msg, toSend);
+        }
+    },
     "info": {
         usage: "Gives info on the current server or a user if one is mentioned\n`info [mentioned user] or [none]`",
         delete: true,

@@ -24,7 +24,7 @@ var custom = {
                  else if (!CustomCommands.hasOwnProperty(msg.channel.server.id) && add !== "") {
                     CustomCommands[msg.channel.server.id] = {};
                     CustomCommands[msg.channel.server.id][add] = toAdd;
-                    console.log(serverC("@" + msg.channel.server.name + ": ") + botC("@WishBot") + " - Added Command " + warningC(msgPrefix + "" + cmdTxt));
+                    console.log(serverC("@" + msg.channel.server.name + ": ") + botC("@WishBot") + " - Added Command " + warningC(add));
                     bot.sendMessage(msg, "🆗");
                     updated = true;
                 } else if (CustomCommands.hasOwnProperty(msg.channel.server.id) && !CustomCommands[msg.channel.server.id].hasOwnProperty(add) && add !== "") {
@@ -78,6 +78,14 @@ var custom = {
 }
 
 exports.custom = custom;
+
+function remove(server) {
+    delete CustomCommands[server.id];
+    console.log(serverC("@" + server.name + ": ") + botC("@WishBot") + " - " + errorC("Removed from Database"));
+    updated = true;
+}
+
+exports.remove = remove;
 
 function saveCustomCommands() {
     fs.writeFile(__dirname + '/../database/CustomCommands-temp.json', JSON.stringify(CustomCommands, null, 4), error => {
