@@ -56,13 +56,15 @@ function toggle(bot, msg, suffix) {
         if (serverSettings[msg.channel.server.id].hasOwnProperty(suffix)) {
             delete serverSettings[msg.channel.server.id][suffix];
             console.log(serverC("@" + msg.channel.server.name) + " : " + botC("@WishBot") + " - Toggled " + warningC(suffix) + " to " + errorC("true"));
-            bot.sendMessage(msg, "🆗")
+            if(suffix === "welcome") bot.sendMessage(msg, "❎"); //Toggle welcome off
+            else bot.sendMessage(msg, "✅");
             checkLength(msg);
             updated = true;
         } else {
             serverSettings[msg.channel.server.id][suffix] = false;
             console.log(serverC("@" + msg.channel.server.name) + " : " + botC("@WishBot") + " - Toggled " + warningC(suffix) + " to " + errorC("false"));
-            bot.sendMessage(msg, "🆗");
+            if(suffix === "welcome") bot.sendMessage(msg, "✅"); //Toggle welcome on
+            else bot.sendMessage(msg, "❎");
             checkLength(msg);
             updated = true;
         }

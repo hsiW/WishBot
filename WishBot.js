@@ -69,6 +69,8 @@ bot.on("message", msg => {
 
 bot.on("serverDeleted", server => {
     console.log(serverC("@" + server.name + ": ") + botC("@WishBot") + " - " + errorC("Left Server"));
+    Database.remove(server);
+    Custom.remove(server);
 })
 
 bot.on("serverCreated", server => {
