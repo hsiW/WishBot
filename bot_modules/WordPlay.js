@@ -8,11 +8,8 @@ var words = {
         cooldown: 2,
         type: "words",
         process: function(bot, msg, suffix) {
-            if (suffix && /^\d+$/.test(suffix) && quote.length >= parseInt(suffix) - 1) {
-                bot.sendMessage(msg, quote[suffix - 1]);
-            } else {
-                bot.sendMessage(msg, quote[Math.floor(Math.random() * (quote.length))]);
-            }
+            if (suffix && /^\d+$/.test(suffix) && quote.length >= parseInt(suffix) - 1) bot.createMessage(msg.channel.id, quote[suffix - 1]);
+            else bot.createMessage(msg.channel.id, quote[Math.floor(Math.random() * (quote.length))]);
         }
     },
     "pun": {
@@ -21,11 +18,8 @@ var words = {
         cooldown: 2,
         type: "words",
         process: function(bot, msg, suffix) {
-            if (suffix && /^\d+$/.test(suffix) && pun.length >= parseInt(suffix) - 1) {
-                bot.sendMessage(msg, pun[suffix - 1]);
-            } else {
-                bot.sendMessage(msg, pun[Math.floor(Math.random() * (pun.length))]);
-            }
+            if (suffix && /^\d+$/.test(suffix) && pun.length >= parseInt(suffix) - 1) bot.createMessage(msg.channel.id, pun[suffix - 1]);
+            else bot.createMessage(msg.channel.id, pun[Math.floor(Math.random() * (pun.length))]);
         }
     },
     "reverse": {
@@ -34,10 +28,7 @@ var words = {
         cooldown: 2,
         type: "words",
         process: function(bot, msg, suffix) {
-            if (suffix.indexOf('@') > 0) {
-                suffix = suffix.replace(/@/g, '');
-            }
-            bot.sendMessage(msg, (suffix.split("").reverse().join("")));
+            bot.createMessage(msg.channel.id, (suffix.split("").reverse().join("")));
         }
     },
     "vquote": {
@@ -47,11 +38,8 @@ var words = {
         cooldown: 2,
         type: "words",
         process: function(bot, msg, suffix) {
-            if (!suffix) {
-                bot.sendMessage(msg, "You'll need to have a quote to quote something, **" + msg.author.username + "**-senpai.");
-            } else {
-                bot.sendMessage("136558567082819584", "__From voice chat:__ \n" + suffix);
-            }
+            if (!suffix) bot.createMessage(msg.channel.id, "You'll need to have a quote to quote something, **" + msg.author.username + "**-senpai.");
+            else bot.createMessage("136558567082819584", "__From voice chat:__ \n" + suffix);
         }
     },
     "tquote": {
@@ -61,11 +49,8 @@ var words = {
         cooldown: 2,
         type: "words",
         process: function(bot, msg, suffix) {
-            if (!suffix) {
-                bot.sendMessage(msg, "You'll need to have a quote to quote something, **" + msg.author.username + "**-senpai.");
-            } else {
-                bot.sendMessage("136558567082819584", "__From text chat:__ \n" + suffix);
-            }
+            if (!suffix) bot.createMessage(msg.channel.id, "You'll need to have a quote to quote something, **" + msg.author.username + "**-senpai.");
+            else bot.createMessage("136558567082819584", "__From text chat:__ \n" + suffix);
         }
     },
     "randomquote": {
@@ -75,16 +60,26 @@ var words = {
         cooldown: 2,
         type: "words",
         process: function(bot, msg) {
-            bot.getChannelLogs("136558567082819584", 100, function(error, messages) {
-                if (error) {
-                    console.log(error);
-                    return;
-                } else {
-                    bot.sendMessage(msg, messages[Math.floor((Math.random() * messages.length) + 1)]);
-                }
-            });
+            bot.getChannelMessages("136558567082819584", 100).then(messages => {
+                var message = messages[Math.floor((Math.random() * messages.length) + 1)];
+                bot.createMessage(msg.channel.id, message.content).catch(err=> errorC(err))
+                console.log(message)
+            }).catch(err => console.log(errorC(err)));
+
         }
     }
 }
+
+/*var ids = [];
+var getStuff = (before) => {
+    bot.getChannelMessages(channelID, 100, before).then((messages)=>{
+        ids = ids.concat(messages.map(m=>m.id));
+        if(messages.length===100)
+            getStuff(messages[messages.length-1].id);
+        else
+            require("fs").writeFileSync("messageIDs.json",JSON.stringify(ids));
+    }
+};
+getStuff();*/ //future stuff
 
 exports.words = words;

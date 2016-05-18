@@ -4,6 +4,7 @@ var admins = require('./../options/admins.json').admins;
 var fs = require('fs');
 var updated = false;
 var usageUpdated = false;
+inactiveServers = [];
 
 setInterval(() => {
     if (updated) {
@@ -17,8 +18,8 @@ setInterval(() => {
 }, 30000);
 
 function add(msg) {
-    serverSettings[msg.channel.server.id] = {};
-    console.log(serverC("@" + msg.channel.server.name + ": ") + botC("@WishBot") + " - " + warningC("Added from Database"));
+    serverSettings[msg.channel.guild.id] = {};
+    console.log(serverC("@" + msg.channel.guild.name + ": ") + botC("@WishBot") + " - " + warningC("Added from Database"));
 }
 
 function remove(server) {
@@ -28,20 +29,20 @@ function remove(server) {
 }
 
 function changePrefix(bot, msg, suffix) {
-    if (serverSettings.hasOwnProperty(msg.channel.server.id)) {
-        if ((msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) && suffix === "&") {
-            delete serverSettings[msg.channel.server.id]["Prefix"];
-            console.log(serverC("@" + msg.channel.server.name + ": ") + botC("@WishBot") + " - Changed prefix to " + warningC(suffix));
-            bot.sendMessage(msg, "🆗");
+    if (serverSettings.hasOwnProperty(msg.channel.guild.id)) {
+        if ((msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1) && suffix === "&") {
+            delete serverSettings[msg.channel.guild.id]["Prefix"];
+            console.log(serverC("@" + msg.channel.guild.name + ": ") + botC("@WishBot") + " - Changed prefix to " + warningC(suffix));
+            bot.createMessage(msg.channel.id, "🆗");
             checkLength(msg);
             updated = true;
         } else if (suffix.includes(' ')) {
-            bot.sendMessage(msg, "Prefix's cannot contain spaces, sorry!")
+            bot.createMessage(msg.channel.id, "Prefix's cannot contain spaces, sorry!")
             return;
-        } else if (msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) {
-            serverSettings[msg.channel.server.id]["Prefix"] = suffix;
-            console.log(serverC("@" + msg.channel.server.name + ": ") + botC("@WishBot") + " - Changed prefix to " + warningC(suffix));
-            bot.sendMessage(msg, "🆗");
+        } else if (msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1) {
+            serverSettings[msg.channel.guild.id]["Prefix"] = suffix;
+            console.log(serverC("@" + msg.channel.guild.name + ": ") + botC("@WishBot") + " - Changed prefix to " + warningC(suffix));
+            bot.createMessage(msg.channel.id, "🆗");
             checkLength(msg);
             updated = true;
         }
@@ -52,19 +53,19 @@ function changePrefix(bot, msg, suffix) {
 }
 
 function toggle(bot, msg, suffix) {
-    if (serverSettings.hasOwnProperty(msg.channel.server.id)) {
-        if (serverSettings[msg.channel.server.id].hasOwnProperty(suffix)) {
-            delete serverSettings[msg.channel.server.id][suffix];
-            console.log(serverC("@" + msg.channel.server.name) + " : " + botC("@WishBot") + " - Toggled " + warningC(suffix) + " to " + errorC("true"));
-            if(suffix === "welcome") bot.sendMessage(msg, "❎"); //Toggle welcome off
-            else bot.sendMessage(msg, "✅");
+    if (serverSettings.hasOwnProperty(msg.channel.guild.id)) {
+        if (serverSettings[msg.channel.guild.id].hasOwnProperty(suffix)) {
+            delete serverSettings[msg.channel.guild.id][suffix];
+            console.log(serverC("@" + msg.channel.guild.name) + " : " + botC("@WishBot") + " - Toggled " + warningC(suffix) + " to " + errorC("true"));
+            if (suffix === "welcome") bot.createMessage(msg.channel.id, "❎"); //Toggle welcome off
+            else bot.createMessage(msg.channel.id, "✅");
             checkLength(msg);
             updated = true;
         } else {
-            serverSettings[msg.channel.server.id][suffix] = false;
-            console.log(serverC("@" + msg.channel.server.name) + " : " + botC("@WishBot") + " - Toggled " + warningC(suffix) + " to " + errorC("false"));
-            if(suffix === "welcome") bot.sendMessage(msg, "✅"); //Toggle welcome on
-            else bot.sendMessage(msg, "❎");
+            serverSettings[msg.channel.guild.id][suffix] = false;
+            console.log(serverC("@" + msg.channel.guild.name) + " : " + botC("@WishBot") + " - Toggled " + warningC(suffix) + " to " + errorC("false"));
+            if (suffix === "welcome") bot.createMessage(msg.channel.id, "✅"); //Toggle welcome on
+            else bot.createMessage(msg.channel.id, "❎");
             checkLength(msg);
             updated = true;
         }
@@ -75,19 +76,19 @@ function toggle(bot, msg, suffix) {
 }
 
 function checkLength(msg) {
-    if (Object.keys(serverSettings[msg.channel.server.id]).length === 0) remove(msg.channel.server)
+    if (Object.keys(serverSettings[msg.channel.guild.id]).length === 0) remove(msg.channel.guild)
 }
 
 exports.checkInactivity = function(bot) {
     inactiveServers = [];
     var now = Date.now();
     Object.keys(UsageCheck).map(id => {
-        if (!bot.servers.find(s => s.id === id)) delete UsageCheck[id];
+        if (!bot.guilds.get(id)) delete UsageCheck[id];
     });
-    bot.servers.map(server => {
+    bot.guilds.filter(server => {
         if (server == undefined) return;
         else if (!UsageCheck.hasOwnProperty(server.id)) UsageCheck[server.id] = now;
-        else if (now - UsageCheck[server.id] >= 432000000) inactiveServers.push(server.id);
+        else if (now - UsageCheck[server.id] >= 1210000000) inactiveServers.push(server.id);
     })
     if (inactiveServers.length > 0) {
         console.log("Will Leave " + inactiveServers.length + " servers on next inactivity tick.");
@@ -96,7 +97,7 @@ exports.checkInactivity = function(bot) {
 }
 
 exports.removeInactive = function(bot, msg) {
-    if (inactiveServers.length === 0) bot.sendMessage(msg, "There is currently no inactive servers!");
+    if (inactiveServers.length === 0) bot.createMessage(msg.channel.id, "There are currently no inactive servers!");
     else {
         var count = 0,
             passedOver = 0,
@@ -112,10 +113,10 @@ exports.removeInactive = function(bot, msg) {
             }
             delete UsageCheck[inactiveServers[passedOver]];
             passedOver++;
-            if (count >= 10 || passedOver >= inactiveServers.length) {
+            if (count >= 3000 || passedOver >= inactiveServers.length) {
                 for (var i = 0; i < passedOver; i++) inactiveServers.shift();
-                if (count == 0) bot.sendMessage(msg, 'No Servers to Leave.');
-                else bot.sendMessage(msg, toSend);
+                if (count == 0) bot.createMessage(msg.channel.id, 'No Servers to Leave.');
+                else bot.createMessage(msg.channel.id, toSend);
                 clearInterval(remInterval);
                 return;
             }
@@ -124,12 +125,12 @@ exports.removeInactive = function(bot, msg) {
     }
 }
 
-exports.updateTimestamp = function(server) {
-    if (!server || !server.id) return;
-    else if (UsageCheck.hasOwnProperty(server.id)) UsageCheck[server.id] = Date.now();
-    else if (inactiveServers.indexOf(server.id) > -1) inactiveServers.splice(inactiveServers.indexOf(server.id), 1);
+exports.updateTimestamp = function(guild) {
+    if (!guild || !guild.id) return;
+    if (UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = Date.now();
+    if (inactiveServers.indexOf(guild.id) > -1) inactiveServers.splice(inactiveServers.indexOf(guild.id), 1);
     usageUpdated = true;
-};
+}
 
 function saveUsage() {
     fs.writeFile(__dirname + '/../database/UsageCheck-temp.json', JSON.stringify(UsageCheck, null, 4), error => {

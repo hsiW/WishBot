@@ -11,9 +11,8 @@ var interactions = require('./Interactions.js').interactions;
 var words = require('./WordPlay.js').words;
 var defaults = require('./Defaults.js').defaults;
 var searches = require('./Search.js').searches;
-var management = require('./Management.js').management;
 var custom = require('./Custom.js').custom;
-var libVersion = require('./../node_modules/discord.js/package.json').version;
+var libVersion = require('./../node_modules/eris/package.json').version;
 var botVersion = require('./../package.json').version;
 
 var defaults = {
@@ -24,21 +23,19 @@ var defaults = {
         type: "default",
         process: function(bot, msg, suffix) {
             if (Commands.hasOwnProperty(suffix)) {
-                bot.sendMessage(msg, "__Command usage for **" + suffix + ":**__\n\n" + Commands[suffix].usage + "\n**Cooldown:** `" + Commands[suffix].cooldown + "s`")
+                bot.createMessage(msg.channel.id, "__Command usage for **" + suffix + ":**__\n\n" + Commands[suffix].usage + "\n**Cooldown:** `" + Commands[suffix].cooldown + "s`")
             } else if (suffix.toLowerCase() === "mod") {
                 var helpMsg = "__**Mod Commands:**__\n";
                 helpMsg += "\n**Mod Utilities: **";
                 helpMsg += Object.keys(mod).sort().map(cmd => "`" + cmd + "`").join(", ");
-                helpMsg += "\n**Mod Management: **";
-                helpMsg += Object.keys(management).sort().map(cmd => "`" + cmd + "`").join(", ");
-                bot.sendMessage(msg, helpMsg);
+                bot.createMessage(msg.channel.id, helpMsg);
             } else if (suffix.toLowerCase() === "admin") {
                 var helpMsg = "__**Admin Commands:**__\n\n**Admin Utilities: **";
                 helpMsg += Object.keys(admin).sort().map(cmd => "`" + cmd + "`").join(", ");
-                bot.sendMessage(msg, helpMsg);
+                bot.createMessage(msg.channel.id, helpMsg);
             } else {
                 var helpMsg = "__**General Commands:**__\n";
-                helpMsg += "\n**Cleverbot: **`chat`, `@" + bot.user.name + "`";
+                helpMsg += "\n**Cleverbot: **`chat`, `@" + bot.user.username + "`";
                 helpMsg += "\n**Chan's:** `chan`, `chan read`, `chan write`, `chan edit`, `chan delete`\n"
                 helpMsg += "**Default: **";
                 helpMsg += Object.keys(defaults).sort().map(cmd => "`" + cmd + "`").join(", ");
@@ -53,7 +50,7 @@ var defaults = {
                 helpMsg += "\n**Word Play: **";
                 helpMsg += Object.keys(words).sort().map(cmd => "`" + cmd + "`").join(", ");
                 helpMsg += "\n\nFor usage and info about these commands use `help [command]`\nTo View the Mod Commmands Help use `help mod`";
-                bot.sendMessage(msg, helpMsg);
+                bot.createMessage(msg.channel.id, helpMsg);
             }
         }
     },
@@ -68,7 +65,7 @@ var defaults = {
                 msgString += "\n" + alias[ali] + ": " + ali;
             });
             msgString += "```\n\n```ruby\n[command]: [command alias]```";
-            bot.sendMessage(msg.author, msgString);
+            bot.getDMChannel(msg.author.id).then(privateChannel => bot.createMessage(privateChannel.id, msgString)).catch(err => console.log(errorC(err)));
         }
     },
     "changelog": {
@@ -77,21 +74,13 @@ var defaults = {
         cooldown: 10,
         type: "default",
         process: function(bot, msg) {
-            bot.getChannelLogs("143904176613752832", 5, function(error, messages) {
-                if (error) {
-                    console.log("there was an error getting the logs");
-                    return;
-                } else {
-                    var msgString = "__**Changelog**__\n\n";
-                    for (i = 4; i >= 0; i--) {
-                        msgString += "\n" + messages[i];
-                        if (i != 0) {
-                            msgString += "\n━━━━━━━━━━━━━━━━━━━";
-                        }
-                    }
-                    bot.sendMessage(msg.author, msgString)
-                }
-            });
+            bot.getChannelMessages("143904176613752832", 5).then(messages => {
+                var msgString = "__**Changelog**__\n";
+                messages.forEach(index => {
+                    msgString += "\n\n" + index.content;
+                });
+                bot.getDMChannel(msg.author.id).then(privateChannel => bot.createMessage(privateChannel.id, msgString))
+            }).catch(err => console.log(errorC(err)));
         }
     },
     "about": {
@@ -101,15 +90,15 @@ var defaults = {
         type: "default",
         process: function(bot, msg) {
             var toSend = "```tex\n";
-            toSend += "$ WishBot [" + bot.user.name + "] $\n\n";
-            toSend += "Lib: {discordjs - v" + libVersion + "}\n";
-            toSend += "Version: {v" + botVersion + "a}\n";
-            toSend += "Creator: { M!sɥ }\n";
-            toSend += "Default Prefix: {" + prefix + "}\n";
-            toSend += "\n% Use -help for command info."
+            toSend += "$ WishBot [" + bot.user.username + "] $";
+            toSend += "\n\nLib: {Eris - v" + libVersion + "}";
+            toSend += "\nVersion: {v" + botVersion + "a}";
+            toSend += "\nCreator: { M!sɥ }";
+            toSend += "\nDefault Prefix: {" + prefix + "}";
+            toSend += "\n\n% Use -help for command info."
             toSend += "\n% Support Server: https://discord.gg/0lBiROCNVaDaE8rR";
             toSend += "\n% Source: https://github.com/hsiw/Wishbot";
-            bot.sendMessage(msg, toSend + "```")
+            bot.createMessage(msg.channel.id, toSend + "```")
         }
     },
     "source": {
@@ -118,7 +107,7 @@ var defaults = {
         cooldown: 30,
         type: "default",
         process: function(bot, msg) {
-            bot.sendMessage(msg, "The source code for this bot may be found here:\n<https://github.com/hsiw/Wishbot>")
+            bot.createMessage(msg.channel.id, "The source code for this bot may be found here:\n<https://github.com/hsiw/Wishbot>");
         }
     },
     "donate": {
@@ -127,7 +116,7 @@ var defaults = {
         cooldown: 30,
         type: "default",
         process: function(bot, msg) {
-            bot.sendMessage(msg, "Because I work on the developement of this bot in my free time, please consider donating to the developement,\nhttps://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JCSVXZTUD7F5C");
+            bot.createMessage(msg.channel.id, "Because I work on the developement of this bot in my free time, please consider donating to the developement,\nhttps://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JCSVXZTUD7F5C");
         }
     },
     "toggle": {
@@ -138,15 +127,14 @@ var defaults = {
         type: "default",
         process: function(bot, msg, suffix) {
             suffix = suffix.toLowerCase();
-            if ((msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) && Commands.hasOwnProperty(suffix)) {
-                if (Commands[suffix].noToggle) bot.sendMessage(msg, "I'm sorry, **" + msg.author.name + "**-senpai but that command is not togglable.")
+            if ((msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1) && Commands.hasOwnProperty(suffix)) {
+                if (Commands[suffix].noToggle) bot.createMessage(msg.channel.id, "I'm sorry, **" + msg.author.name + "**-senpai but that command is not togglable.")
                 else Database.toggle(bot, msg, suffix);
-            } else if ((msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) && (suffix === "unflip" || suffix === "welcome")) Database.toggle(bot, msg, suffix)
-            else if((msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) && !(Commands.hasOwnProperty(suffix))){
-                bot.sendMessage(msg, "Thats not a valid toggle, please use `welcome`, `unflip`, or any command name.")
-            }
-            else if(!(msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1)){
-                bot.sendMessage(msg, "That command requires the `manageRoles` permission, sorry!")
+            } else if ((msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1) && (suffix === "unflip" || suffix === "welcome")) Database.toggle(bot, msg, suffix)
+            else if ((msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1) && !(Commands.hasOwnProperty(suffix))) {
+                bot.createMessage(msg.channel.id, "Thats not a valid toggle, please use `welcome`, `unflip`, or any command name.")
+            } else if (!(msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1)) {
+                bot.createMessage(msg.channel.id, "That command requires the `manageRoles` permission, sorry!")
             }
         }
     },
@@ -156,7 +144,7 @@ var defaults = {
         cooldown: 2,
         type: "default",
         process: function(bot, msg) {
-            bot.sendMessage(msg, "```ruby\nUptime - " + Math.round((bot.uptime / 3600000) % 60) + "h : " + Math.round((bot.uptime / 60000) % 60) + "m : " + Math.round((bot.uptime / 1000) % 60) + "s```")
+            bot.createMessage(msg.channel.id, "```ruby\nUptime - " + Math.round((bot.uptime / 3600000) % 60) + "h : " + Math.round((bot.uptime / 60000) % 60) + "m : " + Math.round((bot.uptime / 1000) % 60) + "s```")
         }
     },
     "server": {
@@ -165,7 +153,7 @@ var defaults = {
         cooldown: 20,
         type: "default",
         process: function(bot, msg) {
-            bot.sendMessage(msg, "__**" + msg.author.username + "-senpai, heres a invite to my server:**__\nhttps://discord.gg/0lBiROCNVaDaE8rR");
+            bot.createMessage(msg.channel.id, "__**" + msg.author.username + "-senpai, heres a invite to my server:**__\nhttps://discord.gg/0lBiROCNVaGw5Eqk");
         }
     },
     "invite": {
@@ -174,7 +162,7 @@ var defaults = {
         cooldown: 20,
         type: "default",
         process: function(bot, msg) {
-            bot.sendMessage(msg, "__**" + msg.author.username + "-senpai, heres a link to invite me to your server:**__\nhttps://discordapp.com/oauth2/authorize?&client_id=161620224305528833&scope=bot&permissions=16886814");
+            bot.createMessage(msg.channel.id, "__**" + msg.author.username + "-senpai, heres a link to invite me to your server:**__\nhttps://discordapp.com/oauth2/authorize?&client_id=161620224305528833&scope=bot&permissions=8");
         }
     },
     "prefix": {
@@ -186,13 +174,13 @@ var defaults = {
         process: function(bot, msg, suffix) {
             if (!suffix) {
                 var msgPrefix;
-                serverSettings.hasOwnProperty(msg.channel.server.id) && serverSettings[msg.channel.server.id].hasOwnProperty("Prefix") ? msgPrefix = serverSettings[msg.channel.server.id]["Prefix"] : msgPrefix = prefix;
-                var msgArray = ["The current command prefix is: `" + msgPrefix + "`"];
-                msgArray.push("\n To change this prefix use `prefix [new prefix]`");
-                bot.sendMessage(msg, msgArray);
+                serverSettings.hasOwnProperty(msg.channel.guild.id) && serverSettings[msg.channel.guild.id].hasOwnProperty("Prefix") ? msgPrefix = serverSettings[msg.channel.guild.id]["Prefix"] : msgPrefix = prefix;
+                var msgString = "The current command prefix is: `" + msgPrefix + "`";
+                msgString += "\n\n To change this prefix use `prefix [new prefix]`";
+                bot.createMessage(msg.channel.id, msgString);
             } else {
-                if (msg.channel.permissionsOf(msg.sender).hasPermission("manageRoles") || admins.indexOf(msg.author.id) > -1) Database.changePrefix(bot, msg, suffix);
-                else bot.sendMessage(msg, "This command requires the `manageRoles` premission to be used, Sorry.");
+                if (msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1) Database.changePrefix(bot, msg, suffix);
+                else bot.createMessage(msg.channel.id, "This command requires the `manageRoles` premission to be used, Sorry.");
             }
         }
     },
@@ -203,8 +191,8 @@ var defaults = {
         type: "default",
         process: function(bot, msg, suffix) {
             if (!suffix) return;
-            bot.sendMessage(msg, "Your request for \"**" + suffix + "**\" was successfully sent, **" + msg.author.name + "**-senpai.")
-            bot.sendMessage("142794318837579777", "__Requested on the server **" + msg.channel.server.name + "** by **" + msg.author.username + "**:__`" + msg.author.id + "`\n" + suffix);
+            bot.createMessage(msg.channel.id, "Your request for \"**" + suffix + "**\" was successfully sent, **" + msg.author.name + "**-senpai.")
+            bot.createMessage("142794318837579777", "__Requested on the server **" + msg.channel.guild.name + "** by **" + msg.author.username + "**:__`" + msg.author.id + "`\n" + suffix);
         }
     },
     "ping": {
@@ -212,9 +200,9 @@ var defaults = {
         usage: "Pings this bot, useful for checking if the bots working corrently.",
         type: "default",
         process: function(bot, msg) {
-            bot.sendMessage(msg, "PONG!", function(error, message) {
-                if (!error) bot.updateMessage(message, "PONG! | *" + (message.timestamp - msg.timestamp) + "*ms");
-            })
+            bot.createMessage(msg.channel.id, "PONG!").then(message => {
+                bot.editMessage(msg.channel.id, message.id, "PONG! | *" + ((new Date(message.timestamp)) - (new Date(msg.timestamp))) + "*ms").catch(err => console.log(errorC(err)))
+            }).catch(err => console.log(errorC(err)))
         }
     }
 }
