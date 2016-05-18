@@ -2,15 +2,15 @@ var Cleverbot = require('cleverbot-node'),
     onee = new Cleverbot;
 Cleverbot.prepare(function() {});
 var decode = require('entities');
-var emoji = ["💁","🙅","🙆","🙋","🙎","🙍","💇","💆"]
+var emoji = ["💁", "🙅", "🙆", "🙋", "🙎", "🙍", "💇", "💆"]
 
 function Clever(bot, msg) {
     var text = (msg.cleanContent.split(' ').length > 1) ? msg.cleanContent.substring(msg.cleanContent.indexOf(' ') + 1).replace('@', '') : false;
-    bot.startTyping(msg.channel);
+    bot.sendChannelTyping(msg.channel.id);
     Cleverbot.prepare(() => {
         onee.write(text, response => {
             if (!response.message) {
-                bot.sendMessage(msg, "Cleverbot is currently reseting. Please try again in a moment");
+                bot.createMessage(msg.channel.id, "Cleverbot is currently reseting. Please try again in a moment");
                 delete require.cache[require.resolve('cleverbot-node')];
                 Cleverbot = require('cleverbot-node');
                 onee = new Cleverbot();
@@ -23,11 +23,10 @@ function Clever(bot, msg) {
                 response.message = response.message.replace(/\[(b|\/b)\]/g, "**");
                 response.message = response.message.replace(/\|/g, "\\u");
                 response.message = unicodeToChar(response.message);
-                bot.sendMessage(msg, emoji[Math.floor(Math.random() * (emoji.length))]+" - " + decode.decodeHTML(response.message));
+                bot.createMessage(msg.channel.id, emoji[Math.floor(Math.random() * (emoji.length))] + " - " + decode.decodeHTML(response.message));
             }
         });
     });
-    bot.stopTyping(msg.channel)
 }
 var chatbot = {
     "chat": {
