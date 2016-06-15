@@ -25,5 +25,7 @@
   "a": "alias",
   "giphy": "gif",
   "frequest": "featurerequest",
-  "calc": "calculate"
+  "calc": "calculate",
+  "chaninfo": "channelinfo",
+  "cinfo": "channelinfo"
 }
