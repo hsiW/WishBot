@@ -1,0 +1,4 @@
+# WishBot
+
+Heavily Indev stuffs
+
