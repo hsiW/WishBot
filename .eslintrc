@@ -14,22 +14,21 @@
 		"no-inner-declarations": 0,
 	},
 	"globals": {
-	"quotes",
 	"inactiveServers",
 	"serverSettings",
-	"commands",
+	"Commands",
 	"CustomCommands",
 	"Database",
 	"UsageCheck",
 	"ignoredUsers",
+	"c",
 	"admins",
 	"serverC",
 	"channelC",
 	"userC",
 	"warningC",
 	"errorC",
-	"botC",
-	miscC
+	"botC"
 	},
 	extends: "eslint:recommended"
 }
