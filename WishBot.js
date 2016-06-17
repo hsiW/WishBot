@@ -105,3 +105,15 @@ bot.on("debug", err => {
 CommandLoader.load().then(() => {
     bot.connect().then(console.log(warningC("Logged in using Token"))).catch(err => console.log(errorC(err.stack)));
 }).catch(err => errorC(err.stack));
+
+var interruptedAlready = false;
+
+process.on('SIGINT', function() {
+    if (interruptedAlready) {
+        console.log(errorC("Caught second interrupt signal... Exiting"));
+        process.exit(1);
+    }
+    interruptedAlready = true;
+    console.log(warningC("Caught interrupt signal... Disconnecting"));
+    bot.disconnect();
+});
