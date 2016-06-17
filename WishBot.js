@@ -89,11 +89,11 @@ function evalText(msg, suffix) {
 }
 
 bot.on("error", err => {
-    console.log(botC("@Onee-chan") + " - " + errorC("ERROR:\n" + err.stack));
+    console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
 })
 
 bot.on("disconnect", () => {
-    console.log(botC("@Onee-chan") + " - " + errorC("DISCONNECTED"));
+    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED"));
     process.exit(0);
 })
 
