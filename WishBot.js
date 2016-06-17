@@ -65,7 +65,7 @@ function reload(msg) {
         CommandLoader.load().then(() => {
             bot.createMessage(msg.channel.id, "🆗");
             bot.deleteMessage(msg.channel.id, msg.id);
-            console.log(errorC("All Modules Reloaded"));
+            console.log(botC("@" + bot.user.username) + errorC(" All Modules Reloaded"));
         }).catch(err => {
             bot.createMessage(msg.channel.id, "```" + err + "```")
             console.log(errorC(err.stack))
@@ -117,4 +117,3 @@ process.on('SIGINT', function() {
     console.log(warningC("Caught interrupt signal... Disconnecting"));
     bot.disconnect();
 });
-
