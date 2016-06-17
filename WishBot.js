@@ -117,3 +117,4 @@ process.on('SIGINT', function() {
     console.log(warningC("Caught interrupt signal... Disconnecting"));
     bot.disconnect();
 });
+
