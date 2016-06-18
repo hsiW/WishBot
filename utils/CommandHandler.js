@@ -13,7 +13,7 @@ exports.commandHandler = function(bot, msg, suffix, cmdTxt) {
 function processCmd(bot, msg, suffix, cmdTxt) {
     var cmd = commands[cmdTxt];
     if (cmd.privateCheck(msg)) {
-        bot.createMessage(msg.channel.id, ":warning: I'm sorry but that command doesn't exist on this server. :warning:");
+        bot.createMessage(msg.channel.id, "⚠ I'm sorry but that command doesn't exist on this server. ⚠");
         bot.deleteMessage(msg.channel.id, msg.id);
     } else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) {
         bot.createMessage(msg.channel.id, `${utils.toTitleCase(cmdTxt)} is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);

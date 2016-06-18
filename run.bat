@@ -1,2 +1,2 @@
-node WishBot.js --harmony
+node WishBot.js
 cmd /k
