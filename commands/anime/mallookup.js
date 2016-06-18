@@ -2,6 +2,7 @@ var request = require('request').defaults({
         encoding: null
     }),
     xml2js = require("xml2js");
+var daysToString = require('./../../utils/utils.js').daysToString;
 
 module.exports = {
     delete: true,
@@ -13,12 +14,16 @@ module.exports = {
             if (error) console.log(error);
             else if (!error && response.statusCode == 200) {
                 xml2js.parseString(body, (err, result) => {
-                    if (err) console.log(err);
+                    if (err) console.log(errorC(err));
                     else if (!result.myanimelist.myinfo) bot.createMessage(msg.channel.id, result.myanimelist.error);
                     else {
-                        console.log(result.myanimelist.myinfo[0]);
-                        result = result.myanimelist.myinfo[0];
-                        bot.createMessage(msg.channel.id, `\`\`\`ruby\nUser: ${result.user_name} (${result.user_id})\nWatching: ${result.user_watching}\nCompleted: ${result.user_completed}\nOn Hold: ${result.user_onhold}\nDropped: ${result.user_dropped}\nPTW: ${result.user_plantowatch}\nDays Spent Watching: ${result.user_days_spent_watching}\`\`\``);
+                        user = result.myanimelist.myinfo[0];
+                        var msgString = '```ruby\n';
+                        msgString += `Name: '${user.user_name}' #${user.user_id}\n`;
+                        msgString += `Watching: ${user.user_watching} | On Hold: ${user.user_onhold} | Dropped: ${user.user_dropped}\n`
+                        msgString += `Completed: ${user.user_completed} | Plan to Watch: ${user.user_plantowatch}\n`;
+                        msgString += `Time Spent on Anime; ${daysToString(user.user_days_spent_watching)}\n`
+                        bot.createMessage(msg.channel.id, msgString + "```");
                     }
                 });
             }

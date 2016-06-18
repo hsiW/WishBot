@@ -41,3 +41,19 @@ exports.sortObj = function(obj, type, caseSensitive) {
     }
     return temp_obj;
 };
+
+exports.minutesToString = function(mins) {
+    var months = Math.floor(mins / 43800);
+    var days = Math.floor((mins / 1440) % 30);
+    var hours = Math.floor((mins / 60) % 24);
+    var minutes = Math.floor(mins % 60);
+    return months + "month(s) : " + days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s)";
+}
+
+exports.daysToString = function(day) {
+    var months = Math.floor(day / 30)
+    var days = Math.floor(day % 30)
+    var hours = Math.floor((day % 24) % 30)
+    var minutes = Math.floor((day / 1440) % 60)
+    return months + "month(s) : " + days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s)";
+}
