@@ -57,3 +57,28 @@ exports.daysToString = function(day) {
     var minutes = Math.floor((day / 1440) % 60)
     return months + "month(s) : " + days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s)";
 }
+
+exports.getSeason = function() {
+    var d = new Date()
+    var season = d.getMonth() + 1;
+    if (season === 1 || season === 2 || season === 3) {
+        return 0;
+    } else if (season === 4 || season === 5 || season === 6) {
+        return 1;
+    } else if (season === 7 || season === 8 || season === 9) {
+        return 2;
+    } else if (season === 10 || season === 11 || season === 12) {
+        return 3;
+    }
+}
+
+exports.splitArray = function(array, size) {
+    var sets = [],
+        chunks,
+        i = 0;
+    chunks = array.length / size;
+    for (var i = 0, j = 0; i < chunks; i++, j += size) {
+        sets[i] = array.slice(j, j + size);
+    }
+    return sets;
+}

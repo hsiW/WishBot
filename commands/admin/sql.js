@@ -1,11 +1,4 @@
 var mysql = require('mysql');
-var pool = mysql.createPool({
-    connectionLimit: 100,
-    host: 'localhost',
-    user: 'Onee',
-    password: 'Boudreau18!',
-    database: 'database'
-});
 
 module.exports = {
     usage: 'Pings this bot, useful for checking if the bots working correctly.',

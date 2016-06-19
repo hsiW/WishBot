@@ -27,6 +27,7 @@
     "google": "^2.0.0",
     "mathjs": "^3.2.0",
     "mysql": "^2.11.1",
+    "nani": "^1.2.0",
     "request": "^2.72.0",
     "require-reload": "^0.2.2",
     "wikijs": "^0.1.3",
