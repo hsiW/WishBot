@@ -58,18 +58,21 @@ exports.daysToString = function(day) {
     return months + "month(s) : " + days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s)";
 }
 
+exports.secondsToString = function(second) {
+    var days = Math.floor(second / 86400)
+    var hours = Math.floor((second / 3600) % 24)
+    var minutes = Math.floor((second / 60) % 60)
+    var seconds = Math.floor(second % 60)
+    return days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s) : " + seconds + "second(s)";
+}
+
 exports.getSeason = function() {
     var d = new Date()
     var season = d.getMonth() + 1;
-    if (season === 1 || season === 2 || season === 3) {
-        return 0;
-    } else if (season === 4 || season === 5 || season === 6) {
-        return 1;
-    } else if (season === 7 || season === 8 || season === 9) {
-        return 2;
-    } else if (season === 10 || season === 11 || season === 12) {
-        return 3;
-    }
+    if (season === 1 || season === 2 || season === 3) return 0;
+    else if (season === 4 || season === 5 || season === 6) return 1;
+    else if (season === 7 || season === 8 || season === 9) return 2;
+    else if (season === 10 || season === 11 || season === 12) return 3;
 }
 
 exports.splitArray = function(array, size) {

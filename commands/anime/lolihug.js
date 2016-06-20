@@ -13,7 +13,7 @@ module.exports = {
     usage: 'Pings this bot, useful for checking if the bots working correctly.',
     cooldown: 5,
     process: function(bot, msg) {
-        pool.query('SELECT * FROM loli ORDER BY RAND() LIMIT 1', function(err, rows, res) {
+        pool.query('SELECT * FROM lolihug ORDER BY RAND() LIMIT 1', function(err, rows, res) {
             if (err) console.log(errorC('Error while performing Query'));
             else bot.createMessage(msg.channel.id, rows[0].url);
         });
