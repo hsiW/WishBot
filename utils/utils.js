@@ -47,7 +47,7 @@ exports.minutesToString = function(mins) {
     var days = Math.floor((mins / 1440) % 30);
     var hours = Math.floor((mins / 60) % 24);
     var minutes = Math.floor(mins % 60);
-    return months + "month(s) : " + days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s)";
+    return months + "month(s) | " + days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s)";
 }
 
 exports.daysToString = function(day) {
@@ -55,7 +55,7 @@ exports.daysToString = function(day) {
     var days = Math.floor(day % 30)
     var hours = Math.floor((day % 24) % 30)
     var minutes = Math.floor((day / 1440) % 60)
-    return months + "month(s) : " + days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s)";
+    return months + "month(s) | " + days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s)";
 }
 
 exports.secondsToString = function(second) {
@@ -63,16 +63,7 @@ exports.secondsToString = function(second) {
     var hours = Math.floor((second / 3600) % 24)
     var minutes = Math.floor((second / 60) % 60)
     var seconds = Math.floor(second % 60)
-    return days + "day(s) : " + hours + "hour(s) : " + minutes + "minute(s) : " + seconds + "second(s)";
-}
-
-exports.getSeason = function() {
-    var d = new Date()
-    var season = d.getMonth() + 1;
-    if (season === 1 || season === 2 || season === 3) return 0;
-    else if (season === 4 || season === 5 || season === 6) return 1;
-    else if (season === 7 || season === 8 || season === 9) return 2;
-    else if (season === 10 || season === 11 || season === 12) return 3;
+    return days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s) | " + seconds + "second(s)";
 }
 
 exports.splitArray = function(array, size) {
@@ -84,4 +75,11 @@ exports.splitArray = function(array, size) {
         sets[i] = array.slice(j, j + size);
     }
     return sets;
+}
+
+exports.messageDelete = function(bot, msg, time) {
+    if (!time) time = 5000;
+    setTimeout(() => {
+        bot.deleteMessage(msg.channel.id, msg.id);
+    }, time)
 }

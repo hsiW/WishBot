@@ -12,16 +12,14 @@ exports.commandHandler = function(bot, msg, suffix, cmdTxt) {
 
 function processCmd(bot, msg, suffix, cmdTxt) {
     var cmd = commands[cmdTxt];
-    if (cmd.privateCheck(msg)) {
-        bot.createMessage(msg.channel.id, "⚠ I'm sorry but that command doesn't exist on this server. ⚠");
-        bot.deleteMessage(msg.channel.id, msg.id);
-    } else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) {
+    if (cmd.privateCheck(msg)) return;
+    else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) {
         bot.createMessage(msg.channel.id, `${utils.toTitleCase(cmdTxt)} is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
     } else {
         try {
+            if (cmd.delete) bot.deleteMessage(msg.channel.id, msg.id).then(console.log);
             cmd.process(bot, msg, suffix);
             console.log(serverC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmdTxt) + " was used by " + userC(msg.author.username));
-            if (cmd.delete) bot.deleteMessage(msg.channel.id, msg.id);
         } catch (err) {
             bot.createMessage(msg.channel.id, "```" + err + "```");
             console.log(errorC(err.stack));
