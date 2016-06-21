@@ -12,8 +12,8 @@ var pool = mysql.createPool({
 module.exports = {
     usage: '',
     cooldown: 5,
-    process: function(bot, msg) {
-        pool.query('SELECT * FROM catgirl ORDER BY RAND() LIMIT 1', function(err, rows, res) {
+    process: (bot, msg) => {
+        pool.query('SELECT * FROM catgirl ORDER BY RAND() LIMIT 1', (err, rows, res) => {
             if (err) console.log(errorC('Error while performing Query'));
             else bot.createMessage(msg.channel.id, rows[0].url);
         });

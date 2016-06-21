@@ -4,7 +4,7 @@ module.exports = {
     usage: "Use this in case of lewd",
     delete: true,
     cooldown: 5,
-    process: function(bot, msg) {
+    process: (bot, msg) => {
         bot.createMessage(msg.channel.id, lewd[Math.floor(Math.random() * (lewd.length))]);
     }
 }

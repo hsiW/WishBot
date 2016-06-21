@@ -1,12 +1,13 @@
 var quotes = require('./../../database/quote.json');
+var utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Sends a voice chat quote to The People Chat's quote channel\n⚠Will not work on any other server⚠\n`vquote [quote]`",
     delete: true,
     privateServer: ['87601506039132160'],
     cooldown: 2,
-    process: function(bot, msg, suffix) {
-        if (!suffix) bot.createMessage(msg.channel.id, "You`ll need to have a quote to quote something, **" + msg.author.username + "**-senpai.");
+    process: (bot, msg, suffix) => {
+        if (!suffix) bot.createMessage(msg.channel.id, "You`ll need to have a quote to quote something, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message, null));
         else bot.createMessage("136558567082819584", "__From voice chat:__ \n" + suffix).then(message => {
             quotes.push(message.content);
             saveQuotes();

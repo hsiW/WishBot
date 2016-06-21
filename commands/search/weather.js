@@ -4,11 +4,11 @@ var options = require("./../../options/options.json");
 module.exports = {
     usage: "Prints out weather information for the mentioned place. Sometimes a country is requires to work properly\n`weather [location]`",
     cooldown: 5,
-    process: function(bot, msg, suffix) {
+    process: (bot, msg, suffix) => {
         if (!suffix) suffix = "Toronto";
         suffix = suffix.replace(" ", "");
         var rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
-        request(rURL, function(error, response, weath) {
+        request(rURL, (error, response, weath) => {
             if (!error && response.statusCode == 200) {
                 weath = JSON.parse(weath);
                 if (!weath.hasOwnProperty("weather")) return;

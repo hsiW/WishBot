@@ -4,7 +4,7 @@ var minutesToString = require('./../../utils/utils.js').minutesToString;
 module.exports = {
     delete: true,
     cooldown: 5,
-    process: function(bot, msg, suffix) {
+    process: (bot, msg, suffix) => {
         request({
             uri: "http://hummingbird.me/api/v1/users/" + suffix,
             method: "GET",
@@ -26,4 +26,4 @@ module.exports = {
             }
         });
     }
-}
+}//This command needs fixing/cleaning up

@@ -7,8 +7,8 @@ module.exports = {
     usage: "This bot prints a random smug image in the current channel",
     delete: true,
     cooldown: 5,
-    process: function(bot, msg) {
-        request(smug[Math.floor(Math.random() * (smug.length))], function(err, response, buffer) {
+    process: (bot, msg) => {
+        request(smug[Math.floor(Math.random() * (smug.length))], (err, response, buffer) => {
             bot.createMessage(msg.channel.id, null, {
                 file: buffer,
                 name: 'smug.jpg'

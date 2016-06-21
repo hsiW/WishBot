@@ -13,11 +13,10 @@ exports.commandHandler = function(bot, msg, suffix, cmdTxt) {
 function processCmd(bot, msg, suffix, cmdTxt) {
     var cmd = commands[cmdTxt];
     if (cmd.privateCheck(msg)) return;
-    else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) {
-        bot.createMessage(msg.channel.id, `${utils.toTitleCase(cmdTxt)} is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
-    } else {
+    else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) bot.createMessage(msg.channel.id, `${utils.toTitleCase(cmdTxt)} is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
+    else {
         try {
-            if (cmd.delete) bot.deleteMessage(msg.channel.id, msg.id).then(console.log);
+            if (cmd.delete) bot.deleteMessage(msg.channel.id, msg.id);
             cmd.process(bot, msg, suffix);
             console.log(serverC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmdTxt) + " was used by " + userC(msg.author.username));
         } catch (err) {

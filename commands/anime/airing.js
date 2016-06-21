@@ -11,7 +11,7 @@ module.exports = {
     usage: "This bot dances around in the current channel using a random dance",
     delete: true,
     cooldown: 5,
-    process: function(bot, msg, suffix) {
+    process: (bot, msg, suffix) => {
         nani.get(url)
             .then(data => {
                 airingAnime = data.filter(isAiring);
@@ -30,6 +30,7 @@ function processAnime(bot, msg, suffix) {
         msgString += pagedTitles[page].map((value, position) => '[' + (position + 1 + (page * 10)) + ']: ' + value).join('\n');
         bot.createMessage(msg.channel.id, msgString + "```").catch(console.log);
     } else if (airingAnime.find(title => isAnime(title, suffix))) {
+        var anime = airingAnime.find(title => isAnime(title, suffix));
         var msgString = '```ruby\n';
         msgString += `Title: ${anime.title_english}\n`
         msgString += `Romaji Title: ${anime.title_romaji}\n`;
@@ -50,10 +51,9 @@ function isAnime(title, suffix) {
 }
 
 function getSeason() {
-    var d = new Date()
-    var season = d.getMonth() + 1;
-    if (season === 1 || season === 2 || season === 3) return 0;
-    else if (season === 4 || season === 5 || season === 6) return 1;
-    else if (season === 7 || season === 8 || season === 9) return 2;
-    else if (season === 10 || season === 11 || season === 12) return 3;
+    var season = (new Date()).getMonth();
+    if (season === 0 || season === 1 || season === 2) return 0;
+    else if (season === 3 || season === 4 || season === 5) return 1;
+    else if (season === 6 || season === 7 || season === 8) return 2;
+    else if (season === 9 || season === 10 || season === 11) return 3;
 }

@@ -2,16 +2,16 @@ var options = require("./../../options/options.json");
 var YouTube = require('youtube-node');
 var youTube = new YouTube();
 youTube.setKey(options.youtube_api_key);
+var utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Prints out the first YouTube link for the mentioned terms\n`youtube [terms]`",
     delete: true,
     cooldown: 5,
-    process: function(bot, msg, suffix) {
-        youTube.search(suffix, 10, function(error, result) {
-            if (error || !result || !result.items || result.items.length < 1) {
-                bot.createMessage(msg.channel.id, "Your search resulted in an error. Please forgive me **" + msg.author.username + "**-senpai! ;-;");
-            } else {
+    process: (bot, msg, suffix) => {
+        youTube.search(suffix, 10, (error, result) => {
+            if (error || !result || !result.items || result.items.length < 1) bot.createMessage(msg.channel.id, "Your search resulted in an error. Please forgive me **" + msg.author.username + "**-senpai!").then(message => utils.messageDelete(bot, message, null));
+            else {
                 if (typeof result.items[0].id.videoId === "undefined") {
                     for (i = 1; i < result.items.length; i++) {
                         if (typeof result.items[i].id.videoId !== "undefined") {

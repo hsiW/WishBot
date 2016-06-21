@@ -7,7 +7,7 @@ var daysToString = require('./../../utils/utils.js').daysToString;
 module.exports = {
     delete: true,
     cooldown: 5,
-    process: function(bot, msg, suffix) {
+    process: (bot, msg, suffix) => {
         var user = suffix.replace(/ /g, '%20')
         var URL = `http://myanimelist.net/malappinfo.php?u=${suffix.replace(/ /g, '%20')}&status=all&type=anime`;
         request(URL, (error, response, body) => {
@@ -29,4 +29,4 @@ module.exports = {
             }
         });
     }
-}
+}//This command needs fixing/cleaning up

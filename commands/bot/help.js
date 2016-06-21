@@ -1,7 +1,7 @@
 var utils = require('./../../utils/utils.js');
 
 module.exports = {
-        process: function (bot, msg, suffix) {
+        process:  (bot, msg, suffix) => {
                 if (commands.hasOwnProperty(suffix)) {
                     bot.createMessage(msg.channel.id, commands[suffix].help());
                 } else {

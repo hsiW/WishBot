@@ -1,4 +1,5 @@
 var quotes = require('./../../database/quote.json');
+var utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Prints a random quote from The People Chat's quote channel\n⚠Will not work on any other server⚠",
@@ -11,8 +12,8 @@ module.exports = {
         else if (suffix) {
             var quoteRegex = new RegExp(suffix, "i");
             var quoteCache = quotes.filter(message => message.match(quoteRegex));
-            if (quoteCache.length < 1) bot.createMessage(msg.channel.id, "No quotes found that contain " + suffix);
-            else bot.createMessage(msg.channel.id, quoteCache[Math.floor((Math.random() * quoteCache.length) + 1)]).catch(err => errorC(err));
+            if (quoteCache.length >= 1) bot.createMessage(msg.channel.id, quoteCache[Math.floor((Math.random() * quoteCache.length) + 1)]).catch(err => errorC(err));
+            else bot.createMessage(msg.channel.id, "No quotes found that contain " + suffix).then(message => utils.messageDelete(bot, message, null));
         } else bot.createMessage(msg.channel.id, quotes[Math.floor((Math.random() * quotes.length) + 1)]).catch(err => errorC(err));
     }
 }

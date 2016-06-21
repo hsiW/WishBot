@@ -6,14 +6,14 @@ module.exports = {
     usage: "Gives you basic information about this bot.",
     delete: true,
     cooldown: 30,
-    process: function(bot, msg) {
+    process: (bot, msg) => {
         var toSend = "```tex\n";
         toSend += "$ WishBot [" + bot.user.username + "] $";
         toSend += "\n\nLib: {Eris - v" + libVersion + "}";
         toSend += "\nVersion: {v" + botVersion + "a}";
-        toSend += "\nCreator: { M!sɥ }";
+        toSend += "\nCreator: { hsiW and Florestina }";
         toSend += "\nDefault Prefix: {" + prefix + "}";
-        toSend += "\n\n% Use -help for command info."
+        toSend += "\n\n% Use " + prefix + "help for command info."
         toSend += "\n% Support Server: https://discord.gg/0lBiROCNVaDaE8rR";
         toSend += "\n% Source: https://github.com/hsiw/Wishbot";
         bot.createMessage(msg.channel.id, toSend + "```")

@@ -1,5 +1,6 @@
 var request = require("request");
 var options = require("./../../options/options.json");
+var utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Searches Imgur for an image with the mentioned terms and if no term is mentioned, Onee-chan is searched. If a subreddit is mentioned in the format `/r/[subreddit]` images from that subreddit will be returned. NSFW images will be ignored unless `--nsfw` is used\
@@ -7,7 +8,7 @@ module.exports = {
     delete: true,
     cooldown: 5,
     type: "searches",
-    process: function(bot, msg, suffix) {
+    process: (bot, msg, suffix) => {
         var response = {};
         var query = "Onee-chan";
         var sort = "top";
@@ -27,7 +28,6 @@ module.exports = {
             var apiURL = "https://api.imgur.com/3/gallery" + query + "/" + sort + "/";
             get_image(bot, msg, apiURL, query);
         } else {
-
             if (suffix.split(",")[2]) {
                 var temp = suffix.split(",")[2].replace(/ /g, "");
                 if (/^\d+$/.test(temp)) page = temp;
@@ -47,10 +47,9 @@ function get_image(bot, msg, apiURL, query) {
     }, (error, result, body) => {
         if (error) {
             console.log(errorC(error));
-            bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```");
-        } else if (result.statusCode != 200) {
-            bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai but I got the status code ```" + result.statusCode);
-        } else if (body) {
+            bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```").then(message => utils.messageDelete(bot, message, null));
+        } else if (result.statusCode != 200) bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai but I got the status code ```" + result.statusCode).then(message => utils.messageDelete(bot, message, null));
+        else if (body) {
             body = JSON.parse(body);
             if (body.hasOwnProperty("data") && body.data.length !== 0) {
                 response = body.data[Math.floor(Math.random() * (body.data.length))];
@@ -58,7 +57,7 @@ function get_image(bot, msg, apiURL, query) {
                 var temp = "";
                 if (response.link != undefined) {
                     if (response.nsfw === true) {
-                        bot.createMessage(msg.channel.id, "Your search for " + query + " was deemed to be too lewd, Senpai\nhttp://i.imgur.com/jKLnvR7.png");
+                        bot.createMessage(msg.channel.id, "Your search for " + query + " was deemed to be too lewd, Senpai\nhttp://i.imgur.com/jKLnvR7.png").then(message => utils.messageDelete(bot, message, null));
                         return;
                     }
                     postedDate.setUTCSeconds(response.datetime)
@@ -67,12 +66,8 @@ function get_image(bot, msg, apiURL, query) {
                         temp = temp.replace(/.*?:\/\//g, "");
                     }
                     bot.createMessage(msg.channel.id, "I searched Imgur for **\"" + query + "\"** and found this, **" + msg.author.username + "**-senpai:\n```ruby\nTitle: " + response.title + "" + temp + "\nDate Created: " + postedDate.toUTCString() + "```" + response.link);
-                } else {
-                    bot.createMessage(msg.channel.id, "I'm sorry but that search for \"**" + query + "**\" did not get any results, **" + msg.author.username + "**-senpai");
-                }
-            } else {
-                bot.createMessage(msg.channel.id, "**" + msg.author.username + "**-senpai, I'm sorry but that search for \"**" + query + "**\" did not get any results.");
-            }
+                } else bot.createMessage(msg.channel.id, "I'm sorry but that search for \"**" + query + "**\" did not get any results, **" + msg.author.username + "**-senpai").then(message => utils.messageDelete(bot, message, null));
+            } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "**-senpai, I'm sorry but that search for \"**" + query + "**\" did not get any results.").then(message => utils.messageDelete(bot, message, null));
         }
     });
 }

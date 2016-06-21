@@ -1,7 +1,7 @@
 module.exports = {
     usage: "Prints a list of users matching the mentioned name\n`searchdiscrim [name]`",
     delete: true,
-    process: function(bot, msg, suffix) {
+    process: (bot, msg, suffix) => {
         var nameRegex = new RegExp(suffix, "i");
         var usersCache = [];
         msg.channel.guild.members.forEach(user => {
