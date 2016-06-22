@@ -1,14 +1,13 @@
-var options = require('./../../options/options.json');
-var nani = require('nani').init(options.nani_id, options.nani_secret);
-var utils = require('./../../utils/utils.js');
-
-var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-var seasons = ['winter', 'spring', 'summer', 'fall'];
-var url = `browse/anime?status=Currently%20Airing&full_page=true&type=Tv&airing_data=true&sort=popularity-desc`
-var airingAnime;
+var options = require('./../../options/options.json'),
+    nani = require('nani').init(options.nani_id, options.nani_secret),
+    utils = require('./../../utils/utils.js'),
+    weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    seasons = ['winter', 'spring', 'summer', 'fall'],
+    url = 'browse/anime?status=Currently%20Airing&full_page=true&type=Tv&airing_data=true&sort=popularity-desc',
+    airingAnime;
 
 module.exports = {
-    usage: "This bot dances around in the current channel using a random dance",
+    usage: '',
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

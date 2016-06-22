@@ -1,8 +1,9 @@
-var fs = require('fs');
-var Command = require('./Command.js');
+var fs = require('fs'),
+    Command = require('./Command.js');
 commands = {};
 
-function load() {
+
+exports.load = function() {
     return new Promise((resolve, reject) => {
         commands = {};
         fs.readdir(`${__dirname}/../commands/`, (err, folders) => {
@@ -11,7 +12,7 @@ function load() {
                 folders.forEach(folder => {
                     fs.readdir(`${__dirname}/../commands/${folder}/`, (error, loaded) => {
                         if (err) reject(`Error reading commands directory: ${error}`);
-                        else if(loaded.length < 1) console.log(folder)
+                        else if (loaded.length < 1) console.log(errorC(folder + ' was empty and has been skipped.'))
                         else if (loaded) {
                             for (name of loaded) {
                                 commands[name.replace('.js', '')] = new Command(name.replace('.js', ''), folder, require(`${__dirname}/../commands/${folder}/${name}`))
@@ -23,8 +24,4 @@ function load() {
         });
         resolve();
     });
-}
-
-module.exports = {
-    load
 }

@@ -1,5 +1,5 @@
-var quotes = require('./../../database/quote.json');
-var utils = require('./../../utils/utils.js');
+var quotes = require('./../../database/quote.json'),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Sends a voice chat quote to The People Chat's quote channel\n⚠Will not work on any other server⚠\n`vquote [quote]`",

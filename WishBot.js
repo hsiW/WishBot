@@ -15,15 +15,15 @@ var reloadAll = require('require-reload')(require),
     help = require('./utils/CommandHandler.js').help,
     messageMentions = require('./utils/MessageMentions.js'),
     Database = require('./utils/Database.js'),
-    games = require('./lists/games.json').games;
-chalk = require("chalk");
-
+    games = require('./lists/games.json').games,
+    chalk = require("chalk");
+//Global Variables
 admins = require('./options/admins.json').admins,
 botC = chalk.magenta.bold,
 userC = chalk.cyan.bold,
 serverC = chalk.black.bold,
 channelC = chalk.green.bold,
-miscC = chalk.blue.bold;
+miscC = chalk.blue.bold,
 warningC = chalk.yellow.bold,
 errorC = chalk.red.bold;
 
@@ -97,6 +97,11 @@ bot.on("disconnect", () => {
     process.exit(0);
 })
 
+bot.on("shardDisconnect", (error, id) => {
+    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "DISCONNECTED"));
+    console.log(errorC(error));
+})
+
 /*
 bot.on("debug", err => {
     console.log(botC("@Onee-chan") + " - " + warningC("Debug: " + err));
@@ -107,7 +112,6 @@ CommandLoader.load().then(() => {
 }).catch(err => errorC(err.stack));
 
 var interruptedAlready = false;
-
 process.on('SIGINT', function() {
     if (interruptedAlready) {
         console.log(errorC("Caught second interrupt signal... Exiting"));

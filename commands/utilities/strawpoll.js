@@ -29,7 +29,7 @@ module.exports = {
                     "multi": false
                 }
             }, (error, response, body) => {
-                if (!error && response.statusCode == 200) bot.createMessage(msg.channel.id, `**${msg.author.username}** created a **Strawpoll** - <http://strawpoll.me/${body.id}> 🎆`);
+                if (!error && response.statusCode == 200) bot.createMessage(msg.channel.id, `**${msg.author.username}** created a poll with the question '${title}'\n**<http://strawpoll.me/${body.id}>** 📝`);
                 else if (error) bot.createMessage(msg.channel.id, error).then(message => utils.messageDelete(bot, message, null));
                 else if (response.statusCode != 201) bot.createMessage(msg.channel.id, `Got status code ${response.statusCode}`).then(message => utils.messageDelete(bot, message, null));
             })

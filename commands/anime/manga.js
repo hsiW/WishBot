@@ -37,7 +37,7 @@ module.exports = {
                     mangaString += "__**" + result.manga.entry[0].title + "**__ - __**" + result.manga.entry[0].synonyms + "**__ • *" + result.manga.entry[0].start_date + "*  to *" + result.manga.entry[0].end_date + "*\n";
                     mangaString += "\n**Type:** *" + result.manga.entry[0].type + "*  **Chapters:** *" + result.manga.entry[0].chapters + "*  **Volumes:** *" + result.manga.entry[0].volumes + "*  **Score:** *" + result.manga.entry[0].score + "*";
                     mangaString += "\n" + synopsis;
-                    mangaString += "\n<http://myanimelist.net/manga/" + result.manga.entry[0].id + "/>";
+                    mangaString += "\n**<http://myanimelist.net/manga/" + result.manga.entry[0].id + "/>**";
                     bot.createMessage(msg.channel.id, mangaString);
                 });
             } else bot.createMessage(msg.channel.id, "No manga found for: \"**" + suffix + "**\"").then(message => utils.messageDelete(bot, message, null));
