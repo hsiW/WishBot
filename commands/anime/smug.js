@@ -1,18 +1,20 @@
-var smug = require('./../../lists/smug.json').smug;
-var request = require('request').defaults({
-    encoding: null
-});
+var mysql = require('mysql');
+var options = require('./../../options/options.json');
+var pool = mysql.createPool({
+	connectionLimit: options.connectionLimit,
+	host: options.host,
+	port: options.port,
+	user: options.user,
+	password: options.password,
+	database: options.database});
 
 module.exports = {
-    usage: "This bot prints a random smug image in the current channel",
-    delete: true,
+    usage: '',
     cooldown: 5,
     process: (bot, msg) => {
-        request(smug[Math.floor(Math.random() * (smug.length))], (err, response, buffer) => {
-            bot.createMessage(msg.channel.id, null, {
-                file: buffer,
-                name: 'smug.jpg'
-            });
+        pool.query('SELECT * FROM loli ORDER BY RAND() LIMIT 1', (err, rows, res) => {
+            if (err) console.log(errorC('Error while performing Query'));
+            else bot.createMessage(msg.channel.id, rows[0].url);
         });
     }
 }
