@@ -7,7 +7,7 @@ module.exports = {
     process: (bot, msg, suffix) => {
         if (/^\d+$/.test(suffix)) {
             if (!msg.channel.permissionsOf(bot.user.id).json.manageMesssages) {
-                bot.getChannelMessages(msg.channel.id, 100).then(messages => {
+                bot.getMessages(msg.channel.id, 100).then(messages => {
                     var toDelete = parseInt(suffix, 10)
                     var dones = 0;
                     for (i = 0; i <= 100; i++) {

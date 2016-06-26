@@ -14,7 +14,9 @@ module.exports = {
                 bot.createMessage(msg.channel.id, "CREATING")
                 createUser(msg.author).catch(console.log).then(bot.createMessage(msg.channel.id, "SUCESS"))
             } else if (suffix.split(' ')[0] === ('edit')) {
-                editUser(msg.author, suffix.split(' ')[1], suffix.substring((6 + suffix.split(' ')[1].length), suffix.length)).then(bot.createMessage(msg.channel.id, "SOMETHING")).catch(console.log);
+                editUser(msg.author, suffix.split(' ')[1].tolow, suffix.substring((6 + suffix.split(' ')[1].length), suffix.length))
+                    .then(bot.createMessage(msg.channel.id, "SOMETHING"))
+                    .catch(err => bot.createMessage(msg.channel.id, err));
             }
         } else processProfile(bot, msg, msg.author);
     }
@@ -26,19 +28,76 @@ function editUser(user, edit, change) {
             if (err) reject(err);
             else {
                 var userProfile = JSON.parse(rows[0].user_profile);
-                console.log("'" + change + "'")
-                if (edit === "name") userProfile.name = change;
-                else if (edit === "status") userProfile.status = change;
-                else if (edit === "birthday") userProfile.birthday = change;
-                else if (edit === "age") userProfile.age = change;
-                else if (edit === "location") userProfile.location = change;
-                else if (edit === "animeplanet") userProfile.animeplanet = change;
-                else if (edit === "hummingbird") userProfile.hummingbird = change;
-                else if (edit === "myanimelist") userProfile.myanimelist = change;
-                else if (edit === "twitch") userProfile.twitch = change;
-                else if (edit === "bio") userProfile.bio = change;
-                else console.log('none');
-                saveUser(user, userProfile).catch(reject).then(resolve());
+                if (edit === "name") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Name included illegal chracters');
+                    else if (change.length <= 32) {
+                        userProfile.name = change;
+                        saveUser(user, userProfile);
+                    } else reject('Name can only be 32 characters or less');
+                    return;
+                } else if (edit === "status") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Status included illegal chracters');
+                    else if (change.length <= 64) {
+                        userProfile.status = change;
+                        saveUser(user, userProfile);
+                    } else reject('Status can only be 64 characters or less');
+                    return;
+                } else if (edit === "birthday") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Birthday included illegal chracters');
+                    else if (change.length <= 16) {
+                        userProfile.birthday = change;
+                        saveUser(user, userProfile);
+                    } else reject('Status can only be 16 characters or less');
+                    return;
+                } else if (edit === "age") {
+                    if (!/^\d+$/.test(change)) reject('Age included illegal chracters');
+                    else if (change.length <= 8) {
+                        userProfile.age = change;
+                        saveUser(user, userProfile);
+                    } else reject('Age can only be 8 characters or less');
+                    return;
+                } else if (edit === "location") {
+                    if (!convertFromCountry(change) || !/[\uD000-\uF8FF]/g.test(change)) reject('Location included illegal chracters');
+                    else if (change.length <= 4) {
+                        userProfile.location = convertFromCountry(change);
+                        saveUser(user, userProfile);
+                    } else reject('Age can only be 4 characters or less');
+                } else if (edit === "animeplanet") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Anime Planet username included illegal chracters');
+                    else if (change.length <= 20 && change.length >= 3) {
+                        userProfile.animeplanet = change;
+                        saveUser(user, userProfile);
+                    } else reject('Anime Planet username can only be 20 characters or less');
+                    return;
+                } else if (edit === "hummingbird") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Hummingbird username included illegal chracters');
+                    else if (change.length <= 20 && change.length >= 3) {
+                        userProfile.animeplanet = change;
+                        saveUser(user, userProfile);
+                    } else reject('Hummingbird username can only be 20 characters or less');
+                    return;
+                } else if (edit === "myanimelist") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('MyAnimeList username included illegal chracters');
+                    else if (change.length <= 16 && change.length >= 2) {
+                        userProfile.animeplanet = change;
+                        saveUser(user, userProfile);
+                    } else reject('MyAnimeList username can only be 16 characters or less');
+                    return;
+                } else if (edit === "twitch") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Twitch username included illegal chracters');
+                    else if (change.length <= 25) {
+                        userProfile.twitch = change;
+                        saveUser(user, userProfile);
+                    } else reject('Twitch username can only be 25 characters or less');
+                    return;
+                } else if (edit === "bio") {
+                    if (change.length <= 1000) {
+                        userProfile.bio = change;
+                        saveUser(user, userProfile);
+                    } else reject('Bio username can only be 1000 characters or less');
+
+                } else console.log('none');
+                resolve();
             }
         });
     })
@@ -51,7 +110,7 @@ function saveUser(user, userProfile) {
             user_profile: JSON.stringify(userProfile)
         }
         pool.query('UPDATE user_settings SET ? WHERE user_id = ' + user.id, data, (err, res) => {
-            if (err) reject(err);
+            if (err) console.log(err);
             else resolve();
         })
     });
@@ -91,12 +150,11 @@ function processProfile(bot, msg, person) {
             msgArray.push(`📝 **Name:** ${person.username}`);
         } else if (rows.length === 1) {
             var user = JSON.parse(rows[0].user_profile);
-            console.log(user);
             msgArray.push(`📝 **Name:** ${user.name}`);
             if (user.status != null) msgArray.push(`🖊 **Status:** ${user.status}`);
             if (user.birthday != null) msgArray.push(`🎉 **Birthday:** ${user.birthday}`);
             if (user.age != null) msgArray.push(`🎂 **Age:** ${user.age}`);
-            if (user.location != null) msgArray.push(`🌎 **Location:** :flag_${user.location}:`);
+            if (user.location != null) msgArray.push(`🌎 **Location:** ${convertToCountry(user.location)}`);
             if (user.animeplanet != null) msgArray.push(`🔖 **Anime Planet:** ${user.animeplanet}`);
             if (user.hummingbird != null) msgArray.push(`📘 **Hummingbird:** ${user.hummingbird}`);
             if (user.myanimelist != null) msgArray.push(`📕 **myAnimeList:** ${user.myanimelist}`);
@@ -107,22 +165,13 @@ function processProfile(bot, msg, person) {
     })
 }
 
-var users = {
-    "87600987040120832": {
-        name: "Wish/Mei",
-        status: "Working on a Better Bot",
-        birthday: "April 27th",
-        age: "21",
-        location: "ca",
-        animeplanet: "hsiW",
-        hummingbird: "hsiW",
-        myanimelist: "hsiW",
-        twitch: "Xanizl",
-        bio: "CREATIVE BIO"
-    },
-    "134755682170699776": {
-        name: "SudoBot",
-        age: "∞",
-        bio: "Being a bot"
-    }
+function convertToCountry(country_code) {
+    var OFFSET = 127397;
+    var cc = country_code.toUpperCase();
+    return (/^[A-Z]{2}$/.test(cc)) ? String.fromCodePoint(...[...cc].map(c => c.charCodeAt() + OFFSET)) : null;
+}
+
+function convertFromCountry(country_code) {
+    var OFFSET = 127397;
+    return String.fromCharCode(...[...country_code].map(c => c.codePointAt() - OFFSET));
 }
