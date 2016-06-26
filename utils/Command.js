@@ -14,9 +14,9 @@ module.exports = class Command {
 
     help() {
         return `__Command usage for **${this.name}:**__
-
 ${this.usage}
-**Cooldown:** \`${this.cooldown}s\``;
+
+**Cooldown:** \`${this.cooldown}s\` | **Delete on Use:** \`${this.delete}\``;
     }
     cooldownTime(user) {
         let now = Date.now();
@@ -25,7 +25,7 @@ ${this.usage}
 
     process(bot, msg, args) {
         if (typeof this.job === 'function') this.job(bot, msg, args);
-        else throw new Error('Job is not set');
+        else throw new Error('Process is not set');
     }
 
     cooldownCheck(user) {

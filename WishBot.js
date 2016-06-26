@@ -12,8 +12,6 @@ var bot = new Eris(options.token, {
 var reloadAll = require('require-reload')(require),
     CommandLoader = require('./utils/CommandLoader.js'),
     processCmd = require('./utils/CommandHandler.js').commandHandler,
-    help = require('./utils/CommandHandler.js').help,
-    messageMentions = require('./utils/MessageMentions.js'),
     Database = require('./utils/Database.js'),
     games = require('./lists/games.json').games,
     chalk = require("chalk");
@@ -39,7 +37,6 @@ bot.on("ready", () => {
 
 bot.on("messageCreate", msg => {
     if (msg.author.bot || !msg.channel.guild) return;
-    else if (msg.mentions && msg.mentions.indexOf('87600987040120832') > -1) messageMentions(bot, msg);
     else {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
         else if (msg.content === "pls reload" && (msg.author.id === "87600987040120832" || msg.author.id === "128254732790792202")) reload(msg);
@@ -47,7 +44,6 @@ bot.on("messageCreate", msg => {
             var formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
             var cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
             if (commands.hasOwnProperty(cmdTxt)) processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
-            else if (cmdTxt === "help") help(bot, msg);
         }
     }
 });

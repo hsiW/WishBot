@@ -10,11 +10,8 @@ module.exports = {
         if (suffix) {
             if (msg.mentions.length === 1) {
                 processProfile(bot, msg, bot.users.get(msg.mentions[0]))
-            } else if (suffix.startsWith('create')) {
-                bot.createMessage(msg.channel.id, "CREATING")
-                createUser(msg.author).catch(console.log).then(bot.createMessage(msg.channel.id, "SUCESS"))
             } else if (suffix.split(' ')[0] === ('edit')) {
-                editUser(msg.author, suffix.split(' ')[1].tolow, suffix.substring((6 + suffix.split(' ')[1].length), suffix.length))
+                editUser(msg.author, suffix.split(' ')[1].toLowerCase(), suffix.substring((6 + suffix.split(' ')[1].length), suffix.length))
                     .then(bot.createMessage(msg.channel.id, "SOMETHING"))
                     .catch(err => bot.createMessage(msg.channel.id, err));
             }
@@ -26,7 +23,9 @@ function editUser(user, edit, change) {
     return new Promise((resolve, reject) => {
         pool.query('SELECT user_profile FROM user_settings WHERE user_id = ' + user.id, (err, rows) => {
             if (err) reject(err);
-            else {
+            else if (rows.length < 1) {
+                createUser(user).then(editUser(user, edit, change));
+            } else {
                 var userProfile = JSON.parse(rows[0].user_profile);
                 if (edit === "name") {
                     if (/[\uD000-\uF8FF]/g.test(change)) reject('Name included illegal chracters');
