@@ -1,13 +1,13 @@
-var libVersion = require('./../../node_modules/eris/package.json').version;
-var botVersion = require('./../../package.json').version;
-var prefix = require('./../../options/options.json').prefix;
+var libVersion = require('./../../node_modules/eris/package.json').version,
+    botVersion = require('./../../package.json').version,
+    prefix = require('./../../options/options.json').prefix;
 
 module.exports = {
     usage: "Gives you basic information about this bot.",
     delete: true,
     cooldown: 30,
     process: (bot, msg) => {
-        var toSend = "```tex\n";
+        let toSend = "```tex\n";
         toSend += "$ WishBot [" + bot.user.username + "] $";
         toSend += "\n\nLib: {Eris - v" + libVersion + "}";
         toSend += "\nVersion: {v" + botVersion + "a}";

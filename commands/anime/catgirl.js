@@ -1,13 +1,13 @@
-var mysql = require('mysql');
-var options = require('./../../options/options.json');
-var pool = mysql.createPool({
-    connectionLimit: options.connectionLimit,
-    host: options.host,
-    port: options.port,
-    user: options.user,
-    password: options.password,
-    database: options.database
-});
+var mysql = require('mysql'),
+    options = require('./../../options/options.json'),
+    pool = mysql.createPool({
+        connectionLimit: options.connectionLimit,
+        host: options.host,
+        port: options.port,
+        user: options.user,
+        password: options.password,
+        database: options.database
+    });
 
 module.exports = {
     usage: '',

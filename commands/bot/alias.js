@@ -5,7 +5,7 @@ module.exports = {
     delete: true,
     cooldown: 10,
     process: (bot, msg) => {
-        var msgString = 'The following are the current command aliases:\n```ruby\n';
+        let msgString = 'The following are the current command aliases:\n```ruby\n';
         Object.keys(alias).sort().forEach(function(ali) {
             msgString += `\n${alias[ali]}: ${ali}`;
         });

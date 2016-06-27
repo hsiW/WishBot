@@ -1,13 +1,13 @@
-var request = require("request");
-var qs = require("querystring");
-var utils = require('./../../utils/utils.js');
+var request = require("request"),
+    qs = require("querystring"),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Searches Giphy using the mentioned tags\n`gif [tag1], [tag2], ect`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
-        var tags = suffix.split(",");
+        let tags = suffix.split(",");
         get_gif(tags, bot, msg, id => {
             if (typeof id !== "undefined") {
                 bot.createMessage(msg.channel.id, "With the tags: **(Tags:** *" + (tags ? tags : "Random GIF") + "* **)** I found this gif, **" + msg.author.username + "**-senpai:\nhttp://media.giphy.com/media/" + id + "/giphy.gif ");
@@ -19,20 +19,20 @@ module.exports = {
 }
 
 function get_gif(tags, bot, msg, func) {
-    var params = {
+    let params = {
         "api_key": "dc6zaTOxFJmzC",
         "rating": "r",
         "format": "json",
         "limit": 1
     };
-    var query = qs.stringify(params);
+    let query = qs.stringify(params);
     if (tags !== null) query += "&tag=" + tags.join('+')
     request("http://api.giphy.com/v1/gifs/random?" + query, function(error, response, body) {
         if (error || response.statusCode !== 200) {
             bot.createMessage(msg.channel.id, "There was an error getting a gif");
             console.log(errorC(error));
         } else {
-            var responseObj = JSON.parse(body);
+            let responseObj = JSON.parse(body);
             func(responseObj.data.id);
         }
     }.bind(this));

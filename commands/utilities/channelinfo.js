@@ -3,8 +3,8 @@ module.exports = {
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {
-        var creationDate = new Date((msg.channel.id / 4194304) + 1420070400000);
-        var toSend = "```ruby\n";
+        let creationDate = new Date((msg.channel.id / 4194304) + 1420070400000);
+        let toSend = "```ruby\n";
         toSend += `         Name: \"${msg.channel.name}\"`;
         toSend += `\n           ID: ${msg.channel.id}`;
         toSend += `\nCreation Date: ${creationDate.toUTCString()}`;

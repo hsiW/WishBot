@@ -1,8 +1,8 @@
 var Cleverbot = require('cleverbot-node'),
-    onee = new Cleverbot;
+    onee = new Cleverbot,
+    decode = require('entities'),
+    emoji = ["💁", "🙅", "🙆", "🙋", "🙎", "🙍", "💇", "💆"];
 Cleverbot.prepare(function() {});
-var decode = require('entities');
-var emoji = ["💁", "🙅", "🙆", "🙋", "🙎", "🙍", "💇", "💆"]
 
 module.exports = {
     usage: "Chat with this bot using the Cleverbot API\n`chat [text]` or `@Onee-chan [text]`",
@@ -14,7 +14,7 @@ module.exports = {
 }
 
 function Clever(bot, msg) {
-    var text = (msg.cleanContent.split(' ').length > 1) ? msg.cleanContent.substring(msg.cleanContent.indexOf(' ') + 1).replace('@', '') : false;
+    let text = (msg.cleanContent.split(' ').length > 1) ? msg.cleanContent.substring(msg.cleanContent.indexOf(' ') + 1).replace('@', '') : false;
     bot.sendChannelTyping(msg.channel.id);
     Cleverbot.prepare(() => {
         onee.write(text, response => {

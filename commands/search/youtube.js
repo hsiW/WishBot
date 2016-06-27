@@ -1,8 +1,8 @@
-var options = require("./../../options/options.json");
-var YouTube = require('youtube-node');
-var youTube = new YouTube();
-youTube.setKey(options.youtube_api_key);
-var utils = require('./../../utils/utils.js');
+var options = require("./../../options/options.json"),
+    YouTube = require('youtube-node'),
+    youTube = new YouTube(),
+    utils = require('./../../utils/utils.js');
+youTube.setKey(options.youtube_api_key)
 
 module.exports = {
     usage: "Prints out the first YouTube link for the mentioned terms\n`youtube [terms]`",

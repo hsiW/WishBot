@@ -1,16 +1,16 @@
-var request = require("request");
-var xml2js = require('xml2js');
-var fix = require('entities');
-var options = require("./../../options/options.json");
-var utils = require('./../../utils/utils.js');
+var request = require("request"),
+    xml2js = require('xml2js'),
+    fix = require('entities'),
+    options = require("./../../options/options.json"),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Prints out information about the mentioned manga\n`manga [manga title]`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
-        var manga = msg.content.split(" ").slice(1).join("+");
-        var apiURL = "http://myanimelist.net/api/manga/search.xml?q=" + manga;
-        var user = options.MAL_user,
+        let manga = msg.content.split(" ").slice(1).join("+");
+        let apiURL = "http://myanimelist.net/api/manga/search.xml?q=" + manga;
+        let user = options.MAL_user,
             pass = options.MAL_pass;
         request(apiURL, {
             "auth": {
@@ -22,8 +22,8 @@ module.exports = {
             if (error) console.log(errorC(error.stack));
             else if (!error && response.statusCode == 200) {
                 xml2js.parseString(body, function(err, result) {
-                    var mangaString = "";
-                    var synopsis = result.manga.entry[0].synopsis.toString();
+                    let mangaString = "";
+                    let synopsis = result.manga.entry[0].synopsis.toString();
                     synopsis = synopsis.replace(/<br \/>/g, " ");
                     synopsis = synopsis.replace(/\[(.{1,10})\]/g, "");
                     synopsis = synopsis.replace(/\r?\n|\r/g, " ");

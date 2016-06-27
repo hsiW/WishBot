@@ -1,20 +1,20 @@
 //Imported Libs
 const Eris = require('eris');
-var options = require('./options/options.json');
-var bot = new Eris(options.token, {
-    getAllUsers: true,
-    messageLimit: 5,
-    autoReconnect: true,
-    disableEveryone: true,
-    maxShards: 1
-});
-
-var reloadAll = require('require-reload')(require),
+var options = require('./options/options.json'),
+    reloadAll = require('require-reload')(require),
     CommandLoader = require('./utils/CommandLoader.js'),
     processCmd = require('./utils/CommandHandler.js').commandHandler,
     Database = require('./utils/Database.js'),
     games = require('./lists/games.json').games,
-    chalk = require("chalk");
+    chalk = require("chalk"),
+    bot = new Eris(options.token, {
+        getAllUsers: true,
+        messageLimit: 5,
+        autoReconnect: true,
+        disableEveryone: true,
+        maxShards: 4
+    });
+
 //Global Variables
 admins = require('./options/admins.json').admins,
 botC = chalk.magenta.bold,
@@ -41,8 +41,8 @@ bot.on("messageCreate", msg => {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
         else if (msg.content === "pls reload" && (msg.author.id === "87600987040120832" || msg.author.id === "128254732790792202")) reload(msg);
         else if (msg.content.startsWith(options.prefix)) {
-            var formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
-            var cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
+            let formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
+            let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
             if (commands.hasOwnProperty(cmdTxt)) processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
         }
     }
@@ -73,7 +73,7 @@ function reload(msg) {
 }
 
 function evalText(msg, suffix) {
-    var result;
+    let result;
     try {
         result = eval("try{" + suffix + "}catch(err){console.log(\" ERROR \"+err);bot.createMessage(msg.channel.id, \"```\"+err+\"```\");}");
     } catch (e) {
@@ -117,3 +117,11 @@ process.on('SIGINT', function() {
     console.log(warningC("Caught interrupt signal... Disconnecting"));
     bot.disconnect();
 });
+
+setInterval(() => {
+    bot.shards.forEach((shard) => {
+        shard.editGame({
+            name: games[Math.floor(Math.random() * (games.length))]
+        });
+    })
+}, 900000);

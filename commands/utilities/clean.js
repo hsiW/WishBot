@@ -8,8 +8,8 @@ module.exports = {
         if (/^\d+$/.test(suffix)) {
             if (!msg.channel.permissionsOf(bot.user.id).json.manageMesssages) {
                 bot.getMessages(msg.channel.id, 100).then(messages => {
-                    var toDelete = parseInt(suffix, 10)
-                    var dones = 0;
+                    let toDelete = parseInt(suffix, 10)
+                    let dones = 0;
                     for (i = 0; i <= 100; i++) {
                         if (toDelete <= 0 || i === 100) {
                             bot.createMessage(msg.channel.id, "Finished cleaning **" + dones + "** message(s) in <#" + msg.channel.id + ">.").then(message => utils.messageDelete(bot, message, null));

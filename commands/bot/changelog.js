@@ -3,8 +3,8 @@ module.exports = {
     delete: true,
     cooldown: 10,
     process: (bot, msg) => {
-        bot.getChannelMessages('143904176613752832', 5).then(messages => {
-            var msgString = '__**Changelog**__\n';
+        bot.getMessages('143904176613752832', 5).then(messages => {
+            let msgString = '__**Changelog**__\n';
             messages.forEach(index => {
                 msgString += "\n\n" + index.content;
             });

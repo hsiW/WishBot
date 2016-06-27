@@ -22,15 +22,15 @@ module.exports = {
 
 function processAnime(bot, msg, suffix) {
     if (/^[0-9]$/.test(suffix) || !suffix) {
-        var currentAnime = airingAnime.map(title => title.title_english + " | " + weekday[new Date(title.airing.time).getDay()]);
-        var pagedTitles = utils.splitArray(currentAnime, 10);
+        let currentAnime = airingAnime.map(title => title.title_english + " | " + weekday[new Date(title.airing.time).getDay()]);
+        let pagedTitles = utils.splitArray(currentAnime, 10);
         ((suffix - 1 <= pagedTitles.length) && suffix) ? page = suffix - 1 : page = 0;
-        var msgString = `\`\`\`markdown\n### Airing Anime for the ${utils.toTitleCase(seasons[getSeason()])} Season: (Page ${page+1}/${pagedTitles.length}) ###\n`;
+        let msgString = `\`\`\`markdown\n### Airing Anime for the ${utils.toTitleCase(seasons[getSeason()])} Season: (Page ${page+1}/${pagedTitles.length}) ###\n`;
         msgString += pagedTitles[page].map((value, position) => '[' + (position + 1 + (page * 10)) + ']: ' + value).join('\n');
         bot.createMessage(msg.channel.id, msgString + "```").catch(console.log);
     } else if (airingAnime.find(title => isAnime(title, suffix))) {
-        var anime = airingAnime.find(title => isAnime(title, suffix));
-        var msgString = '```ruby\n';
+        let anime = airingAnime.find(title => isAnime(title, suffix));
+        let msgString = '```ruby\n';
         msgString += `Title: ${anime.title_english}\n`
         msgString += `Romaji Title: ${anime.title_romaji}\n`;
         msgString += `Japanese Title: ${anime.title_japanese}\n\n`;
@@ -45,12 +45,12 @@ function isAiring(title) {
 }
 
 function isAnime(title, suffix) {
-    var titleRegex = new RegExp(suffix, "i");
+    let titleRegex = new RegExp(suffix, "i");
     if (titleRegex.test(title.title_english)) return title;
 }
 
 function getSeason() {
-    var season = (new Date()).getMonth();
+    let season = (new Date()).getMonth();
     if (season === 0 || season === 1 || season === 2) return 0;
     else if (season === 3 || season === 4 || season === 5) return 1;
     else if (season === 6 || season === 7 || season === 8) return 2;

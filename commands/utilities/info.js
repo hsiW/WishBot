@@ -1,5 +1,5 @@
-var getName = require('./../../utils/utils.js').getName;
-var utils = require('./../../utils/utils.js');
+var getName = require('./../../utils/utils.js').getName,
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Gives info on the user or a then mentioned user if one is mentioned\n`info [mentioned user] or [none]`",
@@ -8,8 +8,8 @@ module.exports = {
     process: (bot, msg, suffix) => {
         msg.mentions.length === 1 ? user = msg.channel.guild.members.get(msg.mentions[0]) : user = getName(msg, suffix);
         if (user) {
-            var creationDate = new Date((user.id / 4194304) + 1420070400000);
-            var toSend = "```ruby\n";
+            let creationDate = new Date((user.id / 4194304) + 1420070400000);
+            let toSend = "```ruby\n";
             toSend += `         Name: \"${user.user.username}\"`;
             if (user.nick !== null) toSend += `\n     Nickname: \"${user.nick}\"`;
             toSend += `\n      User ID: ${user.id}`;

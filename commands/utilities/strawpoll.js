@@ -1,5 +1,5 @@
-var request = require('request');
-var utils = require('./../../utils/utils.js');
+var request = require('request'),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Creates a Strawpoll with the mentioned options\n`strawpoll [option1] | [option2] | ect`",
@@ -8,12 +8,12 @@ module.exports = {
     process: (bot, msg, suffix) => {
         if (!suffix || suffix.split('|').length < 2) bot.createMessage(msg.channel.id, `I can't create a strawpoll from that **${msg.author.username}**-senpai.`).then(message => utils.messageDelete(bot, message, null));
         else {
-            var title = msg.author.username + "'s Poll";
+            let title = msg.author.username + "'s Poll";
             if (/\[(.*?)\]/.test(suffix)) {
                 title = suffix.match(/\[(.*?)\]/)[1];
                 suffix = suffix.replace(/\[(.*?)\]/, '');
             }
-            var choices = suffix.split('|');
+            let choices = suffix.split('|');
             request({
                 uri: "https://strawpoll.me/api/v2/polls",
                 method: "POST",

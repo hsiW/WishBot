@@ -7,9 +7,9 @@ module.exports = {
     cooldown: 20,
     process: (bot, msg, suffix) => {
         if (!suffix) {
-            var msgPrefix;
+            let msgPrefix;
             serverSettings.hasOwnProperty(msg.channel.guild.id) && serverSettings[msg.channel.guild.id].hasOwnProperty('Prefix') ? msgPrefix = serverSettings[msg.channel.guild.id]['Prefix'] : msgPrefix = prefix;
-            var msgString = 'The current command prefix is: `' + msgPrefix + '`';
+            let msgString = 'The current command prefix is: `' + msgPrefix + '`';
             msgString += '\n\n To change this prefix use `prefix [new prefix]`';
             bot.createMessage(msg.channel.id, msgString);
         } else {

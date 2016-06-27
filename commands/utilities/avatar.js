@@ -1,8 +1,8 @@
 var request = require('request').defaults({
-    encoding: null
-});
-var getName = require('./../../utils/utils.js').getName;
-var utils = require('./../../utils/utils.js');
+        encoding: null
+    }),
+    getName = require('./../../utils/utils.js').getName,
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Prints the avatar of the user mentioned or the message authors avatar if none mentioned.\n`avatar [user mention] or [none]`",

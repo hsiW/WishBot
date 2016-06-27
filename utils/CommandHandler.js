@@ -11,7 +11,7 @@ exports.commandHandler = function(bot, msg, suffix, cmdTxt) {
 }
 
 function processCmd(bot, msg, suffix, cmdTxt) {
-    var cmd = commands[cmdTxt];
+    let cmd = commands[cmdTxt];
     if (cmd.privateCheck(msg)) return;
     else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) bot.createMessage(msg.channel.id, `${utils.toTitleCase(cmdTxt)} is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
     else {

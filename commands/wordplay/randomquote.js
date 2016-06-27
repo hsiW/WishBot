@@ -10,8 +10,8 @@ module.exports = {
     process: function(bot, msg, suffix) {
         if (suffix.match(/^\d+$/)) bot.createMessage(msg.channel.id, quotes[suffix]).catch(err => errorC(err));
         else if (suffix) {
-            var quoteRegex = new RegExp(suffix, "i");
-            var quoteCache = quotes.filter(message => message.match(quoteRegex));
+            let quoteRegex = new RegExp(suffix, "i");
+            let quoteCache = quotes.filter(message => message.match(quoteRegex));
             if (quoteCache.length >= 1) bot.createMessage(msg.channel.id, quoteCache[Math.floor((Math.random() * quoteCache.length) + 1)]).catch(err => errorC(err));
             else bot.createMessage(msg.channel.id, "No quotes found that contain " + suffix).then(message => utils.messageDelete(bot, message, null));
         } else bot.createMessage(msg.channel.id, quotes[Math.floor((Math.random() * quotes.length) + 1)]).catch(err => errorC(err));

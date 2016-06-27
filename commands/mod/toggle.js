@@ -1,5 +1,5 @@
-var Database = require('./../../utils/Database.js');
-var utils = require('./../../utils/utils.js');
+var Database = require('./../../utils/Database.js'),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: 'Toggles the currently enabled commands.  Requires the user to have the `manageRoles` premission.\n`toggle [command to toggle]`',

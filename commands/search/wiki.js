@@ -1,5 +1,5 @@
-var Wiki = require('wikijs');
-var utils = require('./../../utils/utils.js');
+var Wiki = require('wikijs'),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Prints out a Wikipedia link for the mentioned terms\n`wiki [terms]`",

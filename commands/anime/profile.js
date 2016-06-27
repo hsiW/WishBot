@@ -1,6 +1,5 @@
-var mysql = require('mysql');
-var options = require('./../../options/options.json');
-
+var mysql = require('mysql'),
+    options = require('./../../options/options.json');
 
 module.exports = {
     usage: "",
@@ -23,10 +22,9 @@ function editUser(user, edit, change) {
     return new Promise((resolve, reject) => {
         pool.query('SELECT user_profile FROM user_settings WHERE user_id = ' + user.id, (err, rows) => {
             if (err) reject(err);
-            else if (rows.length < 1) {
-                createUser(user).then(editUser(user, edit, change));
-            } else {
-                var userProfile = JSON.parse(rows[0].user_profile);
+            else if (rows.length < 1) createUser(user).then(editUser(user, edit, change));
+            else {
+                let userProfile = JSON.parse(rows[0].user_profile);
                 if (edit === "name") {
                     if (/[\uD000-\uF8FF]/g.test(change)) reject('Name included illegal chracters');
                     else if (change.length <= 32) {
@@ -94,7 +92,7 @@ function editUser(user, edit, change) {
                         userProfile.bio = change;
                         saveUser(user, userProfile);
                     } else reject('Bio username can only be 1000 characters or less');
-
+                    return;
                 } else console.log('none');
                 resolve();
             }
@@ -104,7 +102,7 @@ function editUser(user, edit, change) {
 
 function saveUser(user, userProfile) {
     return new Promise((resolve, reject) => {
-        var data = {
+        let data = {
             user_id: user.id,
             user_profile: JSON.stringify(userProfile)
         }
@@ -118,7 +116,7 @@ function saveUser(user, userProfile) {
 
 function createUser(user) {
     return new Promise((resolve, reject) => {
-        var user_default = {
+        let user_default = {
             name: user.username,
             status: null,
             birthday: null,
@@ -130,7 +128,7 @@ function createUser(user) {
             twitch: null,
             bio: null
         };
-        var data = {
+        let data = {
             user_id: user.id,
             user_profile: JSON.stringify(user_default)
         }
@@ -142,13 +140,13 @@ function createUser(user) {
 }
 
 function processProfile(bot, msg, person) {
-    var msgArray = [`__**Profile for ${person.username}**__`];
+    let msgArray = [`__**Profile for ${person.username}**__`];
     pool.query('SELECT * FROM user_settings WHERE user_id = ' + person.id, (err, rows) => {
         if (err) console.log(errorC('Error while performing Query'));
         else if (rows.length < 1) {
             msgArray.push(`📝 **Name:** ${person.username}`);
         } else if (rows.length === 1) {
-            var user = JSON.parse(rows[0].user_profile);
+            let user = JSON.parse(rows[0].user_profile);
             msgArray.push(`📝 **Name:** ${user.name}`);
             if (user.status != null) msgArray.push(`🖊 **Status:** ${user.status}`);
             if (user.birthday != null) msgArray.push(`🎉 **Birthday:** ${user.birthday}`);
@@ -165,12 +163,12 @@ function processProfile(bot, msg, person) {
 }
 
 function convertToCountry(country_code) {
-    var OFFSET = 127397;
-    var cc = country_code.toUpperCase();
+    let OFFSET = 127397;
+    let cc = country_code.toUpperCase();
     return (/^[A-Z]{2}$/.test(cc)) ? String.fromCodePoint(...[...cc].map(c => c.charCodeAt() + OFFSET)) : null;
 }
 
 function convertFromCountry(country_code) {
-    var OFFSET = 127397;
+    let OFFSET = 127397;
     return String.fromCharCode(...[...country_code].map(c => c.codePointAt() - OFFSET));
 }

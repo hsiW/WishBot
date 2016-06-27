@@ -1,6 +1,7 @@
 CustomCommands = require('./../../database/CustomCommands.json');
-var fs = require('fs');
-var updated = false;
+var fs = require('fs'),
+    updated = false;
+    
 setInterval(() => {
     if (updated) {
         updated = false;
@@ -15,8 +16,8 @@ module.exports = {
     process: function(bot, msg, suffix) {
         if (suffix.split(" ")[0] === "add" || suffix.split(" ")[0] === "write") {
             suffix = suffix.substring((suffix.split(" ")[0].substring(1)).length + 2)
-            var add = suffix.substr(0, suffix.indexOf(' ')).toLowerCase();
-            var toAdd = suffix.substr(suffix.indexOf(' ') + 1);
+            let add = suffix.substr(0, suffix.indexOf(' ')).toLowerCase();
+            let toAdd = suffix.substr(suffix.indexOf(' ') + 1);
             if (CustomCommands.hasOwnProperty(msg.channel.guild.id) && CustomCommands[msg.channel.guild.id].hasOwnProperty(add)) bot.createMessage(msg.channel.id, add + " already exists as a command.");
             else if (add === "add" || add === "write" || add === "delete" || add === "edit") bot.createMessage(msg.channel.id, "I'm sorry but " + add + " cannot be a command name.");
             else if (!CustomCommands.hasOwnProperty(msg.channel.guild.id) && add !== "") {
@@ -47,8 +48,8 @@ module.exports = {
             } else bot.createMessage(msg.channel.id, "Cannot remove that as its not created");
         } else if (suffix.split(" ")[0] === "edit") {
             suffix = suffix.substring((suffix.split(" ")[0].substring(1)).length + 2);
-            var toEdit = suffix.substr(0, suffix.indexOf(' '));
-            var editted = suffix.substr(suffix.indexOf(' ') + 1);
+            let toEdit = suffix.substr(0, suffix.indexOf(' '));
+            let editted = suffix.substr(suffix.indexOf(' ') + 1);
             if (CustomCommands.hasOwnProperty(msg.channel.guild.id) && CustomCommands[msg.channel.guild.id].hasOwnProperty(toEdit)) {
                 CustomCommands[msg.channel.guild.id][toEdit] = editted;
                 bot.createMessage(msg.channel.id, "🆗");
@@ -57,7 +58,7 @@ module.exports = {
             if (!CustomCommands.hasOwnProperty(msg.channel.guild.id)) bot.createMessage(msg.channel.id, "No Chans Found on this Server");
             else if (CustomCommands[msg.channel.guild.id][suffix.split(" ")[0]]) bot.createMessage(msg.channel.id, CustomCommands[msg.channel.guild.id][suffix.split(" ")[0]]);
             else {
-                var msgString = "Chans - " + Object.keys(CustomCommands[msg.channel.guild.id]).sort().map(cmd => "`" + cmd + "`").join(", ");
+                let msgString = "Chans - " + Object.keys(CustomCommands[msg.channel.guild.id]).sort().map(cmd => "`" + cmd + "`").join(", ");
                 bot.createMessage(msg.channel.id, msgString);
             }
         }

@@ -1,5 +1,5 @@
-var request = require('request');
-var minutesToString = require('./../../utils/utils.js').minutesToString;
+var request = require('request'),
+    minutesToString = require('./../../utils/utils.js').minutesToString;
 
 module.exports = {
     delete: true,
@@ -16,7 +16,7 @@ module.exports = {
             if (error) bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```");
             else if (response.statusCode != 200) bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai but I got the status code `" + response.statusCode + "`");
             else if (body) {
-                var msgString = "```ruby\n";
+                let msgString = "```ruby\n";
                 msgString += `Name: '${body.name}'\n`;
                 if (body.waifu != null) msgString += `${body.waifu_or_husbando}: '${body.waifu}' #${body.waifu_char_id}\n`;
                 if (body.location != null) msgString += `Location: '${body.location}'\n`;
@@ -26,4 +26,4 @@ module.exports = {
             }
         });
     }
-}//This command needs fixing/cleaning up
+}
