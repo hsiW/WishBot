@@ -20,8 +20,8 @@ module.exports = {
                             if (data.roll != null) response += `**Roll:** ${data.roll}\n`
                             if (data.info !== '') {
                                 let info = data.info;
-                                if (info.match(/(^|\s+)[A-Z](.*?)\:(\s+|$)/g)) {
-                                    info.match(/(^|\s+)[A-Z](.*?)\:(\s+|$)/g).forEach(topic => {
+                                if (info.match(/(^|\s+)[A-Z](\S*?)\:(\s+|$)/g)) {
+                                    info.match(/(^|\s+)[A-Z](\S*?)\:(\s+|$)/g).forEach(topic => {
                                         info = info.replace(topic, '**' + topic + '**')
                                     })
                                     if (info.length > 500) {
