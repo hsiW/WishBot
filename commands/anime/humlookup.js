@@ -5,9 +5,8 @@ module.exports = {
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
-        request({
+        request.get({
             uri: "http://hummingbird.me/api/v1/users/" + suffix,
-            method: "GET",
             headers: {
                 "content-type": "application/json"
             },
@@ -18,8 +17,8 @@ module.exports = {
             else if (body) {
                 let msgString = "```ruby\n";
                 msgString += `Name: '${body.name}'\n`;
-                if (body.waifu != null) msgString += `${body.waifu_or_husbando}: '${body.waifu}' #${body.waifu_char_id}\n`;
-                if (body.location != null) msgString += `Location: '${body.location}'\n`;
+                if (body.waifu) msgString += `${body.waifu_or_husbando}: '${body.waifu}' #${body.waifu_char_id}\n`;
+                if (body.location) msgString += `Location: '${body.location}'\n`;
                 msgString += `Time Spent on Anime: ${minutesToString(body.life_spent_on_anime)}\n`;
                 msgString += `Last Library Update: ${new Date(body.last_library_update).toUTCString()}`;
                 bot.createMessage(msg.channel.id, msgString + "```")

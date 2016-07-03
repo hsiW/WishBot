@@ -2,7 +2,7 @@ module.exports = {
     usage: "Flips a coin",
     delete: true,
     cooldown: 2,
-    process: (bot, msg, suffix) => {
+    process: (bot, msg) => {
         bot.createMessage(msg.channel.id, "**" + msg.author.username + "**, I flipped a coin and got **" + (Math.random() < 0.5 ? "Heads" : "Tails") + "**! ⚖");
     }
 }

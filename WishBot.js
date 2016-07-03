@@ -1,22 +1,34 @@
-//Imported Libs
+//Libs and Variables
 const Eris = require('eris');
-var options = require('./options/options.json'),
+let options = require('./options/options.json'),
     reloadAll = require('require-reload')(require),
     CommandLoader = require('./utils/CommandLoader.js'),
     processCmd = require('./utils/CommandHandler.js').commandHandler,
-    Database = require('./utils/Database.js'),
     games = require('./lists/games.json').games,
     chalk = require("chalk"),
+    tablesUnFlipped = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
+    alias = require('./options/alias.json'),
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 5,
         autoReconnect: true,
         disableEveryone: true,
-        maxShards: 4
+        maxShards: 4,
+        moreMentions: false,
+        disabledEvents: {
+            VOICE_STATE_UPDATE: true,
+            TYPING_START: true,
+            GUILD_EMOJI_UPDATE: true,
+            GUILD_INTEGRATIONS_UPDATE: true,
+            GUILD_BAN_ADD: true,
+            GUILD_BAN_REMOVE: true,
+            MESSAGE_UPDATE: true
+        }
     });
 
 //Global Variables
 admins = require('./options/admins.json').admins,
+Database = require('./utils/Database.js'),
 botC = chalk.magenta.bold,
 userC = chalk.cyan.bold,
 serverC = chalk.black.bold,
@@ -33,16 +45,20 @@ bot.on("ready", () => {
     })
     console.log(botC(bot.user.username + " is now Ready."));
     console.log("Users: " + userC(bot.users.size) + " | Channels: " + channelC(Object.keys(bot.channelGuildMap).length) + " | Servers: " + serverC(bot.guilds.size))
+    Database.checkInactivity(bot);
 })
 
 bot.on("messageCreate", msg => {
     if (msg.author.bot || !msg.channel.guild) return;
     else {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
-        else if (msg.content === "pls reload" && (msg.author.id === "87600987040120832" || msg.author.id === "128254732790792202")) reload(msg);
+        if (msg.content.startsWith('<@' + bot.user.id + '>')) msg.content = msg.content.replace("<@" + bot.user.id + ">", msgPrefix + "chat");
+        if (msg.content.startsWith(options.prefix + "prefix")) processCmd(bot, msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2), "prefix", options.prefix);
+        else if (msg.content === "pls reload" && admins.indexOf(msg.author.id) > -1) reload(msg);
         else if (msg.content.startsWith(options.prefix)) {
             let formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
+            if (alias.hasOwnProperty(cmdTxt)) cmdTxt = alias[cmdTxt];
             if (commands.hasOwnProperty(cmdTxt)) processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
         }
     }
@@ -93,13 +109,17 @@ bot.on("disconnect", () => {
     process.exit(0);
 })
 
+bot.on('shardResume', id => {
+    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
+})
+
 bot.on("shardDisconnect", (error, id) => {
     console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "DISCONNECTED"));
     console.log(errorC(error));
 })
 
-/*
-bot.on("debug", err => {
+
+/*bot.on("debug", err => {
     console.log(botC("@Onee-chan") + " - " + warningC("Debug: " + err));
 })*/
 

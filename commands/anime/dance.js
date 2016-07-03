@@ -5,6 +5,6 @@ module.exports = {
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {
-        bot.createMessage(msg.channel.id, "🎶 💃 *Dances Around* 💃 🎶\n" + dance[Math.floor(Math.random() * (dance.length))]);
+        bot.createMessage(msg.channel.id, `🎶 💃 *Dances Around* 💃 🎶\n${dance[Math.floor(Math.random() * (dance.length))]}`);
     }
 }

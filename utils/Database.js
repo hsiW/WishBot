@@ -1,23 +1,45 @@
-serverSettings = require('./../database/ServerSettings.json');
-UsageCheck = require('./../database/UsageCheck.json');
-var admins = require('./../options/admins.json').admins;
-var fs = require('fs');
-var updated = false;
-var usageUpdated = false;
+UsageCheck = require('./../database/UsageCheck.json'),
 inactiveServers = [];
+var fs = require('fs'),
+    updated = false,
+    usageUpdated = false;
 
 setInterval(() => {
-    if (updated) {
+    /*if (updated) {
         updated = false;
         saveDatabase();
-    }
+    }*/
     if (usageUpdated) {
         updated = false;
         saveUsage();
     }
 }, 30000);
 
-function add(msg) {
+exports.checkInactivity = function(bot) {
+    inactiveServers = [];
+    var now = Date.now();
+    Object.keys(UsageCheck).map(id => {
+        if (!bot.guilds.get(id)) delete UsageCheck[id];
+    });
+    bot.guilds.forEach(server => {
+        if (server == undefined) return;
+        else if (!UsageCheck.hasOwnProperty(server.id)) UsageCheck[server.id] = now;
+        else if (now - UsageCheck[server.id] >= 6.048e+8) inactiveServers.push(server.id);
+    })
+    if (inactiveServers.length > 0) {
+        console.log(botC(`Will Leave ${inactiveServers.length} server(s) on next inactivity tick.`));
+        usageUpdated = true;
+    }
+}
+
+exports.updateTimestamp = function(guild) {
+    if (!guild || !guild.id) return;
+    if (UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = Date.now();
+    if (inactiveServers.indexOf(guild.id) > -1) inactiveServers.splice(inactiveServers.indexOf(guild.id), 1);
+    usageUpdated = true;
+}
+
+/*function add(msg) {
     serverSettings[msg.channel.guild.id] = {};
     console.log(serverC("@" + msg.channel.guild.name + ": ") + botC("@WishBot") + " - " + warningC("Added from Database"));
 }
@@ -25,9 +47,9 @@ function add(msg) {
 function remove(server) {
     delete serverSettings[server.id];
     updated = true;
-}
+}*/
 
-function changePrefix(bot, msg, suffix) {
+/*function changePrefix(bot, msg, suffix) {
     if (serverSettings.hasOwnProperty(msg.channel.guild.id)) {
         if ((msg.channel.permissionsOf(msg.author.id).json['manageRoles'] || admins.indexOf(msg.author.id) > -1) && suffix === "&") {
             delete serverSettings[msg.channel.guild.id]["Prefix"];
@@ -72,63 +94,44 @@ function toggle(bot, msg, suffix) {
         add(msg);
         toggle(bot, msg, suffix);
     }
-}
+}*/
 
-function checkLength(msg) {
+/*function checkLength(msg) {
     if (Object.keys(serverSettings[msg.channel.guild.id]).length === 0) remove(msg.channel.guild);
-}
+}*/
 
-exports.checkInactivity = function(bot) {
-    inactiveServers = [];
-    var now = Date.now();
-    Object.keys(UsageCheck).map(id => {
-        if (!bot.guilds.get(id)) delete UsageCheck[id];
-    });
-    bot.guilds.filter(server => {
-        if (server == undefined) return;
-        else if (!UsageCheck.hasOwnProperty(server.id)) UsageCheck[server.id] = now;
-        else if (now - UsageCheck[server.id] >= 1210000000) inactiveServers.push(server.id);
-    })
-    if (inactiveServers.length > 0) {
-        console.log("Will Leave " + inactiveServers.length + " servers on next inactivity tick.");
-        usageUpdated = true;
-    }
-}
+
 
 exports.removeInactive = function(bot, msg) {
     if (inactiveServers.length === 0) bot.createMessage(msg.channel.id, "There are currently no inactive servers!");
     else {
-        var count = 0,
-            passedOver = 0,
-            toSend = "Left servers:"
+        var toSend = "Left servers:",
+            count = 0;
         var remInterval = setInterval(() => {
             var server = bot.guilds.get('id', inactiveServers[passedOver]);
-            if (server) {
-                toSend += '\n**' + (count + 1) + ':** ' + server.name;
-                bot.leaveGuild(server.id).then(console.log('"Left Server Due to Nonuse -  " + server.name')).catch(console.log);
-                if (UsageCheck.hasOwnProperty(server.id)) delete UsageCheck[server.id];
-                count++;
-            }
-            delete UsageCheck[inactiveServers[passedOver]];
-            passedOver++;
-            if (count >= 3000 || passedOver >= inactiveServers.length) {
+            if (count >= inactiveServers.length) {
                 for (var i = 0; i < passedOver; i++) inactiveServers.shift();
                 if (count == 0) bot.createMessage(msg.channel.id, 'No Servers to Leave.');
                 else bot.createMessage(msg.channel.id, toSend);
                 clearInterval(remInterval);
                 return;
             }
+            if (server) {
+                toSend += '\n**' + (count + 1) + ':** ' + server.name;
+                bot.leaveGuild(server.id).then(console.log('Left Server Due to Nonuse -  ' + server.name)).catch(console.log);
+                if (UsageCheck.hasOwnProperty(server.id)) delete UsageCheck[server.id];
+                count++;
+            } else {
+                delete UsageCheck[inactiveServers[count]];
+            }
+            count++;
+
         }, 10000);
         usageUpdated = true;
     }
 }
 
-exports.updateTimestamp = function(guild) {
-    if (!guild || !guild.id) return;
-    if (UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = Date.now();
-    if (inactiveServers.indexOf(guild.id) > -1) inactiveServers.splice(inactiveServers.indexOf(guild.id), 1);
-    usageUpdated = true;
-}
+
 
 function saveUsage() {
     fs.writeFile(__dirname + '/../database/UsageCheck-temp.json', JSON.stringify(UsageCheck, null, 4), error => {
@@ -147,7 +150,7 @@ function saveUsage() {
     })
 }
 
-function saveDatabase() {
+/*function saveDatabase() {
     fs.writeFile(__dirname + '/../database/ServerSettings-temp.json', JSON.stringify(serverSettings, null, 4), error => {
         if (error) console.log(error)
         else {
@@ -162,9 +165,9 @@ function saveDatabase() {
             });
         }
     })
-}
-
+}*/
+/*
 exports.changePrefix = changePrefix;
 exports.toggle = toggle;
 exports.add = add;
-exports.remove = remove;
+exports.remove = remove;*/

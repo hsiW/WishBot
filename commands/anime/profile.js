@@ -2,14 +2,14 @@ var mysql = require('mysql'),
     options = require('./../../options/options.json');
 
 module.exports = {
-    usage: "",
+    usage: "lots of documentaion, profile edit [name] || [status] || [birthday] || [age] || [location] || [animeplanet] || [hummingbird] || [myanimelist] || [twitch] || [bio]",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (suffix) {
             if (msg.mentions.length === 1) {
                 processProfile(bot, msg, bot.users.get(msg.mentions[0]))
-            } else if (suffix.split(' ')[0] === ('edit')) {
+            } else if (suffix.split(' ')[0].toLowerCase() === ('edit')) {
                 editUser(msg.author, suffix.split(' ')[1].toLowerCase(), suffix.substring((6 + suffix.split(' ')[1].length), suffix.length))
                     .then(bot.createMessage(msg.channel.id, "SOMETHING"))
                     .catch(err => bot.createMessage(msg.channel.id, err));
@@ -25,16 +25,18 @@ function editUser(user, edit, change) {
             else if (rows.length < 1) createUser(user).then(editUser(user, edit, change));
             else {
                 let userProfile = JSON.parse(rows[0].user_profile);
-                if (edit === "name") {
-                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Name included illegal chracters');
-                    else if (change.length <= 32) {
+                if (validateUrl(change)) reject('You cannot use a URL in your profile at this time.');
+                else if (change.length <= 0 && (userProfile.hasOwnProperty(edit))) {
+                    userProfile[edit] = null;
+                    saveUser(user, userProfile);
+                } else if (edit === "name") {
+                    if (change.length <= 32) {
                         userProfile.name = change;
                         saveUser(user, userProfile);
                     } else reject('Name can only be 32 characters or less');
                     return;
                 } else if (edit === "status") {
-                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Status included illegal chracters');
-                    else if (change.length <= 64) {
+                    if (change.length <= 64) {
                         userProfile.status = change;
                         saveUser(user, userProfile);
                     } else reject('Status can only be 64 characters or less');
@@ -171,4 +173,8 @@ function convertToCountry(country_code) {
 function convertFromCountry(country_code) {
     let OFFSET = 127397;
     return String.fromCharCode(...[...country_code].map(c => c.codePointAt() - OFFSET));
+}
+
+function validateUrl(value) {
+    return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
 }
