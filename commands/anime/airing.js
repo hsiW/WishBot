@@ -34,7 +34,7 @@ function processAnime(bot, msg, suffix) {
         msgString += `Title: ${anime.title_english}\n`
         msgString += `Romaji Title: ${anime.title_romaji}\n`;
         msgString += `Japanese Title: ${anime.title_japanese}\n\n`;
-        msgString += `Next Episode: ${anime.airing.next_episode}/${anime.total_episodes} | Airing: ${(new Date(anime.airing.time)).toUTCString()}\n`;
+        msgString += `Next Episode: ${anime.airing.next_episode}/${anime.total_episodes || '?'} | Airing: ${(new Date(anime.airing.time)).toUTCString()}\n`;
         msgString += `Time Til Airing: ${utils.secondsToString(anime.airing.countdown)}`
         bot.createMessage(msg.channel.id, msgString + "```")
     } else bot.createMessage(msg.channel.id, 'No Airing Anime found called `' + suffix + '`, **' + msg.author.username + '**-senpai.').then(message => utils.messageDelete(bot, message, null));
@@ -45,8 +45,7 @@ function isAiring(title) {
 }
 
 function isAnime(title, suffix) {
-    let titleRegex = new RegExp(suffix, "i");
-    if (titleRegex.test(title.title_english)) return title;
+    if (new RegExp(suffix, "i").test(title.title_english)) return title;
 }
 
 function getSeason() {

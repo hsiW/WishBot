@@ -13,10 +13,9 @@ module.exports = {
                     help = utils.sortObj(help);
                     for (let type in help) {
                         helpMsg += `\n**${utils.toTitleCase(type)}:** ${help[type].sort().filter(cmd =>{
-                    let cmdTxt = `\`${cmd}\``;
-            if(!(serverSettings.hasOwnProperty(msg.channel.guild.id) && serverSettings[msg.channel.guild.id][cmd] === false)){
-                return cmdTxt;
-            }
+            //if(!(serverSettings.hasOwnProperty(msg.channel.guild.id) && serverSettings[msg.channel.guild.id][cmd] === false))
+                return `\`${cmd}\``;
+            
         }).join(", ")}`;
             }
             bot.createMessage(msg.channel.id, helpMsg);
