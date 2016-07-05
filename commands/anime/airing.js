@@ -11,6 +11,7 @@ module.exports = {
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
+        bot.sendChannelTyping(msg.channel.id)
         nani.get(url)
             .then(data => {
                 airingAnime = data.filter(isAiring);

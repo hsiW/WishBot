@@ -8,6 +8,7 @@ module.exports = {
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (suffix && !/[\uD000-\uF8FF]/g.test(suffix)) {
+            bot.sendChannelTyping(msg.channel.id)
             let url = `character/search/${suffix.replace(' ','%20')}`
             nani.get(url)
                 .then(data => {

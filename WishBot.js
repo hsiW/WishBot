@@ -91,9 +91,9 @@ function reload(msg) {
 function evalText(msg, suffix) {
     let result;
     try {
-        result = eval("try{" + suffix + "}catch(err){console.log(\" ERROR \"+err);bot.createMessage(msg.channel.id, \"```\"+err+\"```\");}");
+        result = eval("try{" + suffix + "}catch(err){console.log(errorC(\"ERROR \"+err));bot.createMessage(msg.channel.id, \"```\"+err+\"```\");}");
     } catch (e) {
-        console.log("ERROR" + e);
+        console.log(errorC("ERROR" + e));
         bot.createMessage(msg.channel.id, "```" + e + "```");
     }
     if (result && typeof result !== "object") bot.createMessage(msg.channel.id, result);
