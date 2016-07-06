@@ -15,11 +15,11 @@ module.exports = {
                 if (typeof result.items[0].id.videoId === "undefined") {
                     for (i = 1; i < result.items.length; i++) {
                         if (typeof result.items[i].id.videoId !== "undefined") {
-                            bot.createMessage(msg.channel.id, "I searched for **" + suffix + "** and found this **" + msg.author.username + "**-senpai: \nhttps://www.youtube.com/watch?v=" + result.items[i].id.videoId);
+                            bot.createMessage(msg.channel.id, `I searched for **\"${suffix}\"** and found this **${msg.author.username}**-senpai: \nhttps://www.youtube.com/watch?v=${result.items[i].id.videoId}`);
                             return;
                         }
                     }
-                } else bot.createMessage(msg.channel.id, "I searched for **\"" + suffix + "\"** and found this, **" + msg.author.username + "**-senpai: \nhttps://www.youtube.com/watch?v=" + result.items[0].id.videoId);
+                } else bot.createMessage(msg.channel.id, `I searched for **\"${suffix}\"** and found this **${msg.author.username}**-senpai: \nhttps://www.youtube.com/watch?v=${result.items[i].id.videoId}`);
             }
         });
     }

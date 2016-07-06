@@ -3,7 +3,6 @@ var getName = require('./../../utils/utils.js').getName,
 
 module.exports = {
     usage: "Gives info on the user or a then mentioned user if one is mentioned\n`info [mentioned user] or [none]`",
-    delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
         msg.mentions.length === 1 ? user = msg.channel.guild.members.get(msg.mentions[0]) : user = getName(msg, suffix);

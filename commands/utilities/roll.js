@@ -1,6 +1,5 @@
 module.exports = {
     usage: "Rolls a dice with 6 sides or more if a number is mentioned\n`[max value] or [none]`",
-    delete: true,
     cooldown: 2,
     process: (bot, msg, suffix) => {
         let max = 6;

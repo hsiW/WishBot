@@ -4,7 +4,6 @@ var request = require('request').defaults({
 
 module.exports = {
     usage: "Prints the server icon of the current server",
-    delete: true,
     cooldown: 5,
     process: (bot, msg) => {
         request("https://discordapp.com/api/guilds/" + msg.channel.guild.id + "/icons/" + msg.channel.guild.icon + ".jpg", function(err, response, buffer) {

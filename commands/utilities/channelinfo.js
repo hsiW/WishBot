@@ -1,6 +1,5 @@
 module.exports = {
     usage: "Outputs info about the current channel",
-    delete: true,
     cooldown: 5,
     process: (bot, msg) => {
         let creationDate = new Date((msg.channel.id / 4194304) + 1420070400000);
