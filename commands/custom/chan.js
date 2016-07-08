@@ -1,11 +1,11 @@
-CustomCommands = require('./../../database/CustomCommands.json');
+CustomTags = require('./../../database/CustomTags.json');
 var fs = require('fs'),
     updated = false;
     
 setInterval(() => {
     if (updated) {
         updated = false;
-        saveCustomCommands();
+        saveCustomTags();
     }
 }, 30000);
 
@@ -18,28 +18,28 @@ module.exports = {
             suffix = suffix.substring((suffix.split(" ")[0].substring(1)).length + 2)
             let add = suffix.substr(0, suffix.indexOf(' ')).toLowerCase();
             let toAdd = suffix.substr(suffix.indexOf(' ') + 1);
-            if (CustomCommands.hasOwnProperty(msg.channel.guild.id) && CustomCommands[msg.channel.guild.id].hasOwnProperty(add)) bot.createMessage(msg.channel.id, add + " already exists as a command.");
+            if (CustomTags.hasOwnProperty(msg.channel.guild.id) && CustomTags[msg.channel.guild.id].hasOwnProperty(add)) bot.createMessage(msg.channel.id, add + " already exists as a command.");
             else if (add === "add" || add === "write" || add === "delete" || add === "edit") bot.createMessage(msg.channel.id, "I'm sorry but " + add + " cannot be a command name.");
-            else if (!CustomCommands.hasOwnProperty(msg.channel.guild.id) && add !== "") {
-                CustomCommands[msg.channel.guild.id] = {};
-                CustomCommands[msg.channel.guild.id][add] = toAdd;
+            else if (!CustomTags.hasOwnProperty(msg.channel.guild.id) && add !== "") {
+                CustomTags[msg.channel.guild.id] = {};
+                CustomTags[msg.channel.guild.id][add] = toAdd;
                 console.log(serverC("@" + msg.channel.guild.name + ": ") + botC("@WishBot") + " - Added Command " + warningC(add));
                 bot.createMessage(msg.channel.id, "🆗");
                 updated = true;
-            } else if (CustomCommands.hasOwnProperty(msg.channel.guild.id) && !CustomCommands[msg.channel.guild.id].hasOwnProperty(add) && add !== "") {
-                CustomCommands[msg.channel.guild.id][add] = toAdd;
+            } else if (CustomTags.hasOwnProperty(msg.channel.guild.id) && !CustomTags[msg.channel.guild.id].hasOwnProperty(add) && add !== "") {
+                CustomTags[msg.channel.guild.id][add] = toAdd;
                 console.log("Added " + botC(add) + " to " + serverC(msg.channel.guild.name));
                 bot.createMessage(msg.channel.id, "🆗");
                 updated = true;
             } else bot.createMessage(msg.channel.id, "There was an error creating that command please try again.");
         } else if (suffix.split(" ")[0] === "delete") {
             suffix = suffix.substring((suffix.split(" ")[0].substring(1)).length + 2);
-            if (CustomCommands.hasOwnProperty(msg.channel.guild.id) && CustomCommands[msg.channel.guild.id].hasOwnProperty(suffix)) {
-                delete CustomCommands[msg.channel.guild.id][suffix];
+            if (CustomTags.hasOwnProperty(msg.channel.guild.id) && CustomTags[msg.channel.guild.id].hasOwnProperty(suffix)) {
+                delete CustomTags[msg.channel.guild.id][suffix];
                 bot.createMessage(msg.channel.id, "🆗", {}, function(err, msg) {
                     if (!err) {
-                        if (isEmpty(CustomCommands[msg.channel.guild.id])) {
-                            delete CustomCommands[msg.channel.guild.id];
+                        if (isEmpty(CustomTags[msg.channel.guild.id])) {
+                            delete CustomTags[msg.channel.guild.id];
                             console.log(serverC("@" + msg.channel.guild.name + ": ") + botC("@WishBot") + " - " + warningC("Removed server from command database"));
                         }
                         updated = true;
@@ -50,15 +50,15 @@ module.exports = {
             suffix = suffix.substring((suffix.split(" ")[0].substring(1)).length + 2);
             let toEdit = suffix.substr(0, suffix.indexOf(' '));
             let editted = suffix.substr(suffix.indexOf(' ') + 1);
-            if (CustomCommands.hasOwnProperty(msg.channel.guild.id) && CustomCommands[msg.channel.guild.id].hasOwnProperty(toEdit)) {
-                CustomCommands[msg.channel.guild.id][toEdit] = editted;
+            if (CustomTags.hasOwnProperty(msg.channel.guild.id) && CustomTags[msg.channel.guild.id].hasOwnProperty(toEdit)) {
+                CustomTags[msg.channel.guild.id][toEdit] = editted;
                 bot.createMessage(msg.channel.id, "🆗");
             } else bot.createMessage(msg.channel.id, "Cannot edit that which doesn't exist");
         } else {
-            if (!CustomCommands.hasOwnProperty(msg.channel.guild.id)) bot.createMessage(msg.channel.id, "No Chans Found on this Server");
-            else if (CustomCommands[msg.channel.guild.id][suffix.split(" ")[0]]) bot.createMessage(msg.channel.id, CustomCommands[msg.channel.guild.id][suffix.split(" ")[0]]);
+            if (!CustomTags.hasOwnProperty(msg.channel.guild.id)) bot.createMessage(msg.channel.id, "No Chans Found on this Server");
+            else if (CustomTags[msg.channel.guild.id][suffix.split(" ")[0]]) bot.createMessage(msg.channel.id, CustomTags[msg.channel.guild.id][suffix.split(" ")[0]]);
             else {
-                let msgString = "Chans - " + Object.keys(CustomCommands[msg.channel.guild.id]).sort().map(cmd => "`" + cmd + "`").join(", ");
+                let msgString = "Chans - " + Object.keys(CustomTags[msg.channel.guild.id]).sort().map(cmd => "`" + cmd + "`").join(", ");
                 bot.createMessage(msg.channel.id, msgString);
             }
         }
@@ -66,19 +66,19 @@ module.exports = {
 }
 
 exports.remove = function(server) {
-    delete CustomCommands[server.id];
+    delete CustomTags[server.id];
     updated = true;
 }
 
-function saveCustomCommands() {
-    fs.writeFile(__dirname + '/../database/CustomCommands-temp.json', JSON.stringify(CustomCommands, null, 4), error => {
+function saveCustomTags() {
+    fs.writeFile(__dirname + '/../database/CustomTags-temp.json', JSON.stringify(CustomTags, null, 4), error => {
         if (error) console.log(error);
         else {
-            fs.stat(__dirname + '/../database/CustomCommands-temp.json', (err, stats) => {
+            fs.stat(__dirname + '/../database/CustomTags-temp.json', (err, stats) => {
                 if (err) console.log(err);
-                else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with CustomCommands"));
+                else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with CustomTags"));
                 else {
-                    fs.rename(__dirname + '/../database/CustomCommands-temp.json', __dirname + '/../database/CustomCommands.json', e => {
+                    fs.rename(__dirname + '/../database/CustomTags-temp.json', __dirname + '/../database/CustomTags.json', e => {
                         if (e) console.log(e);
                     });
                 }
