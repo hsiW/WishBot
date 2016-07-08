@@ -6,7 +6,7 @@ exports.commandHandler = function(bot, msg, suffix, cmdTxt) {
     else if (commands[cmdTxt].type === "admin" && admins.indexOf(msg.author.id) === -1) return;
     else {
         processCmd(bot, msg, suffix, cmdTxt);
-        Database.updateTimestamp(msg.channel.guild);
+        UsageChecker.updateTimestamp(msg.channel.guild);
     }
 }
 

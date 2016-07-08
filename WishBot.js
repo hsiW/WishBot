@@ -28,7 +28,7 @@ let options = require('./options/options.json'),
 
 //Global Variables
 admins = require('./options/admins.json').admins,
-Database = require('./utils/Database.js'),
+UsageChecker = require('./utils/UsageChecker.js'),
 botC = chalk.magenta.bold,
 userC = chalk.cyan.bold,
 serverC = chalk.black.bold,
@@ -45,7 +45,7 @@ bot.on("ready", () => {
     })
     console.log(botC(bot.user.username + " is now Ready."));
     console.log("Users: " + userC(bot.users.size) + " | Channels: " + channelC(Object.keys(bot.channelGuildMap).length) + " | Servers: " + serverC(bot.guilds.size))
-    Database.checkInactivity(bot);
+    UsageChecker.checkInactivity(bot);
 })
 
 bot.on("messageCreate", msg => {

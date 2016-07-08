@@ -1,5 +1,5 @@
-UsageCheck = require('./../database/UsageCheck.json'),
-inactiveServers = [];
+var UsageCheck = require('./../database/UsageCheck.json'),
+    inactiveServers = [];
 var fs = require('fs'),
     updated = false,
     usageUpdated = false;

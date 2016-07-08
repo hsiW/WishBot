@@ -15,13 +15,10 @@
 	},
 	"globals": {
 	"quotes",
-	"inactiveServers",
 	"serverSettings",
 	"commands",
 	"CustomCommands",
-	"Database",
-	"UsageCheck",
-	"ignoredUsers",
+	"UsageChecker",
 	"admins",
 	"serverC",
 	"channelC",
@@ -29,7 +26,7 @@
 	"warningC",
 	"errorC",
 	"botC",
-	miscC
+	"miscC"
 	},
 	extends: "eslint:recommended"
 }

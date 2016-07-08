@@ -1,5 +1,4 @@
-var Database = require('./../../utils/Database.js'),
-    utils = require('./../../utils/utils.js');
+var utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: 'Toggles the currently enabled commands.  Requires the user to have the `manageRoles` premission.\n`toggle [command to toggle]`',
@@ -10,8 +9,8 @@ module.exports = {
         suffix = suffix.toLowerCase();
         if (commands.hasOwnProperty(suffix)) {
             if (commands[suffix].togglable = false) bot.createMessage(msg.channel.id, 'I`m sorry, **' + msg.author.name + '**-senpai but that command is not togglable.').then(message => utils.messageDelete(bot, message, null));
-            else Database.toggle(bot, msg, suffix);
-        } else if (suffix === 'unflip' || suffix === 'welcome') Database.toggle(bot, msg, suffix);
+            else bot.createMessage(msg.channel.id, "TOGGLE MESSAGE AND THINGS HERE")
+        } else if (suffix === 'unflip' || suffix === 'welcome') bot.createMessage(msg.channel.id, "TOGGLE MESSAGE AND THINGS HERE")
         else if (!(commands.hasOwnProperty(suffix))) bot.createMessage(msg.channel.id, 'Thats not a valid toggle, please use `welcome`, `unflip`, or any command name.').then(message => utils.messageDelete(bot, message, null));
     }
 }
