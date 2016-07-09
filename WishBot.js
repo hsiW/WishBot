@@ -1,11 +1,11 @@
 //Libs and Variables
 const Eris = require('eris');
 let options = require('./options/options.json'),
-    reloadAll = require('require-reload')(require),
+    reload = require('require-reload'),
     CommandLoader = require('./utils/CommandLoader.js'),
-    processCmd = require('./utils/CommandHandler.js').commandHandler,
-    games = require('./lists/games.json').games,
-    chalk = require("chalk"),
+    processCmd = require('./utils/CommandHandler.js'),
+    games = require('./lists/games.json'),
+    chalk = require('chalk'),
     tablesUnFlipped = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
     alias = require('./options/alias.json'),
     bot = new Eris(options.token, {
@@ -27,7 +27,7 @@ let options = require('./options/options.json'),
     });
 
 //Global Variables
-admins = require('./options/admins.json').admins,
+admins = require('./options/admins.json'),
 UsageChecker = require('./utils/UsageChecker.js'),
 botC = chalk.magenta.bold,
 userC = chalk.cyan.bold,
@@ -54,7 +54,7 @@ bot.on("messageCreate", msg => {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
         if (msg.content.startsWith('<@' + bot.user.id + '>')) msg.content = msg.content.replace("<@" + bot.user.id + ">", msgPrefix + "chat");
         if (msg.content.startsWith(options.prefix + "prefix")) processCmd(bot, msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2), "prefix", options.prefix);
-        else if (msg.content === "pls reload" && admins.indexOf(msg.author.id) > -1) reload(msg);
+        else if (msg.content === "pls reload" && admins.indexOf(msg.author.id) > -1) reloadAll(msg);
         else if (msg.content.startsWith(options.prefix)) {
             let formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
@@ -64,13 +64,17 @@ bot.on("messageCreate", msg => {
     }
 });
 
-function reload(msg) {
+function reloadAll(msg) {
     try {
         delete commands;
         try {
-            processCmd = reloadAll('./utils/CommandHandler.js').commandHandler;
-            reloadAll.emptyCache('./utils/CommandLoader.js');
+            reload.emptyCache('./utils/CommandLoader.js');
             CommandLoader = require('./utils/CommandLoader.js');
+            processCmd = reload('./utils/CommandHandler.js');
+            games = reload('./lists/games.json');
+            alias = reload('./options/alias.json');
+            admins = reload('./options/admins.json');
+            UsageChecker = reload('./utils/UsageChecker.js')
         } catch (e) {
             console.error("Failed to reload! Error: ", e);
         }

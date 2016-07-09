@@ -1,4 +1,4 @@
-var quote = require('./../../lists/animequotes.json').animequotes;
+var quote = require('./../../lists/animequotes.json');
 
 module.exports = {
     usage: 'Prints out a random anime quote or the quote at the position mentioned\n`quote [number] or [none]`',

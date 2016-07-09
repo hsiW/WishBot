@@ -1,4 +1,4 @@
-var lewd = require('./../../lists/lewd.json').lewd;
+var lewd = require('./../../lists/lewd.json');
 
 module.exports = {
     usage: "Use this in case of lewd",

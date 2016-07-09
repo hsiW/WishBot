@@ -1,6 +1,6 @@
 var utils = require('./../utils/utils.js')
 
-exports.commandHandler = function(bot, msg, suffix, cmdTxt) {
+module.exports = function(bot, msg, suffix, cmdTxt) {
     /*if (serverSettings.hasOwnProperty(msg.channel.guild.id) && serverSettings[msg.channel.guild.id][cmdTxt] === false) return;
     else */if ((commands[cmdTxt].type === "mod" || commands[cmdTxt].type === "mod") && !((msg.channel.permissionsOf(msg.author.id).json['manageRoles']) || admins.indexOf(msg.author.id) > -1)) return;
     else if (commands[cmdTxt].type === "admin" && admins.indexOf(msg.author.id) === -1) return;
