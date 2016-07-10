@@ -50,7 +50,7 @@ exports.removeInactive = function(bot, msg) {
                 clearInterval(removalInterval);
                 return;
             } else if (server) {
-                bot.leaveGuild(server.id).then(console.log(warningC('Left Server Due to Inactivity -  ' + server.name))).catch(err => console.log(errorC(err)));
+                bot.leaveGuild(server.id).then(console.log(warningC('Left Server Due to Inactivity - ' + server.name))).catch(err => console.log(errorC(err)));
                 if (UsageCheck.hasOwnProperty(server.id)) delete UsageCheck[server.id];
                 count++;
             } else {
