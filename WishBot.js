@@ -8,12 +8,15 @@ let options = require('./options/options.json'),
     chalk = require('chalk'),
     tablesUnFlipped = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
     alias = require('./options/alias.json'),
+    c = new chalk.constructor({
+        enabled: true
+    }),
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 5,
         autoReconnect: true,
         disableEveryone: true,
-        maxShards: 4,
+        maxShards: 8,
         moreMentions: false,
         disabledEvents: {
             VOICE_STATE_UPDATE: true,
@@ -29,13 +32,13 @@ let options = require('./options/options.json'),
 //Global Variables
 admins = require('./options/admins.json'),
 UsageChecker = require('./utils/UsageChecker.js'),
-botC = chalk.magenta.bold,
-userC = chalk.cyan.bold,
-serverC = chalk.black.bold,
-channelC = chalk.green.bold,
-miscC = chalk.blue.bold,
-warningC = chalk.yellow.bold,
-errorC = chalk.red.bold;
+botC = c.magenta.bold,
+userC = c.cyan.bold,
+serverC = c.black.bold,
+channelC = c.green.bold,
+miscC = c.blue.bold,
+warningC = c.yellow.bold,
+errorC = c.red.bold;
 
 bot.on("ready", () => {
     bot.shards.forEach((shard) => {
