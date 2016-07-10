@@ -36,33 +36,30 @@ exports.updateTimestamp = function(guild) {
 }
 
 exports.removeInactive = function(bot, msg) {
+    bot.createMessage(msg.channel.id, 'Starting...')
     if (inactiveServers.length === 0) bot.createMessage(msg.channel.id, "There are currently no inactive servers!");
     else {
-        var toSend = "Left servers:",
-            count = 0;
-        var remInterval = setInterval(() => {
-            var server = bot.guilds.get('id', inactiveServers[passedOver]);
+        let count = 0,
+            serverCount = 0;
+        var removalInterval = setInterval(() => {
+            let server = bot.guilds.get(inactiveServers[serverCount]);
             if (count >= inactiveServers.length) {
-                for (var i = 0; i < passedOver; i++) inactiveServers.shift();
-                if (count == 0) bot.createMessage(msg.channel.id, 'No Servers to Leave.');
-                else bot.createMessage(msg.channel.id, toSend);
-                clearInterval(remInterval);
+                if (count === 0) bot.createMessage(msg.channel.id, 'No Servers to Leave.');
+                else bot.createMessage(msg.channel.id, 'Left ' + count + ' Inactive Servers');
+                usageUpdated = true;
+                clearInterval(removalInterval);
                 return;
-            }
-            if (server) {
-                toSend += '\n**' + (count + 1) + ':** ' + server.name;
-                bot.leaveGuild(server.id).then(console.log('Left Server Due to Nonuse -  ' + server.name)).catch(console.log);
+            } else if (server) {
+                bot.leaveGuild(server.id).then(console.log(warningC('Left Server Due to Inactivity -  ' + server.name))).catch(err => console.log(errorC(err)));
                 if (UsageCheck.hasOwnProperty(server.id)) delete UsageCheck[server.id];
                 count++;
             } else {
-                delete UsageCheck[inactiveServers[count]];
+                delete UsageCheck[inactiveServers[serverCount]];
             }
-            count++;
-
-        }, 10000);
-        usageUpdated = true;
+            serverCount++;
+        }, 10000)
     }
-}
+} //going to rewrite
 
 function saveUsage() {
     fs.writeFile(__dirname + '/../database/UsageCheck-temp.json', JSON.stringify(UsageCheck, null, 4), error => {
