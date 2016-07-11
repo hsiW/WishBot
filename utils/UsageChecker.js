@@ -1,8 +1,9 @@
-var UsageCheck = require('./../database/UsageCheck.json'),
-    inactiveServers = [];
-var fs = require('fs'),
+let UsageCheck = require('./../database/UsageCheck.json'),
+    fs = require('fs'),
     updated = false,
     usageUpdated = false;
+
+inactiveServers = []
 
 setInterval(() => {
     if (usageUpdated) {
@@ -13,7 +14,7 @@ setInterval(() => {
 
 exports.checkInactivity = function(bot) {
     inactiveServers = [];
-    var now = Date.now();
+    let now = Date.now();
     Object.keys(UsageCheck).map(id => {
         if (!bot.guilds.get(id)) delete UsageCheck[id];
     });

@@ -20,6 +20,7 @@
 	"CustomCommands",
 	"UsageChecker",
 	"admins",
+	"inactiveServers",
 	"serverC",
 	"channelC",
 	"userC",

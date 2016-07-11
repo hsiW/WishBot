@@ -1,22 +1,23 @@
 //Libs and Variables
-const Eris = require('eris');
-let options = require('./options/options.json'),
-    reload = require('require-reload'),
-    CommandLoader = require('./utils/CommandLoader.js'),
-    processCmd = require('./utils/CommandHandler.js'),
-    games = require('./lists/games.json'),
-    chalk = require('chalk'),
+const Eris = require('eris'),
     tablesUnFlipped = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
-    alias = require('./options/alias.json'),
+    chalk = require('chalk'),
     c = new chalk.constructor({
         enabled: true
     }),
+    reload = require('require-reload');
+
+let options = require('./options/options.json'),
+    CommandLoader = require('./utils/CommandLoader.js'),
+    processCmd = require('./utils/CommandHandler.js'),
+    games = require('./lists/games.json'),
+    alias = require('./options/alias.json'),
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 5,
         autoReconnect: true,
         disableEveryone: true,
-        maxShards: 8,
+        maxShards: options.shards,
         moreMentions: false,
         disabledEvents: {
             VOICE_STATE_UPDATE: true,
@@ -47,6 +48,7 @@ bot.on("ready", () => {
         });
     })
     console.log(botC(bot.user.username + " is now Ready."));
+    console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
     console.log("Users: " + userC(bot.users.size) + " | Channels: " + channelC(Object.keys(bot.channelGuildMap).length) + " | Servers: " + serverC(bot.guilds.size))
     UsageChecker.checkInactivity(bot);
 })
