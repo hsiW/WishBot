@@ -1,11 +1,11 @@
 //Libs and Variables
 const Eris = require('eris'),
     tablesUnFlipped = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
+    reload = require('require-reload'),
     chalk = require('chalk'),
     c = new chalk.constructor({
         enabled: true
-    }),
-    reload = require('require-reload');
+    });
 
 let options = require('./options/options.json'),
     CommandLoader = require('./utils/CommandLoader.js'),
