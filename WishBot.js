@@ -155,4 +155,4 @@ setInterval(() => {
             name: games[Math.floor(Math.random() * (games.length))]
         });
     })
-}, 900000);
+}, 6e+5);
