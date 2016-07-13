@@ -5,6 +5,7 @@ commands = {};
 
 exports.load = function() {
     return new Promise((resolve, reject) => {
+        commands = {};
         fs.readdir(`${__dirname}/../commands/`, (err, folders) => {
             if (err) reject(`Error reading commands directory: ${err}`);
             else if (folders) {
