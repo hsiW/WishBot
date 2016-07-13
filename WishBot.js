@@ -12,6 +12,7 @@ let options = require('./options/options.json'),
     processCmd = require('./utils/CommandHandler.js'),
     games = require('./lists/games.json'),
     alias = require('./options/alias.json'),
+    utils = require('./utils/utils.js'),
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 5,
@@ -79,12 +80,13 @@ function reloadAll(msg) {
             games = reload('./lists/games.json');
             alias = reload('./options/alias.json');
             admins = reload('./options/admins.json');
+            utils = reload('./utils/utils.js');
             UsageChecker = reload('./utils/UsageChecker.js')
         } catch (e) {
             console.error("Failed to reload! Error: ", e);
         }
         CommandLoader.load().then(() => {
-            bot.createMessage(msg.channel.id, "🆗");
+            bot.createMessage(msg.channel.id, "🆗").then(message => utils.messageDelete(bot, message, null));;
             bot.deleteMessage(msg.channel.id, msg.id);
             console.log(botC("@" + bot.user.username) + errorC(" All Modules Reloaded"));
         }).catch(err => {
