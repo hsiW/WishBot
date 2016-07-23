@@ -13,6 +13,7 @@ let options = require('./options/options.json'),
     games = require('./lists/games.json'),
     alias = require('./options/alias.json'),
     utils = require('./utils/utils.js'),
+    regex,
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 5,
@@ -43,6 +44,7 @@ warningC = c.yellow.bold,
 errorC = c.red.bold;
 
 bot.on("ready", () => {
+    regex = new RegExp('^<@\!?' + bot.user.id + '+>');
     bot.shards.forEach((shard) => {
         shard.editGame({
             name: games[Math.floor(Math.random() * (games.length))]
@@ -58,7 +60,7 @@ bot.on("messageCreate", msg => {
     if (msg.author.bot || !msg.channel.guild) return;
     else {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
-        if (msg.content.startsWith('<@' + bot.user.id + '>')) msg.content = msg.content.replace("<@" + bot.user.id + ">", options.prefix + "chat");
+        if (msg.content.match(regex)) msg.content = msg.content.replace(regex, options.prefix + "chat");
         if (msg.content.startsWith(options.prefix + "prefix")) processCmd(bot, msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2), "prefix", options.prefix);
         else if (msg.content === "pls reload" && admins.indexOf(msg.author.id) > -1) reloadAll(msg);
         else if (msg.content.startsWith(options.prefix)) {
