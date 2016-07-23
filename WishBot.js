@@ -58,7 +58,7 @@ bot.on("messageCreate", msg => {
     if (msg.author.bot || !msg.channel.guild) return;
     else {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
-        if (msg.content.startsWith('<@' + bot.user.id + '>')) msg.content = msg.content.replace("<@" + bot.user.id + ">", msgPrefix + "chat");
+        if (msg.content.startsWith('<@' + bot.user.id + '>')) msg.content = msg.content.replace("<@" + bot.user.id + ">", options.prefix + "chat");
         if (msg.content.startsWith(options.prefix + "prefix")) processCmd(bot, msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2), "prefix", options.prefix);
         else if (msg.content === "pls reload" && admins.indexOf(msg.author.id) > -1) reloadAll(msg);
         else if (msg.content.startsWith(options.prefix)) {

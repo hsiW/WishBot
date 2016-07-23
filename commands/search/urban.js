@@ -12,7 +12,7 @@ module.exports = {
             if (error) console.log(errorC(error));
             else if (!error && response.statusCode == 200) {
                 body = JSON.parse(body);
-                if (body.list.length === 0) bot.createMessage(msg.channel.id, "Your search for **\"" + suffix + "\"** no results, **" + msg.author.name + "**-senpai!").then(message => utils.messageDelete(bot, message, null));
+                if (body.list.length === 0) bot.createMessage(msg.channel.id, "Your search for **\"" + suffix + "\"** no results, **" + msg.author.username + "**-senpai!").then(message => utils.messageDelete(bot, message, null));
                 else {
                     let result = body.list[Math.floor(Math.random() * (body.list.length))]
                     let toSend = "**" + result.word + "** by *" + result.author + "*\n\n";
