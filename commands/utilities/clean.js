@@ -6,7 +6,7 @@ module.exports = {
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (/^\d+$/.test(suffix)) {
-            if (!msg.channel.permissionsOf(bot.user.id).json.manageMesssages) {
+            if (!msg.channel.permissionsOf(bot.user.id).json.manageMessages) {
                 bot.getMessages(msg.channel.id, 100).then(messages => {
                     let toDelete = parseInt(suffix, 10)
                     let dones = 0;
@@ -22,7 +22,7 @@ module.exports = {
                         }
                     }
                 }).catch(err => console.log(errorC(err.stack)));
-            } else bot.purgeChannel(msg.channel.id, parseInt(suffix), message => message.author.id === bot.user.id).catch(err => errorC(err));
+            } else bot.purgeChannel(msg.channel.id, parseInt(suffix), message => message.author.id === bot.user.id).catch(err => errorC(err)).then(bot.createMessage(msg.channel.id, "Finished cleaning bot messages in last " + suffix + " messages.").then(message => utils.messageDelete(bot, message, null)));
         } else bot.createMessage(msg.channel.id, "Using the clean command requires a number, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message, null));
     }
 }

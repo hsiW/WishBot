@@ -5,10 +5,10 @@ commands = {};
 
 exports.load = function() {
     return new Promise((resolve, reject) => {
-        commands = {};
         fs.readdir(`${__dirname}/../commands/`, (err, folders) => {
             if (err) reject(`Error reading commands directory: ${err}`);
             else if (folders) {
+                let processed = 0;
                 folders.forEach(folder => {
                     fs.readdir(`${__dirname}/../commands/${folder}/`, (error, loaded) => {
                         if (err) reject(`Error reading commands directory: ${error}`);

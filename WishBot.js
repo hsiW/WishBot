@@ -75,6 +75,7 @@ bot.on("messageCreate", msg => {
 function reloadAll(msg) {
     try {
         delete commands;
+        commands = {};
         try {
             reload.emptyCache('./utils/CommandLoader.js');
             CommandLoader = require('./utils/CommandLoader.js');
@@ -88,7 +89,7 @@ function reloadAll(msg) {
             console.error("Failed to reload! Error: ", e);
         }
         CommandLoader.load().then(() => {
-            bot.createMessage(msg.channel.id, "🆗").then(message => utils.messageDelete(bot, message, null));;
+            bot.createMessage(msg.channel.id, "🆗").then(message => utils.messageDelete(bot, message));;
             bot.deleteMessage(msg.channel.id, msg.id);
             console.log(botC("@" + bot.user.username) + errorC(" All Modules Reloaded"));
         }).catch(err => {
