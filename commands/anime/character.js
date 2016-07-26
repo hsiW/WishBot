@@ -26,19 +26,18 @@ module.exports = {
                                         info.match(/(^|\s+)[A-Z](\S*?)\:(\s+|$)/g).forEach(topic => {
                                             info = info.replace(topic, '**' + topic + '**')
                                         })
-                                        if (info.length > 750) {
-                                            info = info.substring(0, 750);
-                                            info += "...";
-                                        }
                                     }
                                     response += info + '\n';
                                 }
+                                if (response.length > 1750) {
+                                    response = response.substring(0, 1750);
+                                    response += "...";
+                                }
                                 response += `**Image:** ${data.image_url_lge}`;
-                                bot.createMessage(msg.channel.id, decode.decodeHTML(response));
+                                bot.createMessage(msg.channel.id, decode.decodeHTML(response)).catch(error => console.log(errorC(error)));
                             })
                             .catch(error => console.log(errorC(error)));
-                    }
-                    else bot.createMessage(msg.channel.id, 'No characters found named `'+suffix+'`, **'+msg.author.username+'**-senpai.').then(message => utils.messageDelete(bot, message, null));
+                    } else bot.createMessage(msg.channel.id, 'No characters found named `' + suffix + '`, **' + msg.author.username + '**-senpai.').then(message => utils.messageDelete(bot, message, null));
                 })
                 .catch(error => console.log(errorC(error)));
         } else bot.createMessage(msg.channel.id, 'A name is required to search.').then(message => utils.messageDelete(bot, message, null));

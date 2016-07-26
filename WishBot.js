@@ -75,7 +75,7 @@ bot.on("messageCreate", msg => {
 function reloadAll(msg) {
     try {
         delete commands;
-        commands = {};
+
         try {
             reload.emptyCache('./utils/CommandLoader.js');
             CommandLoader = require('./utils/CommandLoader.js');
@@ -92,6 +92,7 @@ function reloadAll(msg) {
             bot.createMessage(msg.channel.id, "🆗").then(message => utils.messageDelete(bot, message));;
             bot.deleteMessage(msg.channel.id, msg.id);
             console.log(botC("@" + bot.user.username) + errorC(" All Modules Reloaded"));
+            console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
         }).catch(err => {
             bot.createMessage(msg.channel.id, "```" + err + "```")
             console.log(errorC(err.stack))
