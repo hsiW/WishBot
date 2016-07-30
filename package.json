@@ -25,7 +25,7 @@
     "entities": "^1.1.1",
     "eris": "github:abalabahaha/eris#dev",
     "feedparser": "^1.1.4",
-    "google": "^2.0.0",
+    "google-search": "0.0.4",
     "mathjs": "^3.2.0",
     "mysql": "^2.11.1",
     "nani": "^1.2.0",
