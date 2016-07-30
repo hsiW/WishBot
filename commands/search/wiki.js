@@ -1,6 +1,4 @@
-var Wiki = require('wikijs'),
-    utils = require('./../../utils/utils.js'),
-    wiki = new Wiki();
+var axios = require('axios');
 
 module.exports = {
     usage: "Prints out a Wikipedia link for the mentioned terms\n`wiki [terms]`",
@@ -8,9 +6,9 @@ module.exports = {
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (suffix) {
-            wiki.search(suffix, 1).then((data) => {
-                wiki.page(data.results[0]).then((page) => bot.createMessage(msg.channel.id, `**${msg.author.username}**, I searched for **\"${suffix}\"** and found this, Senpai: \n${page.fullurl}`));
-            });
+            axios.get(`https://en.wikipedia.org/w/api.php?action=parse&format=json&prop=text&section=0&page=${suffix.replace(' ','_')}`).then(response => {
+                bot.createMessage(msg.channel.id, `**${msg.author.username}**, I searched for **\"${suffix}\"** and found this, Senpai: \n**<https://en.wikipedia.org/?curid=${response.data.parse.pageid}>**`);
+            }).catch(console.log)
         } else bot.createMessage(msg.channel.id, "You need to enter a topic to be searched, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message, null));;
     }
 }

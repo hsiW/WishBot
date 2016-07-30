@@ -22,7 +22,7 @@ module.exports = {
                         }
                     }
                 }).catch(err => console.log(errorC(err.stack)));
-            } else bot.purgeChannel(msg.channel.id, parseInt(suffix), message => message.author.id === bot.user.id).catch(err => errorC(err)).then(bot.createMessage(msg.channel.id, "Finished cleaning bot messages in last " + suffix + " messages.").then(message => utils.messageDelete(bot, message, null)));
+            } else bot.purgeChannel(msg.channel.id, parseInt(suffix), message => message.author.id === bot.user.id).catch(err => errorC(err)).then(count => bot.createMessage(msg.channel.id, "Finished cleaning  **" + count + "** bot messages in last **" + suffix + "** message(s) of " + msg.channel.name + ", **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message, null)));
         } else bot.createMessage(msg.channel.id, "Using the clean command requires a number, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message, null));
     }
 }
