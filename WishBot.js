@@ -11,7 +11,6 @@ let options = require('./options/options.json'),
     CommandLoader = require('./utils/CommandLoader.js'),
     processCmd = require('./utils/CommandHandler.js'),
     games = require('./lists/games.json'),
-    alias = require('./options/alias.json'),
     utils = require('./utils/utils.js'),
     regex,
     bot = new Eris(options.token, {
@@ -66,7 +65,6 @@ bot.on("messageCreate", msg => {
         else if (msg.content.startsWith(options.prefix)) {
             let formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
-            if (alias.hasOwnProperty(cmdTxt)) cmdTxt = alias[cmdTxt];
             if (commands.hasOwnProperty(cmdTxt)) processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
         }
     }
@@ -75,13 +73,11 @@ bot.on("messageCreate", msg => {
 function reloadAll(msg) {
     try {
         delete commands;
-
         try {
             reload.emptyCache('./utils/CommandLoader.js');
             CommandLoader = require('./utils/CommandLoader.js');
             processCmd = reload('./utils/CommandHandler.js');
             games = reload('./lists/games.json');
-            alias = reload('./options/alias.json');
             admins = reload('./options/admins.json');
             utils = reload('./utils/utils.js');
             UsageChecker = reload('./utils/UsageChecker.js')
