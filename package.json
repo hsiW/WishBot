@@ -29,11 +29,11 @@
     "mathjs": "^3.2.0",
     "mysql": "^2.11.1",
     "nani": "^1.2.0",
-    "request": "^2.72.0",
     "require-reload": "^0.2.2",
+    "reqwest": "^2.0.5",
     "wikijs": "^0.1.3",
     "xml2js": "^0.4.16",
-    "youtube-node": "^1.3.0"
+    "youtube-simple-search": "^0.1.0"
   },
   "devDependencies": {},
   "description": "A Discord Bot, made using the Eris Discord Library, which was created for The People Chat Discord Server."
