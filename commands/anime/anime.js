@@ -1,4 +1,4 @@
-var request = require("request"),
+let axios = require('axios'),
     xml2js = require('xml2js'),
     fix = require('entities'),
     options = require("./../../options/options.json"),
@@ -12,16 +12,14 @@ module.exports = {
         let apiURL = "http://myanimelist.net/api/anime/search.xml?q=" + anime;
         let user = options.MAL_user,
             pass = options.MAL_pass;
-        request(apiURL, {
-            "auth": {
-                "user": user,
-                "pass": pass,
-                "sendImmediately": true
+        axios.get(apiURL, {
+            auth: {
+                username: user,
+                password: pass
             }
-        }, (error, response, body) => {
-            if (error) console.log(errorC(error.stack));
-            else if (!error && response.statusCode == 200) {
-                xml2js.parseString(body, function(err, result) {
+        }).then(response => {
+            if (response.status == 200) {
+                xml2js.parseString(response.data, function(err, result) {
                     let animeString = "";
                     let synopsis = result.anime.entry[0].synopsis.toString();
                     synopsis = synopsis.replace(/<br \/>/g, " ");
@@ -41,6 +39,7 @@ module.exports = {
                     bot.createMessage(msg.channel.id, animeString);
                 });
             } else bot.createMessage(msg.channel.id, "No anime found for: \"**" + suffix + "**\"").then(message => utils.messageDelete(bot, message, null));
-        });
+        }).catch(err => console.log(errorC(err)));
+
     }
 }

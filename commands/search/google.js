@@ -1,9 +1,9 @@
-var GoogleSearch = require('google-search'),
-    options = require("./../../options/options.json");
-var googleSearch = new GoogleSearch({
-    key: options.google_api_key,
-    cx: options.google_search_key
-});
+let GoogleSearch = require('google-search'),
+    options = require("./../../options/options.json"),
+    googleSearch = new GoogleSearch({
+        key: options.google_api_key,
+        cx: options.google_search_key
+    });
 
 
 module.exports = {
