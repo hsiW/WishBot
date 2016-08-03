@@ -36,10 +36,9 @@ module.exports = {
                     animeString += "\n**Type:** *" + result.anime.entry[0].type + "*  **Episodes:** *" + result.anime.entry[0].episodes + "*  **Score:** *" + result.anime.entry[0].score + "*";
                     animeString += "\n" + synopsis;
                     animeString += "\n**<http://myanimelist.net/anime/" + result.anime.entry[0].id + "/>**";
-                    bot.createMessage(msg.channel.id, animeString);
+                    bot.createMessage(msg.channel.id, animeString).catch(console.log);
                 });
             } else bot.createMessage(msg.channel.id, "No anime found for: \"**" + suffix + "**\"").then(message => utils.messageDelete(bot, message, null));
         }).catch(err => console.log(errorC(err)));
-
     }
 }

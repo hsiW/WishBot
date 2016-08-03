@@ -1,4 +1,4 @@
-var request = require('request'),
+let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
@@ -8,11 +8,10 @@ module.exports = {
     process: (bot, msg, suffix) => {
         let search = msg.content.split(" ").slice(1).join("+");
         let apiURL = "http://api.urbandictionary.com/v0/define?term=" + search;
-        request(apiURL, (error, response, body) => {
-            if (error) console.log(errorC(error));
-            else if (!error && response.statusCode == 200) {
-                body = JSON.parse(body);
-                if (body.list.length === 0) bot.createMessage(msg.channel.id, "Your search for **\"" + suffix + "\"** no results, **" + msg.author.username + "**-senpai!").then(message => utils.messageDelete(bot, message, null));
+        axios.get(apiURL).then(response => {
+            if (response.status == 200) {
+                let body = response.data;
+                if (body.list.length === 0) bot.createMessage(msg.channel.id, "Your search for **\"" + suffix + "\"** no results, **" + msg.author.username + "**-senpai!").then(message => utils.messageDelete(bot, message));
                 else {
                     let result = body.list[Math.floor(Math.random() * (body.list.length))]
                     let toSend = "**" + result.word + "** by *" + result.author + "*\n\n";
@@ -23,6 +22,6 @@ module.exports = {
                     bot.createMessage(msg.channel.id, toSend);
                 }
             }
-        });
+        }).catch(err => bot.createMessage(msg.channel.id, "There was an error getting the weather: ```" + err + "```").then(message => utils.messageDelete(bot, message)))
     }
 }

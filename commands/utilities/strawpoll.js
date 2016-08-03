@@ -1,4 +1,4 @@
-var request = require('request'),
+let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
@@ -14,25 +14,21 @@ module.exports = {
                 suffix = suffix.replace(/\[(.*?)\]/, '');
             }
             let choices = suffix.split('|');
-            request({
-                uri: "https://strawpoll.me/api/v2/polls",
-                method: "POST",
-                followAllRedirects: true,
+            axios.post("https://strawpoll.me/api/v2/polls", {
                 maxRedirects: 10,
                 headers: {
                     "content-type": "application/json"
                 },
-                json: true,
-                body: {
+                data: {
                     "title": title,
                     "options": choices,
                     "multi": false
                 }
-            }, (error, response, body) => {
-                if (!error && response.statusCode == 200) bot.createMessage(msg.channel.id, `**${msg.author.username}** created a poll with the question '${title}'\n**<http://strawpoll.me/${body.id}>** 📝`);
-                else if (error) bot.createMessage(msg.channel.id, error).then(message => utils.messageDelete(bot, message, null));
-                else if (response.statusCode != 201) bot.createMessage(msg.channel.id, `Got status code ${response.statusCode}`).then(message => utils.messageDelete(bot, message, null));
-            })
+            }).then(response => {
+                console.log(response)
+                if (response.status == 200) bot.createMessage(msg.channel.id, `**${msg.author.username}** created a poll with the question '${title}'\n**<http://strawpoll.me/${response.data.id}>** 📝`);
+                else bot.createMessage(msg.channel.id, `Got status code ${response.statusCode}`).then(message => utils.messageDelete(bot, message));
+            }).catch(error => bot.createMessage(msg.channel.id, error).then(message => utils.messageDelete(bot, message)))
         }
     }
 }

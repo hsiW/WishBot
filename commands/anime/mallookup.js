@@ -1,4 +1,4 @@
-var request = require('request'),
+let axios = require('axios'),
     xml2js = require("xml2js"),
     daysToString = require('./../../utils/utils.js').daysToString,
     utils = require('./../../utils/utils.js');
@@ -7,13 +7,12 @@ module.exports = {
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
-        if (/[\uD000-\uF8FF]/g.test(suffix)) bot.createMessage(msg.channel.id, "Your search contained illegal characters").then(message => utils.messageDelete(bot, message, null))
+        if (/[\uD000-\uF8FF]/g.test(suffix)) bot.createMessage(msg.channel.id, "Your search contained illegal characters").then(message => utils.messageDelete(bot, message))
         else {
             let URL = `http://myanimelist.net/malappinfo.php?u=${suffix.replace(/ /g, '%20')}&status=all&type=anime`;
-            request(URL, (error, response, body) => {
-                if (error) console.log(error);
-                else if (!error && response.statusCode == 200) {
-                    xml2js.parseString(body, (err, result) => {
+            axios.get(URL).then(response => {
+                if (response.status == 200) {
+                    xml2js.parseString(response.data, (err, result) => {
                         if (err) console.log(errorC(err));
                         else if (!result.myanimelist.myinfo) bot.createMessage(msg.channel.id, result.myanimelist.error[0]);
                         else {
@@ -27,7 +26,7 @@ module.exports = {
                         }
                     });
                 }
-            });
+            }).catch(error => bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```"));
         }
     }
 }

@@ -1,4 +1,4 @@
-var pun = require('./../../lists/puns.json');
+let pun = require('./../../lists/puns.json');
 
 module.exports = {
     usage: 'Prints out a random pun or the pun at the position mentioned\n`pun [number] or [none]`',

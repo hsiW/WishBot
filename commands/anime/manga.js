@@ -1,4 +1,4 @@
-var request = require("request"),
+let axios = require('axios'),
     xml2js = require('xml2js'),
     fix = require('entities'),
     options = require("./../../options/options.json"),
@@ -12,16 +12,14 @@ module.exports = {
         let apiURL = "http://myanimelist.net/api/manga/search.xml?q=" + manga;
         let user = options.MAL_user,
             pass = options.MAL_pass;
-        request(apiURL, {
-            "auth": {
-                "user": user,
-                "pass": pass,
-                "sendImmediately": true
+        axios.get(apiURL, {
+            auth: {
+                username: user,
+                password: pass
             }
-        }, (error, response, body) => {
-            if (error) console.log(errorC(error.stack));
-            else if (!error && response.statusCode == 200) {
-                xml2js.parseString(body, function(err, result) {
+        }).then(response => {
+            if (response.status == 200) {
+                xml2js.parseString(response.data, function(err, result) {
                     let mangaString = "";
                     let synopsis = result.manga.entry[0].synopsis.toString();
                     synopsis = synopsis.replace(/<br \/>/g, " ");
@@ -38,9 +36,9 @@ module.exports = {
                     mangaString += "\n**Type:** *" + result.manga.entry[0].type + "*  **Chapters:** *" + result.manga.entry[0].chapters + "*  **Volumes:** *" + result.manga.entry[0].volumes + "*  **Score:** *" + result.manga.entry[0].score + "*";
                     mangaString += "\n" + synopsis;
                     mangaString += "\n**<http://myanimelist.net/manga/" + result.manga.entry[0].id + "/>**";
-                    bot.createMessage(msg.channel.id, mangaString);
+                    bot.createMessage(msg.channel.id, mangaString).catch(console.log);
                 });
             } else bot.createMessage(msg.channel.id, "No manga found for: \"**" + suffix + "**\"").then(message => utils.messageDelete(bot, message, null));
-        });
+        }).catch(err => console.log(errorC(err)));
     }
 }

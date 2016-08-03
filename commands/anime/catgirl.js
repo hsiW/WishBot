@@ -1,4 +1,4 @@
-var mysql = require('mysql'),
+let mysql = require('mysql'),
     options = require('./../../options/options.json'),
     pool = mysql.createPool({
         connectionLimit: options.connectionLimit,

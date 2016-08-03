@@ -1,4 +1,4 @@
-var request = require("request"),
+let axios = require('axios'),
     options = require("./../../options/options.json"),
     utils = require('./../../utils/utils.js');
 
@@ -39,18 +39,14 @@ module.exports = {
 }
 
 function get_image(bot, msg, apiURL, query) {
-    request({
-        url: apiURL,
+    axios.get(apiURL, {
         headers: {
             'Authorization': 'Client-ID ' + options.imgur_id
         }
-    }, (error, result, body) => {
-        if (error) {
-            console.log(errorC(error));
-            bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```").then(message => utils.messageDelete(bot, message, null));
-        } else if (result.statusCode != 200) bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai but I got the status code ```" + result.statusCode).then(message => utils.messageDelete(bot, message, null));
-        else if (body) {
-            body = JSON.parse(body);
+    }).then(response => {
+        if (response.status != 200) bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai but I got the status code ```" + result.statusCode).then(message => utils.messageDelete(bot, message, null));
+        else if (response.data) {
+            let body = response.data;
             if (body.hasOwnProperty("data") && body.data.length !== 0) {
                 response = body.data[Math.floor(Math.random() * (body.data.length))];
                 let postedDate = new Date(0);
@@ -69,5 +65,5 @@ function get_image(bot, msg, apiURL, query) {
                 } else bot.createMessage(msg.channel.id, "I'm sorry but that search for \"**" + query + "**\" did not get any results, **" + msg.author.username + "**-senpai").then(message => utils.messageDelete(bot, message, null));
             } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "**-senpai, I'm sorry but that search for \"**" + query + "**\" did not get any results.").then(message => utils.messageDelete(bot, message, null));
         }
-    });
+    }).catch(error => bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```").then(message => utils.messageDelete(bot, message, null)));
 }

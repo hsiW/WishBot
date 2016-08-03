@@ -1,4 +1,4 @@
-var utils = require('./../../utils/utils.js');
+let utils = require('./../../utils/utils.js');
 
 module.exports = {
         process:  (bot, msg, suffix) => {

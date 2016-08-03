@@ -1,18 +1,15 @@
-var request = require('request').defaults({
-    encoding: null
-});
+let axios = require('axios');
 
 module.exports = {
     usage: "This bot prints a wewlad in the current channel(I'm so sorry)",
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {
-        request('http://i.imgur.com/iKTCAoN.png', (err, response, buffer) => {
-            console.log(buffer);
+        axios.get('http://i.imgur.com/iKTCAoN.png').then(response => {
             bot.createMessage(msg.channel.id, null, {
-                file: buffer,
+                file: response.data,
                 name: 'wewlad.png'
-            });
+            }).catch(err => console.log(errorC(err)));
         });
     }
 }

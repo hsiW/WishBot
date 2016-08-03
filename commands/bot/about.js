@@ -1,4 +1,4 @@
-var libVersion = require('./../../node_modules/eris/package.json').version,
+let libVersion = require('./../../node_modules/eris/package.json').version,
     botVersion = require('./../../package.json').version,
     prefix = require('./../../options/options.json').prefix;
 

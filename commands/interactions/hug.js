@@ -1,4 +1,4 @@
-var getName = require('./../../utils/utils.js').getName;
+let getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
     usage: "Hugs the mentioned user or puts a hug if none mentioned\n`hug [mentioned user] or [none]`",

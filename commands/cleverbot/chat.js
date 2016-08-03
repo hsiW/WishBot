@@ -1,8 +1,9 @@
-var Cleverbot = require('cleverbot-node'),
+let Cleverbot = require('cleverbot-node'),
     onee = new Cleverbot,
     decode = require('entities'),
     emoji = ["💁", "🙅", "🙆", "🙋", "🙎", "🙍", "💇", "💆"];
-Cleverbot.prepare(function() {});
+    
+Cleverbot.prepare(() => {});
 
 module.exports = {
     usage: "Chat with this bot using the Cleverbot API\n`chat [text]` or `@Onee-chan [text]`",

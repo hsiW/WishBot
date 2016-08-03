@@ -1,4 +1,4 @@
-var utils = require('./../../utils/utils.js');
+let utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: 'Prints out the current command prefix.',
@@ -14,7 +14,7 @@ module.exports = {
             bot.createMessage(msg.channel.id, msgString);
         } else {
             if (msg.channel.permissionsOf(msg.author.id).json.manageRoles || admins.indexOf(msg.author.id) > -1) Database.changePrefix(bot, msg, suffix);
-            else bot.createMessage(msg.channel.id, 'This command requires the `manageRoles` premission to be used, Sorry.').then(message => utils.messageDelete(bot, message, null));
+            else bot.createMessage(msg.channel.id, 'This command requires the `manageRoles` premission to be used, Sorry.').then(message => utils.messageDelete(bot, message));
         }
     }
 }

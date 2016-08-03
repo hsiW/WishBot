@@ -1,4 +1,4 @@
-var getName = require('./../../utils/utils.js').getName;
+let getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
     usage: "Pets the mentioned user or pets this bot if none mentioned\n`pet [mentioned user] or [none]`",

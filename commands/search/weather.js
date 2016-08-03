@@ -1,4 +1,4 @@
-var request = require('request'),
+let axios = require('axios'),
     options = require("./../../options/options.json");
 
 module.exports = {
@@ -7,10 +7,10 @@ module.exports = {
     process: (bot, msg, suffix) => {
         if (!suffix) suffix = "Toronto";
         suffix = suffix.replace(" ", "");
-        let rURL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
-        request(rURL, (error, response, weath) => {
-            if (!error && response.statusCode == 200) {
-                weath = JSON.parse(weath);
+        let URL = (/\d/.test(suffix) == false) ? "http://api.openweathermap.org/data/2.5/weather?q=" + suffix + "&APPID=" + options.weather_api_key : "http://api.openweathermap.org/data/2.5/weather?zip=" + suffix + "&APPID=" + options.weather_api_key;
+        axios.get(URL).then(response => {
+            if (response.status == 200) {
+                let weath = response.data;
                 if (!weath.hasOwnProperty("weather")) return;
                 let weatherC = "☀";
                 if ((weath.weather[0].description.indexOf("rain") > -1) || (weath.weather[0].description.indexOf("drizzle") > -1)) weatherC = "☔";
@@ -30,6 +30,6 @@ module.exports = {
                 msgString += "\n**🌄 Sunrise:** " + formattedSunrise + " UTC / **🌇 Sunset:** " + formattedSunset + " UTC";
                 bot.createMessage(msg.channel.id, msgString);
             } else bot.createMessage(msg.channel.id, "There was an error getting the weather, please try again later.");
-        });
+        }).catch(err => bot.createMessage(msg.channel.id, "There was an error getting the weather: ```" + err+"```"))
     }
 } //Should clean up code but so much work so i'll do it some other day

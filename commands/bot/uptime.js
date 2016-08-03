@@ -1,4 +1,4 @@
-var serverUptime = require('os').uptime();
+let serverUptime = require('os').uptime();
 
 module.exports = {
     usage: 'Prints out the bots estimated uptime.',

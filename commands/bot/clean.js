@@ -1,4 +1,4 @@
-var utils = require('./../../utils/utils.js');
+let utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Cleans the mentioned number of this bots messages from the current channel.\n`delete [# from 1-100]`",

@@ -1,7 +1,7 @@
-var request = require('request').defaults({
+/*var request = require('request').defaults({
     encoding: null
 });
-
+*/
 module.exports = {
     usage: "Prints the server icon of the current server",
     cooldown: 5,

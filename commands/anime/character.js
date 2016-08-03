@@ -1,4 +1,4 @@
-var options = require('./../../options/options.json'),
+let options = require('./../../options/options.json'),
     nani = require('nani').init(options.nani_id, options.nani_secret),
     decode = require('entities'),
     utils = require('./../../utils/utils.js');
