@@ -3,6 +3,7 @@ const Eris = require('eris'),
     tablesUnFlipped = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
     reload = require('require-reload'),
     chalk = require('chalk'),
+    fs = require('fs'),
     c = new chalk.constructor({
         enabled: true
     });
@@ -129,11 +130,6 @@ bot.on("shardDisconnect", (error, id) => {
     console.log(errorC(error));
 })
 
-
-/*bot.on("debug", err => {
-    console.log(botC("@Onee-chan") + " - " + warningC("Debug: " + err));
-})*/
-
 CommandLoader.load().then(() => {
     bot.connect().then(console.log(warningC("Logged in using Token"))).catch(err => console.log(errorC(err.stack)));
 }).catch(err => errorC(err.stack));
@@ -156,3 +152,15 @@ setInterval(() => {
         });
     })
 }, 6e+5);
+
+setInterval(() => {
+    fs.readdir(`${__dirname}/avatars/`, (err, files) => {
+        let avatar = files[Math.floor(Math.random() * (files.length))];
+        fs.readFile(`${__dirname}/avatars/${avatar}`, (err, image) => {
+            let data = "data:image/" + avatar.split('.')[1] + ";base64," + image.toString('base64');
+            bot.editSelf({
+                avatar: data
+            }).then(() => console.log(botC('Changed avatar')), err => console.log(errorC(err)));
+        })
+    });
+}, 3.6e+6);
