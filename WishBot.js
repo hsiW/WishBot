@@ -57,7 +57,7 @@ bot.on("ready", () => {
 })
 
 bot.on("messageCreate", msg => {
-    if (msg.author.bot || !msg.channel.guild) return;
+    if ((msg.author.bot && msg.author.id !== "174669219659513856") || !msg.channel.guild) return;
     else {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
         if (msg.content.match(regex)) msg.content = msg.content.replace(regex, options.prefix + "chat");

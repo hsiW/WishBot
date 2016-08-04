@@ -6,8 +6,8 @@ module.exports = {
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (suffix && (msg.mentions || getName(msg, suffix))) {
-            msg.mentions.length === 1 ? user = msg.channel.guild.members.get(msg.mentions[0]) : user = getName(msg, suffix);
-            bot.createMessage(msg.channel.id, '<@' + user.id + '>' + ", (>^_^)> <(^.^<) ,**" + msg.author.username + "**");
+            msg.mentions.length === 1 ? user = msg.mentions[0] : user = getName(msg, suffix);
+            bot.createMessage(msg.channel.id, user.mention + ", (>^_^)> <(^.^<) ,**" + msg.author.username + "**");
         } else bot.createMessage(msg.channel.id, "(>^_^)> <(^.^<)");
     }
 }

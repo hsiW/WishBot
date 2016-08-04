@@ -6,8 +6,8 @@ exports.toTitleCase = function(str) {
 
 exports.getName = function(msg, name) {
     let nameRegex = new RegExp(name, "i");
-    if (!name) return msg.channel.guild.members.get(msg.author.id)
-    else return msg.channel.guild.members.find(member => member.user.username.match(nameRegex)) ? msg.channel.guild.members.find(member => member.user.username.match(nameRegex)) : msg.channel.guild.members.get(msg.author.id);
+    if (!name) return msg.channel.guild.members.get(msg.author.id).user;
+    else return msg.channel.guild.members.find(member => member.user.username.match(nameRegex)) ? msg.channel.guild.members.find(member => member.user.username.match(nameRegex)).user : msg.channel.guild.members.get(msg.author.id).user;
 }
 
 exports.sortObj = function(obj, type, caseSensitive) {
