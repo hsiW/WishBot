@@ -24,7 +24,7 @@ function editUser(user, edit, change) {
     return new Promise((resolve, reject) => {
         pool.query('SELECT user_profile FROM user_settings WHERE user_id = ' + user.id, (err, rows) => {
             if (err) reject(err);
-            else if (rows.length < 1) createUser(user).then(editUser(user, edit, change));
+            else if (rows.length < 1) createUser(user).then(() => editUser(user, edit, change).then(action => resolve(action)).catch(err => reject(err)));
             else {
                 let userProfile = JSON.parse(rows[0].user_profile);
                 if (validateUrl(change)) reject('You cannot use a URL in your profile at this time.');
