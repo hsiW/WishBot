@@ -12,8 +12,8 @@ module.exports = {
         else if (suffix) {
             let quoteRegex = new RegExp(suffix, "i");
             let quoteCache = quotes.filter(message => message.match(quoteRegex));
-            if (quoteCache.length >= 1) bot.createMessage(msg.channel.id, quoteCache[Math.floor((Math.random() * quoteCache.length) + 1)]).catch(err => errorC(err));
-            else bot.createMessage(msg.channel.id, "No quotes found that contain " + suffix).then(message => utils.messageDelete(bot, message, null));
+            if (quoteCache.length >= 1) bot.createMessage(msg.channel.id, quoteCache[Math.floor(Math.random() * quoteCache.length)]).catch(err => errorC(err));
+            else bot.createMessage(msg.channel.id, "No quotes found that contain `" + suffix + "`").then(message => utils.messageDelete(bot, message));
         } else bot.createMessage(msg.channel.id, quotes[Math.floor((Math.random() * quotes.length) + 1)]).catch(err => errorC(err));
     }
 }

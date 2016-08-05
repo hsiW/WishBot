@@ -1,12 +1,12 @@
 let mysql = require('mysql'),
     options = require('./../../options/options.json'),
     pool = mysql.createPool({
-        connectionLimit: options.connectionLimit,
-        host: options.host,
-        port: options.port,
-        user: options.user,
-        password: options.password,
-        database: options.database
+        connectionLimit: 100,
+        host: options.database.host,
+        port: options.database.port,
+        user: options.database.user,
+        password: options.database.password,
+        database: options.database.database
     });
 
 module.exports = {

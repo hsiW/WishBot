@@ -1,4 +1,4 @@
-var axios = require('axios'),
+let axios = require('axios'),
     getName = require('./../../utils/utils.js').getName,
     utils = require('./../../utils/utils.js');
 

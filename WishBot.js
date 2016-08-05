@@ -17,9 +17,9 @@ let options = require('./options/options.json'),
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 5,
+        maxShards: 8,
         autoReconnect: true,
         disableEveryone: true,
-        maxShards: options.shards,
         moreMentions: false,
         disabledEvents: {
             VOICE_STATE_UPDATE: true,

@@ -1,4 +1,4 @@
-var axios = require('axios');
+let axios = require('axios');
 
 module.exports = {
     usage: "Prints out a Wikipedia link for the mentioned terms\n`wiki [terms]`",

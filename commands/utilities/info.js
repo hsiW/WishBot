@@ -1,4 +1,4 @@
-var getName = require('./../../utils/utils.js').getName,
+let getName = require('./../../utils/utils.js').getName,
     utils = require('./../../utils/utils.js');
 
 module.exports = {

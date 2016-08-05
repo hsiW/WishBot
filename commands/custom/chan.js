@@ -1,5 +1,5 @@
 CustomTags = require('./../../database/CustomTags.json');
-var fs = require('fs'),
+let fs = require('fs'),
     updated = false;
     
 setInterval(() => {

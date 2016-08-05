@@ -1,4 +1,4 @@
-var eightBall = require("./../../lists/8ball.json");
+let eightBall = require("./../../lists/8ball.json");
 
 module.exports = {
     usage: "A magical 8ball\n`8ball [questions]`",

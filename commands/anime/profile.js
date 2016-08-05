@@ -1,5 +1,14 @@
 let mysql = require('mysql'),
     options = require('./../../options/options.json'),
+    pool = mysql.createPool({
+        connectionLimit: 100,
+        host: 'localhost',
+        port: '3306',
+        user: 'Onee',
+        password: 'Boudreau18!',
+        database: 'database',
+        charset: 'utf8mb4_general_ci'
+    }),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
