@@ -160,7 +160,7 @@ setInterval(() => {
             let data = "data:image/" + avatar.split('.')[1] + ";base64," + image.toString('base64');
             bot.editSelf({
                 avatar: data
-            }).then(() => console.log(botC('Changed avatar')), err => console.log(errorC(err)));
+            }).then(() => console.log(botC('Changed avatar to ' + avatar.split('.')[0])), err => console.log(errorC(err)));
         })
     });
 }, 3.6e+6);
