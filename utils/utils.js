@@ -80,6 +80,6 @@ exports.splitArray = function(array, size) {
 exports.messageDelete = function(bot, msg, time) {
     if (!time) time = 5000;
     setTimeout(() => {
-        bot.deleteMessage(msg.channel.id, msg.id);
+        bot.deleteMessage(msg.channel.id, msg.id).catch(err => console.log(errorC(err)));
     }, time)
 }

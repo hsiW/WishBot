@@ -2,17 +2,17 @@ let mysql = require('mysql'),
     options = require('./../../options/options.json'),
     pool = mysql.createPool({
         connectionLimit: 100,
-        host: 'localhost',
-        port: '3306',
-        user: 'Onee',
-        password: 'Boudreau18!',
-        database: 'database',
+        host: options.database.host,
+        port: options.database.port,
+        user: options.database.user,
+        password: options.database.password,
+        database: options.database.database,
         charset: 'utf8mb4_general_ci'
     }),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "lots of documentaion, profile edit [name] || [status] || [birthday] || [age] || [location] || [animeplanet] || [hummingbird] || [myanimelist] || [twitch] || [bio]",
+    usage: "lots of documentaion, profile edit [name] || [status] || [birthday] || [age] || [location] || [animeplanet] || [hummingbird] || [myanimelist] || [twitch] || [bio] || [youtube]",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
@@ -51,47 +51,53 @@ function editUser(user, edit, change) {
                         saveUser(user, userProfile).then(() => resolve('edited `status`'));
                     } else reject('Status can only be 64 characters or less');
                 } else if (edit === "birthday") {
-                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Birthday included illegal chracters');
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Birthday included illegal characters');
                     else if (change.length <= 16) {
                         userProfile.birthday = change;
                         saveUser(user, userProfile).then(() => resolve('edited `birthday`'));
                     } else reject('Status can only be 16 characters or less');
                 } else if (edit === "age") {
-                    if (!/^\d+$/.test(change)) reject('Age included illegal chracters');
+                    if (!/^\d+$/.test(change)) reject('Age included illegal characters');
                     else if (change.length <= 8) {
                         userProfile.age = change;
                         saveUser(user, userProfile).then(() => resolve('edited `age`'));
                     } else reject('Age can only be 8 characters or less');
                 } else if (edit === "location") {
-                    if (!convertFromCountry(change) || !/[\uD000-\uF8FF]/g.test(change)) reject('Location included illegal chracters');
+                    if (!convertFromCountry(change) || !/[\uD000-\uF8FF]/g.test(change)) reject('Location included illegal characters');
                     else if (change.length <= 4) {
                         userProfile.location = convertFromCountry(change);
                         saveUser(user, userProfile).then(() => resolve('edited `location`'));
-                    } else reject('Age can only be 4 characters or less');
+                    } else reject('Location can only be a Discord Emoji Flag');
                 } else if (edit === "animeplanet") {
-                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Anime Planet username included illegal chracters');
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Anime Planet username included illegal characters');
                     else if (change.length <= 20 && change.length >= 3) {
                         userProfile.animeplanet = change;
                         saveUser(user, userProfile).then(() => resolve('edited `animePlanet`'));
                     } else reject('Anime Planet username can only be 20 characters or less');
                 } else if (edit === "hummingbird") {
-                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Hummingbird username included illegal chracters');
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Hummingbird username included illegal characters');
                     else if (change.length <= 20 && change.length >= 3) {
-                        userProfile.animeplanet = change;
+                        userProfile.hummingbird = change;
                         saveUser(user, userProfile).then(() => resolve('edited `hummingbird`'));
                     } else reject('Hummingbird username can only be 20 characters or less');
                 } else if (edit === "myanimelist") {
-                    if (/[\uD000-\uF8FF]/g.test(change)) reject('MyAnimeList username included illegal chracters');
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('MyAnimeList username included illegal characters');
                     else if (change.length <= 16 && change.length >= 2) {
-                        userProfile.animeplanet = change;
+                        userProfile.myanimelist = change;
                         saveUser(user, userProfile).then(() => resolve('edited `myAnimeList`'));
                     } else reject('MyAnimeList username can only be 16 characters or less');
                 } else if (edit === "twitch") {
-                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Twitch username included illegal chracters');
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('Twitch username included illegal characters');
                     else if (change.length <= 25) {
                         userProfile.twitch = change;
                         saveUser(user, userProfile).then(() => resolve('edited `twitch`'));
                     } else reject('Twitch username can only be 25 characters or less');
+                } else if (edit === "youtube") {
+                    if (/[\uD000-\uF8FF]/g.test(change)) reject('YouTube username included illegal characters');
+                    else if (change.length <= 20) {
+                        userProfile.youtube = change;
+                        saveUser(user, userProfile).then(() => resolve('edited `youtube`'));
+                    } else reject('YouTube username can only be 20 characters or less');
                 } else if (edit === "bio") {
                     if (change.length <= 1000) {
                         userProfile.bio = change;
@@ -129,7 +135,8 @@ function createUser(user) {
             hummingbird: null,
             myanimelist: null,
             twitch: null,
-            bio: null
+            bio: null,
+            youtube: null
         };
         let data = {
             user_id: user.id,
@@ -158,6 +165,7 @@ function processProfile(bot, msg, person) {
             if (user.animeplanet != null) msgArray.push(`🔖 **Anime Planet:** ${user.animeplanet}`);
             if (user.hummingbird != null) msgArray.push(`📘 **Hummingbird:** ${user.hummingbird}`);
             if (user.myanimelist != null) msgArray.push(`📕 **myAnimeList:** ${user.myanimelist}`);
+            if (user.youtube != null) msgArray.push(`📺 **YouTube:** ${user.youtube}`);
             if (user.twitch != null) msgArray.push(`🎮 **Twitch:** ${user.twitch}`);
             if (user.bio != null) msgArray.push(`📚 **Bio:** ${user.bio}`);
         }
