@@ -43,26 +43,26 @@ exports.sortObj = (obj, type, caseSensitive) => {
 };
 
 exports.minutesToString = mins => {
-    let months = Math.floor(mins / 43800);
-    let days = Math.floor((mins / 1440) % 30);
-    let hours = Math.floor((mins / 60) % 24);
-    let minutes = Math.floor(mins % 60);
+    let months = Math.floor(mins / 43800),
+        days = Math.floor((mins / 1440) % 30),
+        hours = Math.floor((mins / 60) % 24),
+        minutes = Math.floor(mins % 60);
     return months + "month(s) | " + days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s)";
 }
 
 exports.daysToString = day => {
-    let months = Math.floor(day / 30)
-    let days = Math.floor(day % 30)
-    let hours = Math.floor((day % 24) % 30)
-    let minutes = Math.floor((day / 1440) % 60)
+    let months = Math.floor(day / 30),
+        days = Math.floor(day % 30),
+        hours = Math.floor((day % 24) % 30),
+        minutes = Math.floor((day / 1440) % 60);
     return months + "month(s) | " + days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s)";
 }
 
 exports.secondsToString = second => {
-    let days = Math.floor(second / 86400)
-    let hours = Math.floor((second / 3600) % 24)
-    let minutes = Math.floor((second / 60) % 60)
-    let seconds = Math.floor(second % 60)
+    let days = Math.floor(second / 86400),
+        hours = Math.floor((second / 3600) % 24),
+        minutes = Math.floor((second / 60) % 60),
+        seconds = Math.floor(second % 60);
     return days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s) | " + seconds + "second(s)";
 }
 
