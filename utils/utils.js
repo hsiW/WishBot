@@ -7,7 +7,7 @@ exports.toTitleCase = function(str) {
 exports.getName = function(msg, name) {
     let nameRegex = new RegExp(name, "i");
     if (!name) return msg.channel.guild.members.get(msg.author.id).user;
-    else return msg.channel.guild.members.find(member => member.user.username.match(nameRegex)) ? msg.channel.guild.members.find(member => member.user.username.match(nameRegex)).user : msg.channel.guild.members.get(msg.author.id).user;
+    else return msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) ? msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)).user : msg.channel.guild.members.get(msg.author.id).user;
 }
 
 exports.sortObj = function(obj, type, caseSensitive) {
@@ -77,7 +77,7 @@ exports.splitArray = function(array, size) {
     return sets;
 }
 
-exports.messageDelete = function(bot, msg, time) {
+exports.messageDelete = (bot, msg, time) => {
     if (!time) time = 5000;
     setTimeout(() => {
         bot.deleteMessage(msg.channel.id, msg.id).catch(err => console.log(errorC(err)));

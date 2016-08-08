@@ -7,7 +7,7 @@ module.exports = {
     process: function(bot, msg, suffix) {
         if (suffix && (msg.mentions || getName(msg, suffix))) {
             msg.mentions.length === 1 ? msg.mentions[0] : user = getName(msg, suffix);
-            bot.createMessage(msg.channel.id, user.mention + " has been smited using the power granted to Bluee by the Cabbage Phoenix.");
-        } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "** has smited themself using power granted to Bluee by the Cabbage Phoenix.");
+            bot.createMessage(msg.channel.id, user.mention + " has been smited using the power granted to Bluee by the Cabbage Phoenix.").catch(err => console.log(errorC(err)));
+        } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "** has smited themself using power granted to Bluee by the Cabbage Phoenix.").catch(err => console.log(errorC(err)));
     }
 }

@@ -7,7 +7,7 @@ module.exports = {
     process: (bot, msg, suffix) => {
         if (suffix && (msg.mentions || getName(msg, suffix))) {
             msg.mentions.length === 1 ? user = msg.mentions[0] : user = getName(msg, suffix);
-            bot.createMessage(msg.channel.id, user.mention + " was slapped by **" + msg.author.username + "**!");
-        } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "** slapped themselves!");
+            bot.createMessage(msg.channel.id, user.mention + " was slapped by **" + msg.author.username + "**!").catch(err => console.log(errorC(err)));
+        } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "** slapped themselves!").catch(err => console.log(errorC(err)));
     }
 }
