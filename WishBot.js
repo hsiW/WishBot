@@ -13,6 +13,7 @@ let options = require('./options/options.json'),
     processCmd = require('./utils/CommandHandler.js'),
     games = require('./lists/games.json'),
     utils = require('./utils/utils.js'),
+    Database = require('./utils/Database.js'),
     regex,
     bot = new Eris(options.token, {
         getAllUsers: true,
@@ -66,7 +67,8 @@ bot.on("messageCreate", msg => {
         else if (msg.content.startsWith(options.prefix)) {
             let formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
-            if (commands.hasOwnProperty(cmdTxt)) processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
+            if (cmdTxt === 'channelmute') processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
+            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel).then(() => processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt));
         }
     }
 });
