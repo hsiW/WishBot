@@ -10,17 +10,52 @@ let mysql = require('mysql'),
     }),
     utils = require('./utils.js');
 
-exports.changePrefix = (guild, prefix) => {
+function addGuild(guild) {
+    return new Promise((resolve, reject) => {
+        pool.query('INSERT INTO server_settings SET guild_id = ' + guild.id, (err, result) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+}
 
+function removeGuild(guild) {
+    return new Promise((resolve, reject) => {
+        pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+}
+
+function checkGuild(guild) {
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+            if (err) resolve();
+            else if (result.length >= 1) reject();
+            else resolve();
+        });
+    })
+}
+
+
+exports.changePrefix = (guild, newPrefix) => {
+    return new Promise((resolve, reject) => {
+        checkGuild(guild).then(() => addGuild(guild)).then(
+            pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, {
+                prefix: newPrefix
+            }, (err, result) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        ).catch(err => reject(err));
+    });
 }
 
 exports.checkPrefix = (guild, prefix) => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM sever_settings WHERE prefix = ' + prefix, (err, rows) => {
-            if (err) {
-                console.log(errorC(err));
-                reject();
-            } else if (rows.length <= 1) resolve();
+        pool.query('SELECT prefix FROM sever_settings WHERE guild_id = ' + guild.id, (err, result) => {
+            if (prefix === )
             else reject();
         });
     });
@@ -28,7 +63,7 @@ exports.checkPrefix = (guild, prefix) => {
 
 exports.ignoreChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('INSERT INTO channel_ignores SET channel_id=?', channel.id, (err, result) => {
+        pool.query('INSERT INTO channel_ignores SET channel_id = ' + channel.id, (err, result) => {
             if (err) reject(err);
             else resolve();
         });
@@ -37,7 +72,7 @@ exports.ignoreChannel = channel => {
 
 exports.unignoreChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('DELETE FROM channel_ignores WHERE channel_id=' + channel.id, (err, result) => {
+        pool.query('DELETE FROM channel_ignores WHERE channel_id = ' + channel.id, (err, result) => {
             if (err) reject(err);
             else resolve();
         });
@@ -46,9 +81,9 @@ exports.unignoreChannel = channel => {
 
 exports.checkChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel.id, (err, rows) => {
+        pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel.id, (err, result) => {
             if (err) resolve();
-            else if (rows.length >= 1) reject();
+            else if (result.length >= 1) reject();
             else resolve();
         });
     });
@@ -60,11 +95,11 @@ exports.toggleCommand = (guild, command) => {
 
 exports.checkCommand = (guild, command) => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM server_settings WHERE guild = ' + guild.id, (err, rows) => {
+        pool.query('SELECT * FROM server_settings WHERE guild = ' + guild.id, (err, result) => {
             if (err) {
                 console.log(errorC(err));
                 reject();
-            } else if (rows.length <= 1) resolve();
+            } else if (result.length <= 1) resolve();
             else reject();
         });
     });
@@ -76,11 +111,11 @@ exports.toggleSetting = (guild, setting) => {
 
 exports.checkSetting = (guild, setting) => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM server_settings WHERE guild = ' + guild.id, (err, rows) => {
+        pool.query('SELECT * FROM server_settings WHERE guild = ' + guild.id, (err, result) => {
             if (err) {
                 console.log(errorC(err));
                 reject();
-            } else if (rows.length <= 1) resolve();
+            } else if (result.length <= 1) resolve();
             else reject();
         });
     });
