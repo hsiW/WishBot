@@ -19,44 +19,11 @@ function addGuild(guild) {
     });
 }
 
-function removeGuild(guild) {
+exports.removeGuild = (guild) => {
     return new Promise((resolve, reject) => {
         pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
             if (err) reject(err);
             else resolve();
-        });
-    });
-}
-
-function checkGuild(guild) {
-    return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
-            if (err) resolve();
-            else if (result.length >= 1) reject();
-            else resolve();
-        });
-    })
-}
-
-
-exports.changePrefix = (guild, newPrefix) => {
-    return new Promise((resolve, reject) => {
-        checkGuild(guild).then(() => addGuild(guild)).then(
-            pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, {
-                prefix: newPrefix
-            }, (err, result) => {
-                if (err) reject(err);
-                else resolve();
-            });
-        ).catch(err => reject(err));
-    });
-}
-
-exports.checkPrefix = (guild, prefix) => {
-    return new Promise((resolve, reject) => {
-        pool.query('SELECT prefix FROM sever_settings WHERE guild_id = ' + guild.id, (err, result) => {
-            if (prefix === )
-            else reject();
         });
     });
 }
@@ -119,4 +86,29 @@ exports.checkSetting = (guild, setting) => {
             else reject();
         });
     });
+}
+
+function changePrefix(guild, newPrefix) {
+    return new Promise((resolve, reject) => {});
+}
+
+exports.checkPrefix = (guild, prefix) => {
+
+}
+
+function savePrefixes() {
+    fs.writeFile(__dirname + '/../database/ServerPrefixes-temp.json', JSON.stringify(serverSettings, null, 4), error => {
+        if (error) console.log(error)
+        else {
+            fs.stat(__dirname + '/../database/ServerPrefixes-temp.json', (err, stats) => {
+                if (err) console.log(err)
+                else if (stats["size"] < 5) console.log("ERROR due to size");
+                else {
+                    fs.rename(__dirname + '/../database/ServerPrefixes-temp.json', __dirname + '/../database/ServerPrefixes.json', e => {
+                        if (e) console.log(e);
+                    });
+                }
+            });
+        }
+    })
 }
