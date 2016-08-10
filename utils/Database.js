@@ -117,9 +117,10 @@ function changePrefix(guild, newPrefix) {
 }
 exports.changePrefix = changePrefix;
 
-exports.checkPrefix = (guild, prefix) => {
-
+exports.checkPrefix = (guild) => {
+    if (guildPrefixes.hasOwnProperty(guild.id)) return guildPrefixes[guild.id];
 }
+
 
 function savePrefixes() {
     fs.writeFile(__dirname + '/../database/guildPrefixes-temp.json', JSON.stringify(guildPrefixes, null, 4), error => {
