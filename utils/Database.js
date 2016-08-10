@@ -1,4 +1,5 @@
 let mysql = require('mysql'),
+    fs = require('fs'),
     options = require('./../options/options.json'),
     pool = mysql.createPool({
         connectionLimit: 100,
@@ -8,7 +9,8 @@ let mysql = require('mysql'),
         password: 'Boudreau18!',
         database: 'database'
     }),
-    utils = require('./utils.js');
+    utils = require('./utils.js'),
+    guildPrefixes = require('./../database/guildPrefixes.json')
 
 function addGuild(guild) {
     return new Promise((resolve, reject) => {
@@ -88,24 +90,47 @@ exports.checkSetting = (guild, setting) => {
     });
 }
 
-function changePrefix(guild, newPrefix) {
-    return new Promise((resolve, reject) => {});
+function addGuildtoJson(guild) {
+    return new Promise((resolve, reject) => {
+        guildPrefixes[guild.id] = {};
+        resolve();
+    });
 }
+
+function changePrefix(guild, newPrefix) {
+    return new Promise((resolve, reject) => {
+        if (guildPrefixes.hasOwnProperty(guild.id)) {
+            if (newPrefix === options.prefix) {
+                delete guildPrefixes[guild.id];
+                resolve();
+            } else if (newPrefix.includes(' ')) {
+                reject('Prefixes cannot contain spaces');
+            } else {
+                guildPrefixes[guild.id] = newPrefix;
+                resolve();
+            }
+        } else {
+            addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(() => resolve()))
+        }
+        savePrefixes();
+    });
+}
+exports.changePrefix = changePrefix;
 
 exports.checkPrefix = (guild, prefix) => {
 
 }
 
 function savePrefixes() {
-    fs.writeFile(__dirname + '/../database/ServerPrefixes-temp.json', JSON.stringify(serverSettings, null, 4), error => {
-        if (error) console.log(error)
+    fs.writeFile(__dirname + '/../database/guildPrefixes-temp.json', JSON.stringify(guildPrefixes, null, 4), error => {
+        if (error) console.log(errorC(error))
         else {
-            fs.stat(__dirname + '/../database/ServerPrefixes-temp.json', (err, stats) => {
-                if (err) console.log(err)
+            fs.stat(__dirname + '/../database/guildPrefixes-temp.json', (err, stats) => {
+                if (err) console.log(errorC(err))
                 else if (stats["size"] < 5) console.log("ERROR due to size");
                 else {
-                    fs.rename(__dirname + '/../database/ServerPrefixes-temp.json', __dirname + '/../database/ServerPrefixes.json', e => {
-                        if (e) console.log(e);
+                    fs.rename(__dirname + '/../database/guildPrefixes-temp.json', __dirname + '/../database/guildPrefixes.json', e => {
+                        if (e) console.log(errorC(e));
                     });
                 }
             });
