@@ -6,13 +6,14 @@ module.exports = {
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (/^\d+$/.test(suffix)) {
-            if (!msg.channel.permissionsOf(bot.user.id).json.manageMessages) {
+            if (!msg.channel.permissionsOf(bot.user.id).has('manageMessages')) {
+                console.log('yes')
                 bot.getMessages(msg.channel.id, 100).then(messages => {
                     let toDelete = parseInt(suffix, 10)
                     let dones = 0;
                     for (i = 0; i <= 100; i++) {
                         if (toDelete <= 0 || i === 100) {
-                            bot.createMessage(msg.channel.id, `Finished cleaning **${dones} + "** message(s) in ${msg.channel.mention}`).then(message => utils.messageDelete(bot, message));
+                            bot.createMessage(msg.channel.id, `Finished cleaning **${dones}** message(s) in ${msg.channel.mention}`).then(message => utils.messageDelete(bot, message));
                             return;
                         }
                         if (messages[i].author.id === bot.user.id) {
