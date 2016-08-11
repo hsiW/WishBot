@@ -60,13 +60,13 @@ bot.on("ready", () => {
 bot.on("messageCreate", msg => {
     if ((msg.author.bot && msg.author.id !== "174669219659513856") || !msg.channel.guild) return;
     else {
-        let prefix = Database.checkPrefix(msg.channel.guild) != undefined ? Database.checkPrefix(msg.channel.guild) : options.prefix;
+        let msgPrefix = Database.checkPrefix(msg.channel.guild) != undefined ? Database.checkPrefix(msg.channel.guild) : options.prefix;
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
-        if (msg.content.match(regex)) msg.content = msg.content.replace(regex, options.prefix + "chat");
+        if (msg.content.match(regex)) msg.content = msg.content.replace(regex, msgPrefix + "chat");
         if (msg.content.startsWith(options.prefix + "prefix")) processCmd(bot, msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2), "prefix", options.prefix);
         else if (msg.content === "pls reload" && admins.indexOf(msg.author.id) > -1) reloadAll(msg);
-        else if (prefix) {
-            let formatedMsg = msg.content.substring(options.prefix.length, msg.content.length);
+        else if (msg.content.startsWith(msgPrefix)) {
+            let formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
             if (cmdTxt === 'channelmute') processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
             else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel).then(() => processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt));
@@ -119,8 +119,8 @@ bot.on("error", err => {
     console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
 })
 
-bot.on("disconnect", () => {
-    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED"));
+bot.on("disconnect", err => {
+    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED: " + err));
     process.exit(0);
 })
 

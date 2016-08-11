@@ -1,8 +1,7 @@
 let Cleverbot = require('cleverbot-node'),
     onee = new Cleverbot,
-    decode = require('entities'),
-    emoji = ["💁", "🙅", "🙆", "🙋", "🙎", "🙍", "💇", "💆"];
-    
+    decode = require('entities');
+
 Cleverbot.prepare(() => {});
 
 module.exports = {
@@ -33,7 +32,7 @@ function Clever(bot, msg) {
                 response.message = response.message.replace(/\[(b|\/b)\]/g, "**");
                 response.message = response.message.replace(/\|/g, "\\u");
                 response.message = unicodeToChar(response.message);
-                bot.createMessage(msg.channel.id, emoji[Math.floor(Math.random() * (emoji.length))] + " - " + decode.decodeHTML(response.message));
+                bot.createMessage(msg.channel.id, "🗨 - " + decode.decodeHTML(response.message));
             }
         });
     });

@@ -1,9 +1,7 @@
 let utils = require('./../utils/utils.js')
 
 module.exports = function(bot, msg, suffix, cmdTxt) {
-    /*if (serverSettings.hasOwnProperty(msg.channel.guild.id) && serverSettings[msg.channel.guild.id][cmdTxt] === false) return;
-    else */
-    if ((commands[cmdTxt].type === "mod" || commands[cmdTxt].type === "mod") && !((msg.channel.permissionsOf(msg.author.id).json['manageRoles']) || admins.indexOf(msg.author.id) > -1)) return;
+    if ((commands[cmdTxt].type === "mod" || commands[cmdTxt].type === "mod") && !((msg.channel.permissionsOf(msg.author.id).has('manageGuild')) || admins.indexOf(msg.author.id) > -1)) return;
     else if (commands[cmdTxt].type === "admin" && admins.indexOf(msg.author.id) === -1) return;
     else {
         processCmd(bot, msg, suffix, cmdTxt);
