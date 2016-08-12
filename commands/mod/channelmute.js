@@ -4,6 +4,7 @@ let Database = require('./../../utils/Database.js'),
 module.exports = {
     usage: '',
     delete: true,
+    togglable: false,
     cooldown: 5,
     process: (bot, msg) => {
         Database.checkChannel(msg.channel).then(() => {

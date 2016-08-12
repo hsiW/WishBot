@@ -69,7 +69,7 @@ bot.on("messageCreate", msg => {
             let formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
             if (cmdTxt === 'channelmute') processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
-            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel).then(() => processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt));
+            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel).then(() => Database.checkCommand(msg.channel.guild, cmdTxt).then(() => processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt)));
         }
     }
 });
