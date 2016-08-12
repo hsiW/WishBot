@@ -25,7 +25,7 @@ module.exports = {
                     formattedSunset = (sunset.getHours()) + ':' + ("0" + sunset.getMinutes()).substr(-2),
                     msgString = "🌎 __**Weather for " + weath.name + ", " + weath.sys.country + ":**__ • (*" + weath.coord.lon + ", " + weath.coord.lat + "*)";
                 msgString += "\n**" + weatherC + "Current Weather Conditions:** " + weath.weather[0].description;
-                msgString += "\n**:sweat: Humidity:** " + weath.main.humidity + "% - **🌆 Current Temperature:** " + Math.round(weath.main.temp - 273.15) + "°C / " + Math.round(((weath.main.temp - 273.15) * 1.8) + 32) + "°F";
+                msgString += "\n**:sweat: Humidity:** " + weath.main.humidity + "% - **🌡 Current Temperature:** " + Math.round(weath.main.temp - 273.15) + "°C / " + Math.round(((weath.main.temp - 273.15) * 1.8) + 32) + "°F";
                 msgString += "\n**:cloud: Cloudiness:** " + weath.clouds.all + "% - **💨 Wind Speed:** " + weath.wind.speed + " m/s [*" + compass[(direction % 16)] + "*]";
                 msgString += "\n**🌄 Sunrise:** " + formattedSunrise + " UTC / **🌇 Sunset:** " + formattedSunset + " UTC";
                 bot.createMessage(msg.channel.id, msgString);

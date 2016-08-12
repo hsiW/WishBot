@@ -14,7 +14,7 @@ let mysql = require('mysql'),
 
 function addGuild(guild) {
     return new Promise((resolve, reject) => {
-        pool.query('INSERT INTO server_settings SET guild_id = ' + guild.id, (err, result) => {
+        pool.query('INSERT INTO server_settings SET guild_id = ?', guild.id, (err, result) => {
             if (err) reject(err);
             else resolve();
         });
@@ -30,6 +30,7 @@ exports.removeGuild = (guild) => {
     });
 }
 
+//Ignore Channel Stuffs
 exports.ignoreChannel = channel => {
     return new Promise((resolve, reject) => {
         pool.query('INSERT INTO channel_ignores SET channel_id = ' + channel.id, (err, result) => {
@@ -58,18 +59,50 @@ exports.checkChannel = channel => {
     });
 }
 
-exports.toggleCommand = (guild, command) => {
-
+//Command Stuffs
+function toggleCommand(guild, command) {
+    return new Promise((resolve, reject) => {
+        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+            if (result.length === 0) addGuild(guild).then(() => toggleCommand(guild, command).then(action => resolve(action))).catch(err => reject(err))
+            else {
+                if (result.disabled_commands != null) {
+                    var disabled = JSON.parse(result.disabled_commands);
+                    if (disabled.hasOwnProperty(command)) delete disabled[command];
+                    else disabled[command] = true;
+                } else {
+                    var disabled = {};
+                    disabled[command] = true;
+                }
+                let data = {
+                    guild_id: guild.id,
+                    disabled_commands: JSON.stringify(disabled)
+                }
+                saveGuild(guild, data).then(() => resolve(`Sucessfully toggled ${command} to `))
+            }
+        });
+    });
 }
+
+function saveGuild(guild, data) {
+    return new Promise((resolve, reject) => {
+        pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, data, (err, res) => {
+            if (err) console.log(err);
+            else resolve();
+        })
+    });
+}
+
+exports.toggleCommand = toggleCommand;
 
 exports.checkCommand = (guild, command) => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM server_settings WHERE guild = ' + guild.id, (err, result) => {
-            if (err) {
-                console.log(errorC(err));
-                reject();
-            } else if (result.length <= 1) resolve();
-            else reject();
+        pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+            if (err || result.length === 0) resolve();
+            else {
+                let disabled = JSON.parse(result[0].disabled_commands)
+                if (disabled[command] != undefined) reject();
+                else resolve();
+            }
         });
     });
 }
@@ -90,6 +123,7 @@ exports.checkSetting = (guild, setting) => {
     });
 }
 
+//Prefix Stuff
 function addGuildtoJson(guild) {
     return new Promise((resolve, reject) => {
         guildPrefixes[guild.id] = {};
