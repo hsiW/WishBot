@@ -1,6 +1,6 @@
 {
   "name": "wishbot",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "main": "WishBot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

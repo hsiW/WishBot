@@ -1,4 +1,5 @@
 let quotes = require('./../../database/quote.json'),
+    fs = require('fs'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {

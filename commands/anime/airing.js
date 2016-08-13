@@ -25,7 +25,7 @@ function processAnime(bot, msg, suffix) {
     if (/^[0-9]$/.test(suffix) || !suffix) {
         let currentAnime = airingAnime.map(title => title.title_english + " | " + weekday[new Date(title.airing.time).getDay()]);
         let pagedTitles = utils.splitArray(currentAnime, 10);
-        ((suffix - 1 <= pagedTitles.length) && suffix) ? page = suffix - 1 : page = 0;
+        ((suffix - 1 < pagedTitles.length) && suffix) ? page = suffix - 1 : page = 0;
         let msgString = `\`\`\`markdown\n### Airing Anime for the ${utils.toTitleCase(seasons[getSeason()])} Season: (Page ${page+1}/${pagedTitles.length}) ###\n`;
         msgString += pagedTitles[page].map((value, position) => '[' + (position + 1 + (page * 10)) + ']: ' + value).join('\n');
         bot.createMessage(msg.channel.id, msgString + "```").catch();

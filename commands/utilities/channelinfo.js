@@ -7,8 +7,8 @@ module.exports = {
         toSend += `\n           ID: ${msg.channel.id}`;
         toSend += `\nCreation Date: ${new Date(msg.channel.createdAt).toUTCString()}`;
         toSend += `\n     Position: #${msg.channel.position}`;
-        toSend += `\n         Type: ${msg.channel.type}`;
-        toSend += `\n\`\`\`**Topic:** ${msg.channel.topic}`;
+        toSend += `\n         Type: ${msg.channel.type}\`\`\``;
+        if (msg.channel.topic != "") toSend += `\n**Topic:** ${msg.channel.topic}`;
         bot.createMessage(msg.channel.id, toSend).catch();
     }
 }

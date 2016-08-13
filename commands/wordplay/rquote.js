@@ -4,7 +4,7 @@ let quotes = require('./../../database/quote.json'),
 module.exports = {
     usage: "Prints a random quote from The People Chat's quote channel\n⚠Will not work on any other server⚠",
     delete: true,
-    privateServer: ['87601506039132160', '180142674353979392'],
+    privateServer: ['87601506039132160'],
     cooldown: 2,
     type: "words",
     process: function(bot, msg, suffix) {

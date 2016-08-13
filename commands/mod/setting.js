@@ -7,7 +7,7 @@ module.exports = {
     togglable: false,
     cooldown: 5,
     process: (bot, msg, suffix) => {
-        if (suffix.toLowerCase() === 'tableflip') Database.toggleSetting(msg.channel.guild, suffix).then(result => bot.createMessage(msg.channel.id, "⚙ " + result + " ⚙").then(message => utils.messageDelete(bot, message))).catch()
+        if (suffix.toLowerCase() === 'tableflip') Database.toggleSetting(msg.channel.guild, suffix, null, msg.channel).then(result => bot.createMessage(msg.channel.id, "⚙ " + result + " ⚙").then(message => utils.messageDelete(bot, message))).catch()
         else if (suffix.toLowerCase().startsWith('welcome') || suffix.toLowerCase().startsWith('leave')) {
             let setting = suffix.split(' ')[0],
                 message = suffix.substring(setting.length + 1, suffix.length);
