@@ -18,6 +18,6 @@ module.exports = {
                 msgString += "\n[" + (i + 1) + "]: " + usersCache[i].username + " #" + usersCache[i].discriminator;
             }
         }
-        bot.createMessage(msg.channel.id, msgString + "```");
+        bot.createMessage(msg.channel.id, msgString + "```").catch();
     }
 }

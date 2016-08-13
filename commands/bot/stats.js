@@ -8,6 +8,6 @@ module.exports = {
         statMsg += `\nTotal Channel(s): ${(Object.keys(bot.channelGuildMap).length + bot.privateChannels.size)}`;
         statMsg += "\nTotal User(s): " + bot.users.size;
         statMsg += `\nMemory Usage: ${(process.memoryUsage().rss / 1024 / 1000).toFixed(2)}MB`;
-        bot.createMessage(msg.channel.id, statMsg + '```');
+        bot.createMessage(msg.channel.id, statMsg + '```').catch();
     }
 }

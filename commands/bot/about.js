@@ -16,6 +16,6 @@ module.exports = {
         toSend += "\n\n% Use " + prefix + "help for command info."
         toSend += "\n% Support Server: https://discord.gg/0lBiROCNVaDaE8rR";
         toSend += "\n% Source: https://github.com/hsiw/Wishbot";
-        bot.createMessage(msg.channel.id, toSend + "```")
+        bot.createMessage(msg.channel.id, toSend + "```").catch()
     }
 }

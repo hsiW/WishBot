@@ -9,6 +9,6 @@ module.exports = {
                 file: response.data,
                 name: 'servericon.jpg'
             });
-        });
+        }).catch();
     }
 }

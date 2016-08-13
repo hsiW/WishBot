@@ -32,7 +32,7 @@ function Clever(bot, msg) {
                 response.message = response.message.replace(/\[(b|\/b)\]/g, "**");
                 response.message = response.message.replace(/\|/g, "\\u");
                 response.message = unicodeToChar(response.message);
-                bot.createMessage(msg.channel.id, "🗨 - " + decode.decodeHTML(response.message));
+                bot.createMessage(msg.channel.id, "🗨 - " + decode.decodeHTML(response.message)).catch();
             }
         });
     });

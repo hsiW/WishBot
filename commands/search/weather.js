@@ -29,7 +29,7 @@ module.exports = {
                 msgString += "\n**:cloud: Cloudiness:** " + weath.clouds.all + "% - **💨 Wind Speed:** " + weath.wind.speed + " m/s [*" + compass[(direction % 16)] + "*]";
                 msgString += "\n**🌄 Sunrise:** " + formattedSunrise + " UTC / **🌇 Sunset:** " + formattedSunset + " UTC";
                 bot.createMessage(msg.channel.id, msgString);
-            } else bot.createMessage(msg.channel.id, "There was an error getting the weather, please try again later.");
-        }).catch(err => bot.createMessage(msg.channel.id, "There was an error getting the weather: ```" + err+"```"))
+            } else bot.createMessage(msg.channel.id, "There was an error getting the weather, please try again later.").catch();
+        }).catch(err => bot.createMessage(msg.channel.id, "There was an error getting the weather: ```" + err + "```")).catch();
     }
 } //Should clean up code but so much work so i'll do it some other day

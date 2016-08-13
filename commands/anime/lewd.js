@@ -5,6 +5,6 @@ module.exports = {
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {
-        bot.createMessage(msg.channel.id, lewd[Math.floor(Math.random() * (lewd.length))]);
+        bot.createMessage(msg.channel.id, lewd[Math.floor(Math.random() * (lewd.length))]).catch();
     }
 }

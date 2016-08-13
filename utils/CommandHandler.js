@@ -15,11 +15,11 @@ function processCmd(bot, msg, suffix, cmdTxt) {
     else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) bot.createMessage(msg.channel.id, `${utils.toTitleCase(cmdTxt)} is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
     else {
         try {
-            if (cmd.delete) bot.deleteMessage(msg.channel.id, msg.id);
+            if (cmd.delete) bot.deleteMessage(msg.channel.id, msg.id).catch();
             cmd.process(bot, msg, suffix);
             console.log(serverC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmdTxt) + " was used by " + userC(msg.author.username));
         } catch (err) {
-            bot.createMessage(msg.channel.id, "```" + err + "```");
+            bot.createMessage(msg.channel.id, "```" + err + "```").catch();
             console.log(errorC(err.stack));
         }
     }

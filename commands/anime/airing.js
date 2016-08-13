@@ -28,7 +28,7 @@ function processAnime(bot, msg, suffix) {
         ((suffix - 1 <= pagedTitles.length) && suffix) ? page = suffix - 1 : page = 0;
         let msgString = `\`\`\`markdown\n### Airing Anime for the ${utils.toTitleCase(seasons[getSeason()])} Season: (Page ${page+1}/${pagedTitles.length}) ###\n`;
         msgString += pagedTitles[page].map((value, position) => '[' + (position + 1 + (page * 10)) + ']: ' + value).join('\n');
-        bot.createMessage(msg.channel.id, msgString + "```").catch(console.log);
+        bot.createMessage(msg.channel.id, msgString + "```").catch();
     } else if (airingAnime.find(title => isAnime(title, suffix))) {
         let anime = airingAnime.find(title => isAnime(title, suffix));
         let msgString = '```ruby\n';
@@ -37,8 +37,8 @@ function processAnime(bot, msg, suffix) {
         msgString += `Japanese Title: ${anime.title_japanese}\n\n`;
         msgString += `Next Episode: ${anime.airing.next_episode}/${anime.total_episodes || '?'} | Airing: ${(new Date(anime.airing.time)).toUTCString()}\n`;
         msgString += `Time Til Airing: ${utils.secondsToString(anime.airing.countdown)}`
-        bot.createMessage(msg.channel.id, msgString + "```")
-    } else bot.createMessage(msg.channel.id, 'No Airing Anime found called `' + suffix + '`, **' + msg.author.username + '**-senpai.').then(message => utils.messageDelete(bot, message, null));
+        bot.createMessage(msg.channel.id, msgString + "```").catch()
+    } else bot.createMessage(msg.channel.id, 'No Airing Anime found called `' + suffix + '`, **' + msg.author.username + '**-senpai.').then(message => utils.messageDelete(bot, message)).catch();
 }
 
 function isAiring(title) {

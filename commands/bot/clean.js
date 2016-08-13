@@ -17,13 +17,13 @@ module.exports = {
                             return;
                         }
                         if (messages[i].author.id === bot.user.id) {
-                            bot.deleteMessage(msg.channel.id, messages[i].id).catch(err => errorC(err.stack));
+                            bot.deleteMessage(msg.channel.id, messages[i].id).catch();
                             dones++;
                             toDelete--;
                         }
                     }
-                }).catch(err => console.log(errorC(err.stack))).catch(console.log);
-            } else bot.purgeChannel(msg.channel.id, parseInt(suffix), message => message.author.id === bot.user.id).then(count => bot.createMessage(msg.channel.id, `Finished cleaning  **${count}** bot messages in last **${suffix}** message(s) of ${msg.channel.mention}, **${msg.author.username}**-senpai.`).then(message => utils.messageDelete(bot, message))).catch(err => errorC(err)).catch(console.log);
-        } else bot.createMessage(msg.channel.id, "Using the clean command requires a number, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message));
+                }).catch();
+            } else bot.purgeChannel(msg.channel.id, parseInt(suffix), message => message.author.id === bot.user.id).then(count => bot.createMessage(msg.channel.id, `Finished cleaning  **${count}** bot messages in last **${suffix}** message(s) of ${msg.channel.mention}, **${msg.author.username}**-senpai.`).then(message => utils.messageDelete(bot, message))).catch();
+        } else bot.createMessage(msg.channel.id, "Using the clean command requires a number, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message)).catch();
     }
 }

@@ -3,6 +3,6 @@ module.exports = {
     cooldown: 2,
     process: function(bot, msg, suffix) {
         if (!suffix) suffix = "echo";
-        bot.createMessage(msg.channel.id, `💭 - ${suffix}`)
+        bot.createMessage(msg.channel.id, `💭 - ${suffix}`).catch();
     }
 }

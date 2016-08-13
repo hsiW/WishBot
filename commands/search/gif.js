@@ -11,8 +11,8 @@ module.exports = {
             rating: 'g',
             fmt: 'json'
         }, (err, data) => {
-            if (err || data.data.length === 0) bot.createMessage(msg.channel.id, "There was an error with that request: ```" + err + "```").then(message => utils.messageDelete(bot, message));
-            else bot.createMessage(msg.channel.id, "With the tags: **(Tag:** *" + (suffix ? suffix : "Random GIF") + "* **)** I found this gif, **" + msg.author.username + "**-senpai:\n" + data.data.url);
+            if (err || data.data.length === 0) bot.createMessage(msg.channel.id, "There was an error with that request: ```" + err + "```").then(message => utils.messageDelete(bot, message)).catch();
+            else bot.createMessage(msg.channel.id, "With the tags: **(Tag:** *" + (suffix ? suffix : "Random GIF") + "* **)** I found this gif, **" + msg.author.username + "**-senpai:\n" + data.data.url).catch();
         });
     }
 }

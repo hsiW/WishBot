@@ -8,9 +8,7 @@ module.exports = {
             messages.forEach(index => {
                 msgString += "\n\n" + index.content;
             });
-            bot.getDMChannel(msg.author.id).then(privateChannel =>
-                bot.createMessage(privateChannel.id, msgString)
-            ).catch(err => console.log(errorC(err.stack)))
-        }).catch(err => console.log(errorC(err)));
+            bot.getDMChannel(msg.author.id).then(privateChannel => bot.createMessage(privateChannel.id, msgString))
+        }).catch()
     }
 }

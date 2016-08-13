@@ -15,7 +15,7 @@ module.exports = {
     process: (bot, msg) => {
         pool.query('SELECT * FROM catgirl ORDER BY RAND() LIMIT 1', (err, rows, res) => {
             if (err) console.log(errorC('Error while performing Query'));
-            else bot.createMessage(msg.channel.id, rows[0].url);
+            else bot.createMessage(msg.channel.id, rows[0].url).catch();
         });
     }
 }

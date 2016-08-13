@@ -44,16 +44,16 @@ function get_image(bot, msg, apiURL, query) {
             'Authorization': 'Client-ID ' + options.imgur_id
         }
     }).then(response => {
-        if (response.status != 200) bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai but I got the status code ```" + result.statusCode).then(message => utils.messageDelete(bot, message, null));
+        if (response.status != 200) bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai but I got the status code ```" + result.statusCode).then(message => utils.messageDelete(bot, message)).catch();
         else if (response.data) {
             let body = response.data;
             if (body.hasOwnProperty("data") && body.data.length !== 0) {
                 response = body.data[Math.floor(Math.random() * (body.data.length))];
-                let postedDate = new Date(0);
-                let temp = "";
+                let postedDate = new Date(0),
+                    temp = "";
                 if (response.link != undefined) {
                     if (response.nsfw === true) {
-                        bot.createMessage(msg.channel.id, "Your search for " + query + " was deemed to be too lewd, Senpai\nhttp://i.imgur.com/jKLnvR7.png").then(message => utils.messageDelete(bot, message, null));
+                        bot.createMessage(msg.channel.id, "Your search for " + query + " was deemed to be too lewd, Senpai\nhttp://i.imgur.com/jKLnvR7.png").then(message => utils.messageDelete(bot, message)).catch();
                         return;
                     }
                     postedDate.setUTCSeconds(response.datetime)
@@ -61,9 +61,9 @@ function get_image(bot, msg, apiURL, query) {
                         temp = "\nDescription: " + response.description;
                         temp = temp.replace(/.*?:\/\//g, "");
                     }
-                    bot.createMessage(msg.channel.id, "I searched Imgur for **\"" + query + "\"** and found this, **" + msg.author.username + "**-senpai:\n```ruby\nTitle: " + response.title + "" + temp + "\nDate Created: " + postedDate.toUTCString() + "```" + response.link);
-                } else bot.createMessage(msg.channel.id, "I'm sorry but that search for \"**" + query + "**\" did not get any results, **" + msg.author.username + "**-senpai").then(message => utils.messageDelete(bot, message, null));
-            } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "**-senpai, I'm sorry but that search for \"**" + query + "**\" did not get any results.").then(message => utils.messageDelete(bot, message, null));
+                    bot.createMessage(msg.channel.id, "I searched Imgur for **\"" + query + "\"** and found this, **" + msg.author.username + "**-senpai:\n```ruby\nTitle: " + response.title + "" + temp + "\nDate Created: " + postedDate.toUTCString() + "```" + response.link).catch();
+                } else bot.createMessage(msg.channel.id, "I'm sorry but that search for \"**" + query + "**\" did not get any results, **" + msg.author.username + "**-senpai").then(message => utils.messageDelete(bot, message)).catch();
+            } else bot.createMessage(msg.channel.id, "**" + msg.author.username + "**-senpai, I'm sorry but that search for \"**" + query + "**\" did not get any results.").then(message => utils.messageDelete(bot, message)).catch();
         }
-    }).catch(error => bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```").then(message => utils.messageDelete(bot, message, null)));
+    }).catch(error => bot.createMessage(msg.channel.id, "I'm sorry **" + msg.author.username + "**-senpai there was an error: ```" + error + "```").then(message => utils.messageDelete(bot, message))).catch();
 }

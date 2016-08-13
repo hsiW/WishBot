@@ -169,7 +169,7 @@ function processProfile(bot, msg, person) {
             if (user.twitch != null) msgArray.push(`🎮 **Twitch:** ${user.twitch}`);
             if (user.bio != null) msgArray.push(`📚 **Bio:** ${user.bio}`);
         }
-        bot.createMessage(msg.channel.id, msgArray.join('\n'));
+        bot.createMessage(msg.channel.id, msgArray.join('\n')).catch();
     })
 }
 

@@ -61,6 +61,7 @@ bot.on("messageCreate", msg => {
     if ((msg.author.bot && msg.author.id !== "174669219659513856") || !msg.channel.guild) return;
     else {
         let msgPrefix = Database.checkPrefix(msg.channel.guild) != undefined ? Database.checkPrefix(msg.channel.guild) : options.prefix;
+        if (msg.content === "(╯°□°）╯︵ ┻━┻") Database.checkSetting(msg.channel.guild, 'tableflip').then(() => bot.createMessage(msg.channel.id, tablesUnFlipped[Math.floor(Math.random() * (tablesUnFlipped.length))])).catch()
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
         if (msg.content.match(regex)) msg.content = msg.content.replace(regex, msgPrefix + "chat");
         if (msg.content.startsWith(options.prefix + "prefix")) processCmd(bot, msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2), "prefix", options.prefix);
@@ -114,6 +115,24 @@ function evalText(msg, suffix) {
     if (result && typeof result !== "object") bot.createMessage(msg.channel.id, result);
     else if (result && typeof result === "object") bot.createMessage(msg.channel.id, "```xl\n" + result + "```");
 }
+
+bot.on("guildMemberAdd", (guild, member) => {
+    if (guild) {
+        Database.checkSetting(guild, 'welcome').then(response => {
+            let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention);
+            bot.createMessage(response.channel, message);
+        }).catch();
+    }
+})
+
+bot.on("guildMemberRemove", (guild, member) => {
+    if (guild) {
+        Database.checkSetting(guild, 'leave').then(response => {
+            let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username);
+            bot.createMessage(response.channel, message)
+        }).catch()
+    }
+})
 
 bot.on("error", err => {
     console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));

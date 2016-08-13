@@ -6,7 +6,7 @@ module.exports = {
     delete: true,
     cooldown: 15,
     process: (bot, msg, suffix) => {
-        if (!suffix || suffix.split('|').length < 2) bot.createMessage(msg.channel.id, `I can't create a strawpoll from that **${msg.author.username}**-senpai.`).then(message => utils.messageDelete(bot, message, null));
+        if (!suffix || suffix.split('|').length < 2) bot.createMessage(msg.channel.id, `I can't create a strawpoll from that **${msg.author.username}**-senpai.`).then(message => utils.messageDelete(bot, message));
         else {
             let title = msg.author.username + "'s Poll";
             if (/\[(.*?)\]/.test(suffix)) {
@@ -26,9 +26,9 @@ module.exports = {
                 }
             }).then(response => {
                 console.log(response)
-                if (response.status == 200) bot.createMessage(msg.channel.id, `**${msg.author.username}** created a poll with the question '${title}'\n**<http://strawpoll.me/${response.data.id}>** 📝`);
-                else bot.createMessage(msg.channel.id, `Got status code ${response.statusCode}`).then(message => utils.messageDelete(bot, message));
-            }).catch(error => bot.createMessage(msg.channel.id, error).then(message => utils.messageDelete(bot, message)))
+                if (response.status == 200) bot.createMessage(msg.channel.id, `**${msg.author.username}** created a poll with the question '${title}'\n**<http://strawpoll.me/${response.data.id}>** 📝`).catch();
+                else bot.createMessage(msg.channel.id, `Got status code ${response.statusCode}`).then(message => utils.messageDelete(bot, message)).catch();
+            }).catch(error => bot.createMessage(msg.channel.id, error).then(message => utils.messageDelete(bot, message))).catch();
         }
     }
 }

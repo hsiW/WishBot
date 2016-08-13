@@ -5,7 +5,7 @@ module.exports = {
     delete: true,
     cooldown: 2,
     process: (bot, msg, suffix) => {
-        if (suffix && /^\d+$/.test(suffix) && quote.length >= parseInt(suffix) - 1) bot.createMessage(msg.channel.id, quote[suffix - 1]);
-        else bot.createMessage(msg.channel.id, quote[Math.floor(Math.random() * (quote.length))]);
+        if (suffix && /^\d+$/.test(suffix) && quote.length >= parseInt(suffix) - 1) bot.createMessage(msg.channel.id, quote[suffix - 1]).catch();
+        else bot.createMessage(msg.channel.id, quote[Math.floor(Math.random() * (quote.length))]).catch();
     }
 }

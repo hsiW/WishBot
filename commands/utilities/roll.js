@@ -4,6 +4,6 @@ module.exports = {
     process: (bot, msg, suffix) => {
         let max = 6;
         if (suffix) max = suffix;
-        bot.createMessage(msg.channel.id, `**${msg.author.username}** rolled a **${(Math.floor(Math.random() * max) + 1)}**! 🎲`);
+        bot.createMessage(msg.channel.id, `**${msg.author.username}** rolled a **${(Math.floor(Math.random() * max) + 1)}**! 🎲`).catch();
     }
 }

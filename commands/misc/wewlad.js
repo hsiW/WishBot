@@ -9,7 +9,7 @@ module.exports = {
             bot.createMessage(msg.channel.id, null, {
                 file: response.data,
                 name: 'wewlad.png'
-            }).catch(err => console.log(errorC(err)));
-        });
+            });
+        }).catch();
     }
 }

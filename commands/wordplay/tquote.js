@@ -7,11 +7,11 @@ module.exports = {
     privateServer: ['87601506039132160'],
     cooldown: 2,
     process: (bot, msg, suffix) => {
-        if (!suffix) bot.createMessage(msg.channel.id, "You'll need to have a quote to quote something, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message, null));
+        if (!suffix) bot.createMessage(msg.channel.id, "You'll need to have a quote to quote something, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message)).catch();
         else bot.createMessage("136558567082819584", "__From text chat:__ \n" + suffix).then(message => {
             quotes.push(message.content);
             saveQuotes();
-        });
+        }).catch();
     }
 }
 

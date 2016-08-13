@@ -37,9 +37,9 @@ module.exports = {
                                 bot.createMessage(msg.channel.id, decode.decodeHTML(response)).catch(error => console.log(errorC(error)));
                             })
                             .catch(error => console.log(errorC(error)));
-                    } else bot.createMessage(msg.channel.id, 'No characters found named `' + suffix + '`, **' + msg.author.username + '**-senpai.').then(message => utils.messageDelete(bot, message, null));
+                    } else bot.createMessage(msg.channel.id, 'No characters found named `' + suffix + '`, **' + msg.author.username + '**-senpai.').then(message => utils.messageDelete(bot, message)).catch();
                 })
                 .catch(error => console.log(errorC(error)));
-        } else bot.createMessage(msg.channel.id, 'A name is required to search.').then(message => utils.messageDelete(bot, message, null));
+        } else bot.createMessage(msg.channel.id, 'A name is required to search.').then(message => utils.messageDelete(bot, message)).catch();
     }
 }

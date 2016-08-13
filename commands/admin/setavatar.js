@@ -12,7 +12,7 @@ module.exports = {
                         avatar: data
                     }).then(() => bot.createMessage(msg.channel.id, 'Successfully changed avatar'), err => bot.createMessage(msg.channel.id, err));
                 }
-            }).catch(console.log);
+            }).catch();
         } else {
             fs.readdir(`${__dirname}/../../avatars/`, (err, files) => {
                 let avatar = files[Math.floor(Math.random() * (files.length))];

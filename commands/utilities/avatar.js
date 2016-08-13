@@ -14,7 +14,7 @@ module.exports = {
                     file: response.data,
                     name: 'avatar.jpg'
                 });
-            });
-        } else bot.createMessage(msg.channel.id, suffix + " is not a valid user.").then(message => utils.messageDelete(bot, message, null));
+            }).catch();
+        } else bot.createMessage(msg.channel.id, suffix + " is not a valid user.").then(message => utils.messageDelete(bot, message)).catch();
     }
 }

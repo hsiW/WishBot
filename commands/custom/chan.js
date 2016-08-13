@@ -1,7 +1,7 @@
 CustomTags = require('./../../database/CustomTags.json');
 let fs = require('fs'),
     updated = false;
-    
+
 setInterval(() => {
     if (updated) {
         updated = false;
@@ -19,19 +19,19 @@ module.exports = {
             let add = suffix.substr(0, suffix.indexOf(' ')).toLowerCase();
             let toAdd = suffix.substr(suffix.indexOf(' ') + 1);
             if (CustomTags.hasOwnProperty(msg.channel.guild.id) && CustomTags[msg.channel.guild.id].hasOwnProperty(add)) bot.createMessage(msg.channel.id, add + " already exists as a command.");
-            else if (add === "add" || add === "write" || add === "delete" || add === "edit") bot.createMessage(msg.channel.id, "I'm sorry but " + add + " cannot be a command name.");
+            else if (add === "add" || add === "write" || add === "delete" || add === "edit") bot.createMessage(msg.channel.id, "I'm sorry but " + add + " cannot be a command name.").catch();
             else if (!CustomTags.hasOwnProperty(msg.channel.guild.id) && add !== "") {
                 CustomTags[msg.channel.guild.id] = {};
                 CustomTags[msg.channel.guild.id][add] = toAdd;
                 console.log(serverC("@" + msg.channel.guild.name + ": ") + botC("@WishBot") + " - Added Command " + warningC(add));
-                bot.createMessage(msg.channel.id, "🆗");
+                bot.createMessage(msg.channel.id, "🆗").catch();
                 updated = true;
             } else if (CustomTags.hasOwnProperty(msg.channel.guild.id) && !CustomTags[msg.channel.guild.id].hasOwnProperty(add) && add !== "") {
                 CustomTags[msg.channel.guild.id][add] = toAdd;
                 console.log("Added " + botC(add) + " to " + serverC(msg.channel.guild.name));
-                bot.createMessage(msg.channel.id, "🆗");
+                bot.createMessage(msg.channel.id, "🆗").catch();
                 updated = true;
-            } else bot.createMessage(msg.channel.id, "There was an error creating that command please try again.");
+            } else bot.createMessage(msg.channel.id, "There was an error creating that command please try again.").catch();
         } else if (suffix.split(" ")[0] === "delete") {
             suffix = suffix.substring((suffix.split(" ")[0].substring(1)).length + 2);
             if (CustomTags.hasOwnProperty(msg.channel.guild.id) && CustomTags[msg.channel.guild.id].hasOwnProperty(suffix)) {
@@ -44,8 +44,8 @@ module.exports = {
                         }
                         updated = true;
                     } else console.log(errorC(err));
-                });
-            } else bot.createMessage(msg.channel.id, "Cannot remove that as its not created");
+                }).catch();
+            } else bot.createMessage(msg.channel.id, "Cannot remove that as its not created").catch();
         } else if (suffix.split(" ")[0] === "edit") {
             suffix = suffix.substring((suffix.split(" ")[0].substring(1)).length + 2);
             let toEdit = suffix.substr(0, suffix.indexOf(' '));
@@ -53,13 +53,13 @@ module.exports = {
             if (CustomTags.hasOwnProperty(msg.channel.guild.id) && CustomTags[msg.channel.guild.id].hasOwnProperty(toEdit)) {
                 CustomTags[msg.channel.guild.id][toEdit] = editted;
                 bot.createMessage(msg.channel.id, "🆗");
-            } else bot.createMessage(msg.channel.id, "Cannot edit that which doesn't exist");
+            } else bot.createMessage(msg.channel.id, "Cannot edit that which doesn't exist").catch();
         } else {
-            if (!CustomTags.hasOwnProperty(msg.channel.guild.id)) bot.createMessage(msg.channel.id, "No Chans Found on this Server");
+            if (!CustomTags.hasOwnProperty(msg.channel.guild.id)) bot.createMessage(msg.channel.id, "No Chans Found on this Server").catch();
             else if (CustomTags[msg.channel.guild.id][suffix.split(" ")[0]]) bot.createMessage(msg.channel.id, CustomTags[msg.channel.guild.id][suffix.split(" ")[0]]);
             else {
                 let msgString = "Chans - " + Object.keys(CustomTags[msg.channel.guild.id]).sort().map(cmd => "`" + cmd + "`").join(", ");
-                bot.createMessage(msg.channel.id, msgString);
+                bot.createMessage(msg.channel.id, msgString).catch();
             }
         }
     }

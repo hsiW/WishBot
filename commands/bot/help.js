@@ -18,7 +18,7 @@ module.exports = {
             
         }).join(", ")}`;
             }
-            bot.createMessage(msg.channel.id, helpMsg);
+            bot.createMessage(msg.channel.id, helpMsg).catch();
         }
     }
 }

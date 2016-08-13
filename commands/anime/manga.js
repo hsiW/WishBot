@@ -36,9 +36,9 @@ module.exports = {
                     mangaString += "\n**Type:** *" + result.manga.entry[0].type + "*  **Chapters:** *" + result.manga.entry[0].chapters + "*  **Volumes:** *" + result.manga.entry[0].volumes + "*  **Score:** *" + result.manga.entry[0].score + "*";
                     mangaString += "\n" + synopsis;
                     mangaString += "\n**<http://myanimelist.net/manga/" + result.manga.entry[0].id + "/>**";
-                    bot.createMessage(msg.channel.id, mangaString).catch(console.log);
+                    bot.createMessage(msg.channel.id, mangaString).catch();
                 });
-            } else bot.createMessage(msg.channel.id, "No manga found for: \"**" + suffix + "**\"").then(message => utils.messageDelete(bot, message, null));
-        }).catch(err => console.log(errorC(err)));
+            } else bot.createMessage(msg.channel.id, "No manga found for: \"**" + suffix + "**\"").then(message => utils.messageDelete(bot, message)).catch();
+        }).catch()
     }
 }
