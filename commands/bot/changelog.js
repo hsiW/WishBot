@@ -1,13 +1,10 @@
 module.exports = {
-    usage: 'Prints out the last 5 changes for this bot.',
+    usage: 'Returns the last changelog for the bot.',
     delete: true,
     cooldown: 10,
     process: (bot, msg) => {
-        bot.getMessages('143904176613752832', 5).then(messages => {
-            let msgString = '__**Changelog**__\n';
-            messages.forEach(index => {
-                msgString += "\n\n" + index.content;
-            });
+        bot.getMessages('143904176613752832', 1).then(messages => {
+            let msgString = '__**Changelog**__\n\n' + message[0].content;
             bot.getDMChannel(msg.author.id).then(privateChannel => bot.createMessage(privateChannel.id, msgString))
         }).catch()
     }

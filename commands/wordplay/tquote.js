@@ -3,7 +3,7 @@ let quotes = require('./../../database/quote.json'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Sends a text quote to The People Chat's quote channel\n⚠Will not work on any other server⚠\n`tquote [quote]`",
+    usage: "Sends a text quote to The People Chat's quote channel.\n⚠Will not work on any other server⚠\n`tquote [quote]`",
     delete: true,
     privateServer: ['87601506039132160'],
     cooldown: 2,

@@ -2,7 +2,7 @@ let quotes = require('./../../database/quote.json'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Prints a random quote from The People Chat's quote channel\n⚠Will not work on any other server⚠",
+    usage: "Prints a random quote from The People Chat's quote channel.\n⚠Will not work on any other server⚠",
     delete: true,
     privateServer: ['87601506039132160'],
     cooldown: 2,

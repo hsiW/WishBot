@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Sends a feature request to the maker of this bot\n`request [feature to request]`',
+    usage: 'Sends a feature request to the maker of the bot\n`request [feature to request]`',
     delete: true,
     cooldown: 60,
     process: (bot, msg, suffix) => {

@@ -1,5 +1,5 @@
 module.exports = {
-    usage: "Tells everyone you'd like to play a game. Can mention the game if one is mentioned\n`letsplay [game] or [none]`",
+    usage: "Tells everyone you'd like to play a game. Can specify a game if desired. Uses an @everyone mention if the user has permission to do so.\n`letsplay [game] or [none]`",
     delete: true,
     cooldown: 10,
     process: (bot, msg, suffix) => {

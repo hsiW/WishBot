@@ -1,5 +1,5 @@
 module.exports = {
-    usage: "Outputs info about the current channel",
+    usage: "Outputs info about the current channel.",
     cooldown: 5,
     process: (bot, msg) => {
         let toSend = "```ruby\n";

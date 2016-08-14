@@ -3,14 +3,14 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Searches Imgur for an image with the mentioned terms and if no term is mentioned, Onee-chan is searched. If a subreddit is mentioned in the format `/r/[subreddit]` images from that subreddit will be returned. NSFW images will be ignored unless `--nsfw` is used\
-    \n`image [term] or /r/[subreddit], <top> or <day> or <week> or <month> or <year> or <all>, <page #>`",
+    usage: "Searches Imgur for an image with the mentioned terms and if no term is mentioned, Yuki Nagato is searched. If a subreddit is mentioned in the format /r/[subreddit] images from that subreddit will be returned.  Subreddit searches can be further refined by <top>, <day>, <week>, <month>, <year>, or <all> to specify the timeframe to seatch posts and <page #> to specify the page number to pull it from.\
+    \n`image [term] or /r/[subreddit], <timeframe>, <page #>`",
     delete: true,
     cooldown: 5,
     type: "searches",
     process: (bot, msg, suffix) => {
         let response = {};
-        let query = "Onee-chan";
+        let query = "Yuki Nagato";
         let sort = "top";
         let page = 0;
         if (suffix.split(",")[0]) query = suffix.split(",")[0];

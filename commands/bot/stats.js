@@ -1,5 +1,5 @@
 module.exports = {
-    usage: "Prints out stats for this bot",
+    usage: "Returns some basic stats for the bot.",
     delete: true,
     cooldown: 20,
     process: (bot, msg, suffix) => {

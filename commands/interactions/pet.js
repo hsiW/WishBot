@@ -1,7 +1,7 @@
 let getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
-    usage: "Pets the mentioned user or pets this bot if none mentioned\n`pet [mentioned user] or [none]`",
+    usage: "Pets the user, can take a username/nickname(can take a mention if a match isnt found) to hug that pet.`pet [user] or [none]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

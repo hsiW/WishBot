@@ -3,18 +3,19 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Prints the avatar of the user mentioned or the message authors avatar if none mentioned.\n`avatar [user mention] or [none]`",
-    delete: true,
+    usage: "Returns the users avatar, can take a username/nickname(can take a mention if a match isnt found) to return the avatar of that user.\n`avatar [user mention] or [none]`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
-        msg.mentions.length === 1 ? user = msg.channel.guild.members.get(msg.mentions[0]) : user = getName(msg, suffix);
+        msg.mentions.length === 1 ? user = msg.mentions[0] : user = getName(msg, suffix).user;
         if (user) {
-            axios.get("https://discordapp.com/api/users/" + user.user.id + "/avatars/" + user.user.avatar + ".jpg").then(response => {
-                bot.createMessage(msg.channel.id, "**" + user.user.username + "'s** avatar is:", {
+            axios.get(user.avatarURL, {
+                responseType: 'arraybuffer'
+            }).then(response => {
+                bot.createMessage(msg.channel.id, "__**" + user.username + "'s** avatar is:__", {
                     file: response.data,
                     name: 'avatar.jpg'
                 });
-            }).catch();
+            }).catch(console.log);
         } else bot.createMessage(msg.channel.id, suffix + " is not a valid user.").then(message => utils.messageDelete(bot, message)).catch();
     }
 }

@@ -1,7 +1,7 @@
 let getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
-    usage: "Punts the mentioned user into the San Francisco Bay\n`punt [mentioned user] or [none]`",
+    usage: "Punts the user, can take a username/nickname(can take a mention if a match isnt found) to punts that user.\n`punt [user] or [none]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

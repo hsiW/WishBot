@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Pings this bot, useful for checking if the bots working correctly.',
+    usage: 'Pings this bot, useful for checking if the bots working correctly. *(Not usually accurate)*',
     cooldown: 5,
     process: (bot, msg) => {
         bot.createMessage(msg.channel.id, "PONG!").then(message => {

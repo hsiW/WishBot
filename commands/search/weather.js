@@ -2,7 +2,7 @@ let axios = require('axios'),
     options = require("./../../options/options.json");
 
 module.exports = {
-    usage: "Prints out weather information for the mentioned place. Sometimes a country is requires to work properly\n`weather [location]`",
+    usage: "Returns weather information for the inputted place. Sometimes a country is required to search for the right location.\n`weather [location]`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (!suffix) suffix = "Toronto";

@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Tells everyone you`d like a call',
+    usage: "Tells everyone you'd like a call. Uses an @everyone mention if the user has permission to do so.",
     delete: true,
     cooldown: 10,
     process: (bot, msg) => {

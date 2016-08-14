@@ -2,7 +2,7 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "",
+    usage: "Returns a Urban Dictionary definition for the search terms\n`urban [search]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

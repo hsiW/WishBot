@@ -10,7 +10,7 @@ setInterval(() => {
 }, 30000);
 
 module.exports = {
-    usage: "Creates and manipulates Custom Chans.\nTo create a chan use `chan add [chan name] [chan content]`\nTo edit a chan use `chan edit [chan name] [chan content]`\nTo remove a chan use `chan delete [chan name]`\nTo view created chans use `chan`\n\nChan's are run by doing `chan [command name]`.",
+    usage: "Creates and manipulates Custom Chans(which are essentially another name for tags).\n\nTo create a chan use `chan add [chan name] [chan content]`\nTo edit a chan use `chan edit [chan name] [chan content]`\nTo remove a chan use `chan delete [chan name]`\nTo view created chans use `chan`\n\nChan's are run by doing `chan [chan name]`.",
     delete: true,
     cooldown: 2,
     process: function(bot, msg, suffix) {

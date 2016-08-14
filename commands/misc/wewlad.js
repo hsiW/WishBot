@@ -5,7 +5,9 @@ module.exports = {
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {
-        axios.get('http://i.imgur.com/iKTCAoN.png').then(response => {
+        axios.get('http://i.imgur.com/iKTCAoN.png', {
+                responseType: 'arraybuffer'
+            }).then(response => {
             bot.createMessage(msg.channel.id, null, {
                 file: response.data,
                 name: 'wewlad.png'

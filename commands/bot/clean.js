@@ -1,7 +1,7 @@
 let utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Cleans the mentioned number of this bots messages from the current channel.\n`delete [# from 1-100]`",
+    usage: "Cleans the mentioned number of this bots messages from the current channel. Can only delete 100 messages at a time without the bot having `manageMessages`, otherwise its limitless.\n`delete [number]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

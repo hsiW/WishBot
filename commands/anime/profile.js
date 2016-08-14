@@ -12,7 +12,25 @@ let mysql = require('mysql'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "lots of documentaion, profile edit [name] || [status] || [birthday] || [age] || [location] || [animeplanet] || [hummingbird] || [myanimelist] || [twitch] || [bio] || [youtube]",
+    usage: `Creates and edits a profile linked to your Discord account for use by the bot. Profiles can be called with a username/nickname/mention and will default to the users profile if nothing is inputted. Fields can be edited via \`profile [field] [input]\`, and can be cleared via \`profile [field]\`. 
+
+__The fields and their max character limits are as follows:__
+\`\`\`ruby
+       [Name]: 32 chars
+     [Status]: 64 chars
+   [Birthday]: 16 chars
+        [Age]: 8 chars
+   [Location]: Emoji Flag
+[AnimePlanet]: 20 chars
+[Hummingbird]: 20 chars
+[MyAnimeList]: 16 chars
+     [Twitch]: 25 chars
+    [Youtube]: 20 chars
+        [Bio]: 1000 chars
+\`\`\`
+**[NOTE]:** URL's cannot be used in profiles at this time.
+
+\`profile [user] or profile [field] [input]\``,
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

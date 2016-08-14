@@ -5,7 +5,7 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Prints out information about the mentioned anime\n`anime [anime title]`",
+    usage: "Returns information about the inputted anime title.\n`anime [anime title]`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
         let anime = msg.content.split(" ").slice(1).join("+");

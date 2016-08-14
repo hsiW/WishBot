@@ -1,7 +1,7 @@
 let serverUptime = require('os').uptime();
 
 module.exports = {
-    usage: 'Prints out the bots estimated uptime.',
+    usage: 'Return the bots estimated uptime as well as the servers uptime.',
     delete: true,
     cooldown: 2,
     process: (bot, msg) => {

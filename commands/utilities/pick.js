@@ -1,7 +1,7 @@
 var utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Picks from the mentioned options\n`pick [option 1], [option 2], ect`",
+    usage: "Picks from the inputted options.\n`pick [option 1] | [option 2] | ect`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
         if (!suffix || suffix.split("|").length < 2) bot.createMessage(msg.channel.id, "I can't pick from that, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message)).catch();

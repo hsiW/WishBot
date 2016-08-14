@@ -1,11 +1,13 @@
 let axios = require('axios');
 
 module.exports = {
-    usage: "Prints the server icon of the current server",
+    usage: "Returns the icon of the current server.",
     cooldown: 5,
     process: (bot, msg) => {
-        axios.get("https://discordapp.com/api/guilds/" + msg.channel.guild.id + "/icons/" + msg.channel.guild.icon + ".jpg").then(response => {
-            bot.createMessage(msg.channel.id, "**" + msg.channel.guild.name + "'s** icon is:", {
+        axios.get(msg.channel.guild.iconURL, {
+            responseType: 'arraybuffer'
+        }).then(response => {
+            bot.createMessage(msg.channel.id, "__**" + msg.channel.guild.name + "'s** icon is:__", {
                 file: response.data,
                 name: 'servericon.jpg'
             });

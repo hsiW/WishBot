@@ -1,5 +1,5 @@
 module.exports = {
-    usage: "This bot prints a weedle in the current channel",
+    usage: "Its Weedle, what do you expect?",
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {

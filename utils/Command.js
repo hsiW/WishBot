@@ -14,6 +14,7 @@ module.exports = class Command {
 
     help() {
         return `__Command usage for **${this.name}:**__
+
 ${this.usage}
 
 **Cooldown:** \`${this.cooldown}s\` | **Delete on Use:** \`${this.delete}\``;

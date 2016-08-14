@@ -5,7 +5,7 @@ let Cleverbot = require('cleverbot-node'),
 Cleverbot.prepare(() => {});
 
 module.exports = {
-    usage: "Chat with this bot using the Cleverbot API\n`chat [text]` or `@Onee-chan [text]`",
+    usage: "Chat with this bot using the Cleverbot API\n`chat [text]` or `@BotMention [text]`",
     cooldown: 2,
     type: "Cleverbot",
     process: function(bot, msg) {

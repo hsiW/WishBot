@@ -1,7 +1,7 @@
 let lewd = require('./../../lists/lewd.json');
 
 module.exports = {
-    usage: "Use this in case of lewd",
+    usage: "Returns an image to use incase of lewdness.",
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {

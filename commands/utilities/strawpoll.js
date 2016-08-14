@@ -2,7 +2,7 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Creates a Strawpoll with the mentioned options\n`strawpoll [option1] | [option2] | ect`",
+    usage: "Creates a Strawpoll with the inputted options.\n`strawpoll [option1] | [option2] | ect`",
     delete: true,
     cooldown: 15,
     process: (bot, msg, suffix) => {
