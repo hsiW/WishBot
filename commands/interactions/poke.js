@@ -1,7 +1,7 @@
 let getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
-    usage: "Pokes the mentioned user or pokes this bot if none mentioned\n`poke [mentioned user] or [none]`",
+    usage: "Poke the bot, can take a username/nickname(can take a mention if a match isn't found) to poke that user.\n`poke [mentioned user] or [none]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

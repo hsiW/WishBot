@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Gives you a link to donate to the development of this bot.',
+    usage: 'Returns a link to donate to the development of this bot.',
     delete: true,
     cooldown: 30,
     process: (bot, msg) => {

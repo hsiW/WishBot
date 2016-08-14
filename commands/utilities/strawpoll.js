@@ -2,7 +2,7 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Creates a Strawpoll with the inputted options.\n`strawpoll [option1] | [option2] | ect`",
+    usage: "Creates a Strawpoll with the inputted options. A question can be set by inputting it in []'s.\n`strawpoll [option1] | [option2] | ect`",
     delete: true,
     cooldown: 15,
     process: (bot, msg, suffix) => {
@@ -13,7 +13,7 @@ module.exports = {
                 title = suffix.match(/\[(.*?)\]/)[1];
                 suffix = suffix.replace(/\[(.*?)\]/, '');
             }
-            let choices = suffix.split('|');
+            let choices = suffix.split('|').replace(/ /g, "");
             axios.post("https://strawpoll.me/api/v2/polls", {
                 maxRedirects: 10,
                 headers: {

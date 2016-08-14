@@ -1,5 +1,5 @@
 module.exports = {
-    usage: "Returns a Lenny to the current channel",
+    usage: "Returns a Lenny to the current channel.",
     delete: true,
     cooldown: 5,
     process: (bot, msg) => {

@@ -2,7 +2,7 @@ let giphy = require('giphy-api-without-credentials')(),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Searches Giphy using the mentioned tag and returns a random gif\n`gif [tag]`",
+    usage: "Searches Giphy using the search terms and returns a random gif\n`gif [search]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

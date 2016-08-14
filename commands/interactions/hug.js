@@ -1,7 +1,7 @@
 let getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
-    usage: "Hugs the user, can take a username/nickname(can take a mention if a match isnt found) to hug that user.\n`hug [user] or [none]`",
+    usage: "Hugs the user, can take a username/nickname(can take a mention if a match isn't found) to hug that user.\n`hug [user] or [none]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

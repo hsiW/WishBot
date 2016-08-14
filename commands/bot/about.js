@@ -3,7 +3,7 @@ let libVersion = require('./../../node_modules/eris/package.json').version,
     prefix = require('./../../options/options.json').prefix;
 
 module.exports = {
-    usage: "Returns basic about this bot.",
+    usage: "Returns basic info about this bot.",
     delete: true,
     cooldown: 30,
     process: (bot, msg) => {

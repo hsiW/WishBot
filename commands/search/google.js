@@ -7,7 +7,7 @@ let GoogleSearch = require('google-search'),
 
 
 module.exports = {
-    usage: "Searches Google using the entered search terms and returns the first result.\n`google [search]`",
+    usage: "Searches Google using the entered search terms and returns the first result as a link.\n`google [search]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

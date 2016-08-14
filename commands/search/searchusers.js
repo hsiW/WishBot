@@ -1,5 +1,6 @@
 module.exports = {
-    usage: "Returns a list of users matching the searched name\n`searchdiscrim [name]`",
+    usage: "Returns a list of users matching the searched name\n`searchusers [name]`",
+    cooldown: 10,
     delete: true,
     process: (bot, msg, suffix) => {
         let nameRegex = new RegExp(suffix, "i");

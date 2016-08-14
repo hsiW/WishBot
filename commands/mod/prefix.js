@@ -2,7 +2,7 @@ let utils = require('./../../utils/utils.js'),
     Database = require('./../../utils/Database.js');
 
 module.exports = {
-    usage: 'Changes the current prefix to the inputted term. Cannot use spaces.\nprefix [new prefix]`',
+    usage: 'Changes the current prefix to the inputted term. Spaces cannot be used.\n`prefix [new prefix]`',
     delete: true,
     togglable: false,
     cooldown: 20,

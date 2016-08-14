@@ -3,7 +3,7 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Returns the users avatar, can take a username/nickname(can take a mention if a match isnt found) to return the avatar of that user.\n`avatar [user mention] or [none]`",
+    usage: "Returns the users avatar, can take a username/nickname(can take a mention if a match isn't found) to return the avatar of that user.\n`avatar [user mention] or [none]`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
         msg.mentions.length === 1 ? user = msg.mentions[0] : user = getName(msg, suffix).user;

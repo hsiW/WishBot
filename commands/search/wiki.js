@@ -1,7 +1,7 @@
 let axios = require('axios');
 
 module.exports = {
-    usage: "Returns a Wikipedia link for the searched terms\n`wiki [search]`",
+    usage: "Returns a Wikipedia link for the searched terms.\n`wiki [search]`",
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {

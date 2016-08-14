@@ -2,7 +2,7 @@ let Database = require('./../../utils/Database.js'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: 'Toggles all commands from being used in the channel in which the command is used.',
+    usage: 'Toggles all commands from being used in the channel in which this command is used.',
     delete: true,
     togglable: false,
     cooldown: 5,

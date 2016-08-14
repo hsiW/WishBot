@@ -2,7 +2,7 @@ let getName = require('./../../utils/utils.js').getName,
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Gives info on the user, can take a username/nickname(can take a mention if a match isnt found) to find the info of that user.\n`info [none] or [user]`",
+    usage: "Gives info on the user, can take a username/nickname(can take a mention if a match isn't found) to find the info of that user.\n`info [none] or [user]`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
         let = user = msg.mentions.length === 1 ? msg.mentions[0] : getName(msg, suffix);

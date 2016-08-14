@@ -3,16 +3,26 @@ let axios = require('axios'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Searches Imgur for an image with the mentioned terms and if no term is mentioned, Yuki Nagato is searched. If a subreddit is mentioned in the format /r/[subreddit] images from that subreddit will be returned.  Subreddit searches can be further refined by <top>, <day>, <week>, <month>, <year>, or <all> to specify the timeframe to seatch posts and <page #> to specify the page number to pull it from.\
-    \n`image [term] or /r/[subreddit], <timeframe>, <page #>`",
+    usage: `Searches Imgur with the search terms and if no terms are inputted, 'Yuki Nagato' is searched. A subreddit can be searched using the format \`/r/[subreddit]\`.  
+
+__Subreddit searches can be further refined by the following following:__\`\`\`ruby
+  [top]: Current top images(Default)
+  [all]: All of Imgur
+  [day]: Today
+ [week]: This Week
+[month]: This Month
+ [year]: This Year
+       &
+ [page]: Returns results from that page on imgur(Defaults to 0)
+\`\`\`
+\`image [term] or /r/[subreddit], <timeframe>, <page #>\``,
     delete: true,
     cooldown: 5,
-    type: "searches",
     process: (bot, msg, suffix) => {
-        let response = {};
-        let query = "Yuki Nagato";
-        let sort = "top";
-        let page = 0;
+        let response = {},
+            query = "Yuki Nagato",
+            sort = "top",
+            page = 0;
         if (suffix.split(",")[0]) query = suffix.split(",")[0];
         if (suffix.split(",")[1]) {
             let temp = suffix.split(",")[1].replace(/ /g, "");

@@ -1,7 +1,7 @@
 let getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
-    usage: "Smites the user, can take a username/nickname(can take a mention if a match isnt found) to smite that user.\n`smite [user] or [none]`",
+    usage: "Smites the user, can take a username/nickname(can take a mention if a match isn't found) to smite that user.\n`smite [user] or [none]`",
     delete: true,
     cooldown: 5,
     process: function(bot, msg, suffix) {
