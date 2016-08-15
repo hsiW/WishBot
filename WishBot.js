@@ -4,6 +4,7 @@ const Eris = require('eris'),
     reload = require('require-reload'),
     chalk = require('chalk'),
     fs = require('fs'),
+    request = require('request'),
     c = new chalk.constructor({
         enabled: true
     });
@@ -147,6 +148,28 @@ bot.on('shardResume', id => {
     console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
 })
 
+bot.on("guildMemberRemove", (guild, member) => {
+    if (guild) {
+        Database.checkSetting(guild, 'leave').then(response => {
+            let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username);
+            bot.createMessage(response.channel, message)
+        }).catch()
+    }
+})
+
+bot.on("error", err => {
+    console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
+})
+
+bot.on("disconnect", err => {
+    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED: " + err));
+    process.exit(0);
+})
+
+bot.on('shardResume', id => {
+    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
+})
+
 bot.on("shardDisconnect", (error, id) => {
     console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "DISCONNECTED"));
     console.log(errorC(error));
@@ -167,6 +190,37 @@ process.on('SIGINT', function() {
     bot.disconnect();
 });
 
+function postGuildCount() {
+    request.post({
+        "url": "https://www.carbonitex.net/discord/data/botdata.php",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "json": true,
+        body: {
+            "key": options.carbon_key,
+            "servercount": bot.guilds.size
+        }
+    }, (error, response, body) => {
+        if (error) console.log(error);
+        else {
+            request.post({
+                "url": "https://bots.discord.pw/api/bots/" + bot.user.id + "/stats",
+                "headers": {
+                    "content-type": "application/json",
+                    "Authorization": options.bots_key
+                },
+                "json": true,
+                body: {
+                    "server_count": bot.guilds.size
+                }
+            }, (err, response, body) => {
+                if (!error) console.log(botC("@WishBot") + " Successfully posted " + serverC(bot.guilds.size) + " Servers to Carbon.");
+                else console.log(errorC("Failed to post Servers to Carbon"));
+            });
+        }
+    });
+}
 setInterval(() => {
     bot.shards.forEach((shard) => {
         shard.editGame({

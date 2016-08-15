@@ -15,7 +15,7 @@ module.exports = {
             for (let type in help) {
                 helpMsg += `\n**${utils.toTitleCase(type)}:** ` + help[type].sort().map(cmd => '`' + cmd + '`').join(", ");
             }
-            bot.createMessage(msg.channel.id, helpMsg).catch();
+            bot.createMessage(msg.channel.id, helpMsg+'\n\nFor more info on these commands use `help [command]`').catch();
         }
     }
 }
