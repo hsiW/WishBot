@@ -16,7 +16,7 @@ module.exports = {
                         let url = `character/${data[0].id}`
                         nani.get(url)
                             .then(data => {
-                                let response = `**Name:** ${data.name_first} ${data.name_last.toUpperCase()}\n`
+                                let response = `**Name:** ${data.name_first} ${(data.name_last) ? data.name_last.toUpperCase() : ''}\n`
                                 if (data.name_alt !== '') response += `**Alt Name:** ${data.name_alt}\n`
                                 if (data.name_japanese !== '') response += `**Japanese Name:** ${data.name_japanese}\n`
                                 if (data.roll != null) response += `**Roll:** ${data.roll}\n`

@@ -71,14 +71,14 @@ exports.remove = function(server) {
 }
 
 function saveCustomTags() {
-    fs.writeFile(__dirname + '/../database/CustomTags-temp.json', JSON.stringify(CustomTags, null, 4), error => {
+    fs.writeFile(__dirname + '/../../database/CustomTags-temp.json', JSON.stringify(CustomTags, null, 4), error => {
         if (error) console.log(error);
         else {
-            fs.stat(__dirname + '/../database/CustomTags-temp.json', (err, stats) => {
+            fs.stat(__dirname + '/../../database/CustomTags-temp.json', (err, stats) => {
                 if (err) console.log(err);
                 else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with CustomTags"));
                 else {
-                    fs.rename(__dirname + '/../database/CustomTags-temp.json', __dirname + '/../database/CustomTags.json', e => {
+                    fs.rename(__dirname + '/../../database/CustomTags-temp.json', __dirname + '/../../database/CustomTags.json', e => {
                         if (e) console.log(e);
                     });
                 }

@@ -3,18 +3,22 @@ let mysql = require('mysql'),
     options = require('./../options/options.json'),
     pool = mysql.createPool({
         connectionLimit: 100,
-        host: 'localhost', //Its local you cant do anything anyway
-        port: '3306',
-        user: 'Onee',
-        password: 'Boudreau18!',
-        database: 'database'
+        host: options.database.host,
+        port: options.database.port,
+        user: options.database.user,
+        password: options.database.password,
+        database: options.database.database
     }),
     utils = require('./utils.js'),
     guildPrefixes = require('./../database/guildPrefixes.json')
 
 function addGuild(guild) {
     return new Promise((resolve, reject) => {
-        pool.query('INSERT INTO server_settings SET guild_id = ?', guild.id, (err, result) => {
+        pool.query('INSERT INTO server_settings SET ?', {
+            guild_id: guild.id,
+            settings: JSON.stringify({}),
+            disabled_commands: JSON.stringify({})
+        }, (err, result) => {
             if (err) reject(err);
             else resolve();
         });
@@ -102,8 +106,8 @@ exports.checkCommand = (guild, command) => {
         pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
             if (err || result.length === 0) resolve();
             else {
-                let disabled = JSON.parse(result[0].disabled_commands)
-                if (disabled && disabled[command] != undefined) reject();
+                let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
+                if (disabled != null && disabled[command] != undefined) reject();
                 else resolve();
             }
         });
@@ -116,37 +120,36 @@ exports.toggleCommand = toggleCommand;
 function toggleSetting(guild, settingChange, message, channel) {
     return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
-            if (result.length === 0) addGuild(guild).then(() => toggleSetting(guild, settingChange, message).then(action => resolve(action))).catch(err => reject(err))
+            if (result.length === 0) addGuild(guild).then(() => toggleSetting(guild, settingChange, message, channel).then(action => resolve(action))).catch(err => reject(err))
             else {
                 settingChange = settingChange.toLowerCase();
                 var toggled = false,
-                    usageChannel = result[0].channel_id != undefined ? JSON.parse(result[0].channel_id) : channel.id,
+                    usageChannel = result[0].channel_id != undefined ? result[0].channel_id : channel.id,
                     serverSettings = result[0].settings != undefined ? JSON.parse(result[0].settings) : {};
                 if (settingChange === 'tableflip') {
-                    if (serverSettings.hasOwnProperty('tableflip')) delete serverSettings['tableflip'];
+                    if (serverSettings.hasOwnProperty('tableflip')) delete serverSettings.tableflip;
                     else {
                         serverSettings['tableflip'] = true;
                         toggled = true;
                     }
                 } else if (settingChange === 'welcome') {
                     if (message) {
-                        serverSettings['welcome'] = message;
+                        serverSettings.welcome = message;
                         toggled = true;
                         usageChannel = channel.id;
-                    } else delete serverSettings['welcome'];
+                    } else delete serverSettings.welcome;
                 } else if (settingChange === 'leave') {
                     if (settingChange) {
-                        serverSettings['leave'] = message;
+                        serverSettings.leave = message;
                         toggled = true;
                         usageChannel = channel.id;
-                    } else delete serverSettings['leave'];
+                    } else delete serverSettings.leave;
                 }
-                let data = {
+                saveGuild(guild, {
                     guild_id: guild.id,
                     channel_id: usageChannel,
                     settings: JSON.stringify(serverSettings)
-                }
-                saveGuild(guild, data).then(() => resolve(`Sucessfully toggled \`${settingChange}\` to \`${toggled}\``)).catch()
+                }).then(() => resolve(`Sucessfully toggled \`${settingChange}\` to \`${toggled}\``)).catch()
             }
 
         });
@@ -216,18 +219,7 @@ exports.checkPrefix = (guild) => {
 
 
 function savePrefixes() {
-    fs.writeFile(__dirname + '/../database/guildPrefixes-temp.json', JSON.stringify(guildPrefixes, null, 4), error => {
+    fs.writeFile(__dirname + '/../database/guildPrefixes.json', JSON.stringify(guildPrefixes, null, 4), error => {
         if (error) console.log(errorC(error))
-        else {
-            fs.stat(__dirname + '/../database/guildPrefixes-temp.json', (err, stats) => {
-                if (err) console.log(errorC(err))
-                else if (stats["size"] < 5) console.log("ERROR due to size");
-                else {
-                    fs.rename(__dirname + '/../database/guildPrefixes-temp.json', __dirname + '/../database/guildPrefixes.json', e => {
-                        if (e) console.log(errorC(e));
-                    });
-                }
-            });
-        }
     })
 }

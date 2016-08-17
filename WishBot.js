@@ -19,7 +19,7 @@ let options = require('./options/options.json'),
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 5,
-        maxShards: 1,
+        maxShards: 4,
         autoReconnect: true,
         disableEveryone: true,
         moreMentions: false,
@@ -71,7 +71,7 @@ bot.on("messageCreate", msg => {
             let formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
             if (cmdTxt === 'channelmute') processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt);
-            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel).then(() => Database.checkCommand(msg.channel.guild, cmdTxt).then(() => processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt)));
+            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel).then(() => Database.checkCommand(msg.channel.guild, cmdTxt).then(() => processCmd(bot, msg, formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1), cmdTxt))).catch(console.log);
         }
     }
 });
@@ -148,15 +148,6 @@ bot.on('shardResume', id => {
     console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
 })
 
-bot.on("guildMemberRemove", (guild, member) => {
-    if (guild) {
-        Database.checkSetting(guild, 'leave').then(response => {
-            let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username);
-            bot.createMessage(response.channel, message)
-        }).catch()
-    }
-})
-
 bot.on("error", err => {
     console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
 })
@@ -212,6 +203,7 @@ function postGuildCount() {
                 },
                 "json": true,
                 body: {
+                    "logoid": bot.user.avatar,
                     "server_count": bot.guilds.size
                 }
             }, (err, response, body) => {

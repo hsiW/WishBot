@@ -1,4 +1,5 @@
-let axios = require('axios');
+let axios = require('axios'),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Returns a Wikipedia link for the searched terms.\n`wiki [search]`",

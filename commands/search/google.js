@@ -3,8 +3,8 @@ let GoogleSearch = require('google-search'),
     googleSearch = new GoogleSearch({
         key: options.google_api_key,
         cx: options.google_search_key
-    });
-
+    }),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Searches Google using the entered search terms and returns the first result as a link.\n`google [search]`",

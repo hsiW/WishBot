@@ -1,5 +1,6 @@
 let search = require('youtube-simple-search'),
-    options = require("./../../options/options.json");
+    options = require("./../../options/options.json"),
+    utils = require('./../../utils/utils.js');
 
 module.exports = {
     usage: "Returns the first Youtube result for the searched terms.\n`youtube [search]`",
