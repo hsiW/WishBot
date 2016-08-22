@@ -10,7 +10,7 @@ let mysql = require('mysql'),
     });
 
 module.exports = {
-    usage: 'Returns a random image of a smug face.',
+    usage: 'Returns a random image of a smug face.\n[Command Created by Florestina]',
     cooldown: 5,
     process: (bot, msg) => {
         pool.query('SELECT * FROM smug ORDER BY RAND() LIMIT 1', (err, rows, res) => {

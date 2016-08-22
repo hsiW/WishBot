@@ -5,7 +5,7 @@ module.exports = {
     usage: "Gives info on the user, can take a username/nickname(can take a mention if a match isn't found) to find the info of that user.\n`info [none] or [user]`",
     cooldown: 5,
     process: (bot, msg, suffix) => {
-        let = user = msg.mentions.length === 1 ? msg.mentions[0] : getName(msg, suffix);
+        let = user = msg.mentions.length === 1 ? msg.channel.guild.members.get(msg.mentions[0].id) : getName(msg, suffix);
         if (user) {
             let toSend = "```ruby\n";
             toSend += `         Name: \"${user.user.username}\"`;

@@ -54,8 +54,8 @@ function editUser(user, edit, change) {
             else if (rows.length < 1) createUser(user).then(() => editUser(user, edit, change).then(action => resolve(action)).catch(err => reject(err)));
             else {
                 let userProfile = JSON.parse(rows[0].user_profile);
-                change = change.replace(/^((https?:)(\/\/\/?)([\w]*(?::[\w]*)?@)?([\d\w\.-]+)(?::(\d+))?)?([\/\\\w\.()-]*)?(?:([?][^#]*)?(#.*)?)*/gmi, '<' + '$&' + '>');
-                if (change.length <= 0 && (userProfile.hasOwnProperty(edit))) {
+                if (validateUrl(change)) reject('You cannot use a URL in your profile at this time.');
+                else if (change.length <= 0 && (userProfile.hasOwnProperty(edit))) {
                     userProfile[edit] = null;
                     saveUser(user, userProfile).then(() => resolve('cleared `' + edit + '`'));
                 } else if (edit === "name") {
