@@ -1,11 +1,15 @@
+require("moment-duration-format");
 let options = require('./../../options/options.json'),
     nani = require('nani').init(options.nani_id, options.nani_secret),
+    moment = require('moment'),
     utils = require('./../../utils/utils.js'),
     weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     seasons = ['winter', 'spring', 'summer', 'fall'],
     url = 'browse/anime?status=Currently%20Airing&full_page=true&type=Tv&airing_data=true&sort=popularity-desc',
     airingAnime;
 
+
+//Will work on more when api is updated
 module.exports = {
     usage: 'Returns a paged list of currently airing anime. Input the page number to see airing anime on that page. Can also return more specific details if an anime is specified. Please Note time til airing is not 100% accurate\n`airing [none] or [page number] or [anime]`',
     delete: true,
@@ -14,6 +18,7 @@ module.exports = {
         bot.sendChannelTyping(msg.channel.id).catch()
         nani.get(url)
             .then(data => {
+                console.log(data)
                 airingAnime = data.filter(isAiring);
                 processAnime(bot, msg, suffix);
             }).catch();
@@ -34,8 +39,8 @@ function processAnime(bot, msg, suffix) {
         msgString += `Title: ${anime.title_english}\n`
         msgString += `Romaji Title: ${anime.title_romaji}\n`;
         msgString += `Japanese Title: ${anime.title_japanese}\n\n`;
-        msgString += `Next Episode: ${anime.airing.next_episode}/${anime.total_episodes || '?'} | Airing: ${(new Date(anime.airing.time)).toUTCString()}\n`;
-        msgString += `Time Til Airing: ${utils.secondsToString(anime.airing.countdown)}`
+        msgString += `Next Episode: ${anime.airing.next_episode}/${anime.total_episodes || '?'} | Airing: ${moment(anime.airing.time).utc().format('dddd HH:mm')} UTC\n`;
+        msgString += `Time Til Airing: ${moment.duration(anime.airing.countdown).format('D[day(s)] H[hour(s)] m[minute(s)]')}`
         bot.createMessage(msg.channel.id, msgString + "```").catch(console.log)
     } else bot.createMessage(msg.channel.id, 'No Airing Anime found called `' + suffix + '`, **' + msg.author.username + '**-senpai.').then(message => utils.messageDelete(bot, message)).catch(console.log);
 }
