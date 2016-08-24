@@ -28,7 +28,6 @@ __The fields and their max character limits are as follows:__
     [Youtube]: 20 chars
         [Bio]: 1000 chars
 \`\`\`
-**[NOTE]:** URL's cannot be used in profiles at this time.
 
 \`profile [user] or profile [field] [input]\``,
     delete: true,
@@ -40,7 +39,7 @@ __The fields and their max character limits are as follows:__
                     .then(action => bot.createMessage(msg.channel.id, "Successfully " + action + ", **" + msg.author.username + "**-senpai"))
                     .catch(err => bot.createMessage(msg.channel.id, err));
             } else {
-                msg.mentions.length === 1 ? user = msg.mentions[0] : user = utils.getName(msg, suffix);
+                msg.mentions.length === 1 ? user = msg.mentions[0] : user = utils.getName(msg, suffix).user;
                 processProfile(bot, msg, user)
             }
         } else processProfile(bot, msg, msg.author);
@@ -168,6 +167,7 @@ function createUser(user) {
 }
 
 function processProfile(bot, msg, person) {
+    console.log(person)
     let msgArray = [`__**Profile for ${person.username}**__`];
     pool.query('SELECT * FROM user_settings WHERE user_id = ' + person.id, (err, rows) => {
         if (err) console.log(errorC('Error while performing Query'));

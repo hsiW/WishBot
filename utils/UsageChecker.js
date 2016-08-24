@@ -12,6 +12,13 @@ setInterval(() => {
     }
 }, 30000);
 
+exports.updateTimestamp = function(guild) {
+    if (!guild || !guild.id) return;
+    if (UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = Date.now();
+    if (inactiveServers.indexOf(guild.id) > -1) inactiveServers.splice(inactiveServers.indexOf(guild.id), 1);
+    usageUpdated = true;
+}
+
 exports.checkInactivity = function(bot) {
     return new Promise((resolve, reject) => {
         inactiveServers = [];
@@ -19,26 +26,16 @@ exports.checkInactivity = function(bot) {
         Object.keys(UsageCheck).map(id => {
             if (!bot.guilds.get(id)) delete UsageCheck[id];
         });
-        bot.guilds.forEach(server => {
-            if (server == undefined) return;
-            else if (!UsageCheck.hasOwnProperty(server.id)) UsageCheck[server.id] = now;
-            else if (now - UsageCheck[server.id] >= 6.048e+8) inactiveServers.push(server.id);
+        bot.guilds.forEach(guild => {
+            if (!UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = now;
+            else if (now - UsageCheck[guild.id] >= 6.048e+8) inactiveServers.push(guild.id);
         })
         if (inactiveServers.length > 0) {
             console.log(botC(`Will Leave ${inactiveServers.length} server(s) on next inactivity tick.`));
-            resolve();
             usageUpdated = true;
-        } else if (inactiveServers.length <= 0) {
-            reject('Currently No Inactive Servers');
-        }
+            resolve();
+        } else if (inactiveServers.length <= 0) reject('Currently No Inactive Servers');
     });
-}
-
-exports.updateTimestamp = function(guild) {
-    if (!guild || !guild.id) return;
-    if (UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = Date.now();
-    if (inactiveServers.indexOf(guild.id) > -1) inactiveServers.splice(inactiveServers.indexOf(guild.id), 1);
-    usageUpdated = true;
 }
 
 exports.removeInactive = function(bot, msg) {
@@ -60,28 +57,15 @@ exports.removeInactive = function(bot, msg) {
                     bot.leaveGuild(server.id).then(console.log(warningC('Left Server Due to Inactivity - ' + server.name))).catch(err => console.log(errorC(err)));
                     if (UsageCheck.hasOwnProperty(server.id)) delete UsageCheck[server.id];
                     count++;
-                } else {
-                    delete UsageCheck[inactiveServers[serverCount]];
-                }
+                } else delete UsageCheck[inactiveServers[serverCount]];
                 serverCount++;
-            }, 10000)
+            }, 200)
         }
     });
 }
 
 function saveUsage() {
-    fs.writeFile(__dirname + '/../database/UsageCheck-temp.json', JSON.stringify(UsageCheck, null, 4), error => {
+    fs.writeFile(__dirname + '/../database/UsageCheck.json', JSON.stringify(UsageCheck, null, 4), error => {
         if (error) console.log(error)
-        else {
-            fs.stat(__dirname + '/../database/UsageCheck-temp.json', (err, stats) => {
-                if (err) console.log(err)
-                else if (stats["size"] < 5) console.log("ERROR due to size");
-                else {
-                    fs.rename(__dirname + '/../database/UsageCheck-temp.json', __dirname + '/../database/UsageCheck.json', e => {
-                        if (e) console.log(e);
-                    });
-                }
-            });
-        }
     })
 }

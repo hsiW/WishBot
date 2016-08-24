@@ -4,7 +4,7 @@ const Eris = require('eris'),
     reload = require('require-reload'),
     chalk = require('chalk'),
     fs = require('fs'),
-    request = require('request'),
+    axios = require('axios'),
     c = new chalk.constructor({
         enabled: true
     });
@@ -66,7 +66,6 @@ bot.on("messageCreate", msg => {
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
         if (msg.content.match(regex)) msg.content = msg.content.replace(regex, msgPrefix + "chat");
         if (msg.content.startsWith(options.prefix + "prefix")) processCmd(bot, msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2), "prefix", options.prefix);
-        else if (msg.content === "pls reload" && admins.indexOf(msg.author.id) > -1) reloadAll(msg);
         else if (msg.content.startsWith(msgPrefix)) {
             let formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length);
             let cmdTxt = formatedMsg.split(" ")[0].toLowerCase();
@@ -75,35 +74,6 @@ bot.on("messageCreate", msg => {
         }
     }
 });
-
-function reloadAll(msg) {
-    try {
-        delete commands;
-        try {
-            reload.emptyCache('./utils/CommandLoader.js');
-            CommandLoader = require('./utils/CommandLoader.js');
-            processCmd = reload('./utils/CommandHandler.js');
-            games = reload('./lists/games.json');
-            admins = reload('./options/admins.json');
-            utils = reload('./utils/utils.js');
-            UsageChecker = reload('./utils/UsageChecker.js')
-        } catch (e) {
-            console.error("Failed to reload! Error: ", e);
-        }
-        CommandLoader.load().then(() => {
-            bot.createMessage(msg.channel.id, "🆗").then(message => utils.messageDelete(bot, message));;
-            bot.deleteMessage(msg.channel.id, msg.id);
-            console.log(botC("@" + bot.user.username) + errorC(" All Modules Reloaded"));
-            console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
-        }).catch(err => {
-            bot.createMessage(msg.channel.id, "```" + err + "```")
-            console.log(errorC(err.stack))
-        });
-    } catch (err) {
-        bot.createMessage(msg.channel.id, "```" + err + "```")
-        console.log(errorC(err.stack))
-    }
-}
 
 function evalText(msg, suffix) {
     let result;
@@ -135,83 +105,39 @@ bot.on("guildMemberRemove", (guild, member) => {
     }
 })
 
-bot.on("error", err => {
-    console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
-})
+bot.on('guildCreate', postGuildCount())
 
-bot.on("disconnect", err => {
-    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED: " + err));
-    process.exit(0);
-})
-
-bot.on('shardResume', id => {
-    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
-})
-
-bot.on("error", err => {
-    console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
-})
-
-bot.on("disconnect", err => {
-    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED: " + err));
-    process.exit(0);
-})
-
-bot.on('shardResume', id => {
-    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
-})
-
-bot.on("shardDisconnect", (error, id) => {
-    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "DISCONNECTED"));
-    console.log(errorC(error));
-})
+bot.on('guildDelete', postGuildCount())
 
 CommandLoader.load().then(() => {
     bot.connect().then(console.log(warningC("Logged in using Token"))).catch(err => console.log(errorC(err.stack)));
 }).catch(err => errorC(err.stack));
 
-var interruptedAlready = false;
-process.on('SIGINT', function() {
-    if (interruptedAlready) {
-        console.log(errorC("Caught second interrupt signal... Exiting"));
-        process.exit(1);
-    }
-    interruptedAlready = true;
-    console.log(warningC("Caught interrupt signal... Disconnecting"));
-    bot.disconnect();
-});
-
 function postGuildCount() {
-    request.post({
-        "url": "https://www.carbonitex.net/discord/data/botdata.php",
-        "headers": {
-            "content-type": "application/json"
-        },
-        "json": true,
-        body: {
-            "key": options.carbon_key,
-            "servercount": bot.guilds.size
-        }
-    }, (error, response, body) => {
-        if (error) console.log(error);
-        else {
-            request.post({
-                "url": "https://bots.discord.pw/api/bots/" + bot.user.id + "/stats",
-                "headers": {
-                    "content-type": "application/json",
-                    "Authorization": options.bots_key
-                },
-                "json": true,
-                body: {
-                    "logoid": bot.user.avatar,
-                    "server_count": bot.guilds.size
-                }
-            }, (err, response, body) => {
-                if (!error) console.log(botC("@WishBot") + " Successfully posted " + serverC(bot.guilds.size) + " Servers to Carbon.");
-                else console.log(errorC("Failed to post Servers to Carbon"));
-            });
-        }
-    });
+    if (bot.user) {
+        axios({
+            method: 'post',
+            url: "https://bots.discord.pw/api/bots/" + bot.user.id + "/stats",
+            headers: {
+                "Authorization": options.bot_key,
+                "content-type": "application/json"
+            },
+            data: {
+                "server_count": bot.guilds.size
+            }
+        }).catch(console.log);
+        axios({
+            method: 'post',
+            url: "https://www.carbonitex.net/discord/data/botdata.php",
+            headers: {
+                "content-type": "application/json"
+            },
+            data: {
+                "key": options.carbon_key,
+                "servercount": bot.guilds.size
+            }
+        }).catch(console.log);
+    }
 }
 setInterval(() => {
     bot.shards.forEach((shard) => {
@@ -232,3 +158,38 @@ setInterval(() => {
         })
     });
 }, 3.6e+6);
+
+bot.on("error", err => {
+    console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
+})
+
+bot.on("disconnect", err => {
+    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED: " + err));
+    process.exit(0);
+})
+
+bot.on('shardResume', id => {
+    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
+})
+
+bot.on("warn", warn => {
+    console.log(warningC(warn));
+})
+
+bot.on("error", err => {
+    console.log(botC("@" + bot.user.username) + " - " + errorC("ERROR:\n" + err.stack));
+})
+
+bot.on("disconnect", err => {
+    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED: " + err));
+    process.exit(0);
+})
+
+bot.on('shardResume', id => {
+    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
+})
+
+bot.on("shardDisconnect", (error, id) => {
+    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "DISCONNECTED"));
+    console.log(errorC(error));
+})
