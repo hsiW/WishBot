@@ -3,7 +3,7 @@ module.exports = {
     cooldown: 2,
     process: (bot, msg, suffix) => {
         let max = 6;
-        if (suffix) max = suffix;
+        if (suffix && /^\d+$/.test(suffix)) max = suffix;
         bot.createMessage(msg.channel.id, `🎲 **${msg.author.username}** rolled a **${(Math.floor(Math.random() * max) + 1)}**! 🎲`).catch();
     }
 }
