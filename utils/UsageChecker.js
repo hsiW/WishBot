@@ -10,7 +10,7 @@ setInterval(() => {
         updated = false;
         saveUsage();
     }
-}, 30000);
+}, 5000);
 
 exports.updateTimestamp = function(guild) {
     if (!guild || !guild.id) return;

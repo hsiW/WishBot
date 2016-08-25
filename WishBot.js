@@ -30,7 +30,9 @@ let options = require('./options/options.json'),
             GUILD_INTEGRATIONS_UPDATE: true,
             GUILD_BAN_ADD: true,
             GUILD_BAN_REMOVE: true,
-            MESSAGE_UPDATE: true
+            MESSAGE_UPDATE: true,
+            MESSAGE_DELETE: true,
+            MESSAGE_DELETE_BULK: true
         }
     });
 
@@ -105,9 +107,9 @@ bot.on("guildMemberRemove", (guild, member) => {
     }
 })
 
-bot.on('guildCreate', postGuildCount())
+bot.on('guildCreate', () => postGuildCount())
 
-bot.on('guildDelete', postGuildCount())
+bot.on('guildDelete', () => postGuildCount())
 
 CommandLoader.load().then(() => {
     bot.connect().then(console.log(warningC("Logged in using Token"))).catch(err => console.log(errorC(err.stack)));
@@ -172,8 +174,8 @@ bot.on('shardResume', id => {
     console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
 })
 
-bot.on("warn", warn => {
-    console.log(warningC(warn));
+bot.on("warn", (warn, id) => {
+    console.log(warningC(warn, id));
 })
 
 bot.on("error", err => {
@@ -193,3 +195,5 @@ bot.on("shardDisconnect", (error, id) => {
     console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "DISCONNECTED"));
     console.log(errorC(error));
 })
+
+//bot.on("debug", console.log)

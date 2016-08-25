@@ -13,9 +13,12 @@ module.exports = {
                 title = suffix.match(/\[(.*?)\]/)[1];
                 suffix = suffix.replace(/\[(.*?)\]/, '');
             }
-            let choices = suffix.split('|').replace(/ /g, "");
-            axios.post("https://strawpoll.me/api/v2/polls", {
-                maxRedirects: 10,
+            let choices = suffix.split('|');
+            axios({
+                method: 'post',
+                url: "https://strawpoll.me/api/v2/polls",
+                maxRedirects: 25,
+                timeout: 20000,
                 headers: {
                     "content-type": "application/json"
                 },
@@ -25,10 +28,9 @@ module.exports = {
                     "multi": false
                 }
             }).then(response => {
-                console.log(response)
                 if (response.status == 200) bot.createMessage(msg.channel.id, `**${msg.author.username}** created a poll with the question '${title}'\n**<http://strawpoll.me/${response.data.id}>** 📝`).catch();
                 else bot.createMessage(msg.channel.id, `Got status code ${response.statusCode}`).then(message => utils.messageDelete(bot, message)).catch();
-            }).catch(error => bot.createMessage(msg.channel.id, error).then(message => utils.messageDelete(bot, message))).catch();
+            }).catch(error => bot.createMessage(msg.channel.id, error.stack).then(message => utils.messageDelete(bot, message)))
         }
     }
 }
