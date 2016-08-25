@@ -28,7 +28,7 @@ exports.checkInactivity = function(bot) {
         });
         bot.guilds.forEach(guild => {
             if (!UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = now;
-            else if (now - UsageCheck[guild.id] >= 6.048e+8) inactiveServers.push(guild.id);
+            else if (now - UsageCheck[guild.id] >= 1.21e+9) inactiveServers.push(guild.id);
         })
         if (inactiveServers.length > 0) {
             console.log(botC(`Will Leave ${inactiveServers.length} server(s) on next inactivity tick.`));
