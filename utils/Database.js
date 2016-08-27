@@ -195,19 +195,17 @@ function addGuildtoJson(guild) {
 
 function changePrefix(guild, newPrefix) {
     return new Promise((resolve, reject) => {
-        if (guildPrefixes.hasOwnProperty(guild.id)) {
+        if (newPrefix === '') reject('The prefix cannot be nothing');
+        else if (newPrefix.includes(' ') || newPrefix === " ") reject('Prefixes cannot contain spaces');
+        else if (guildPrefixes.hasOwnProperty(guild.id)) {
             if (newPrefix === options.prefix) {
                 delete guildPrefixes[guild.id];
                 resolve();
-            } else if (newPrefix.includes(' ')) {
-                reject('Prefixes cannot contain spaces');
             } else {
                 guildPrefixes[guild.id] = newPrefix;
                 resolve();
             }
-        } else {
-            addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(() => resolve()))
-        }
+        } else addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(() => resolve())).catch(err => reject(err));
         savePrefixes();
     });
 }
