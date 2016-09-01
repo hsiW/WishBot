@@ -217,7 +217,18 @@ exports.checkPrefix = (guild) => {
 
 
 function savePrefixes() {
-    fs.writeFile(__dirname + '/../database/guildPrefixes.json', JSON.stringify(guildPrefixes, null, 4), error => {
-        if (error) console.log(errorC(error))
+    fs.writeFile(__dirname + '/../database/guildPrefixes-temp.json', JSON.stringify(guildPrefixes, null, 4), error => {
+        if (error) console.log(error);
+        else {
+            fs.stat(__dirname + '/../database/guildPrefixes-temp.json', (err, stats) => {
+                if (err) console.log(err);
+                else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with guildPrefixes"));
+                else {
+                    fs.rename(__dirname + '/../database/guildPrefixes-temp.json', __dirname + '/../database/guildPrefixes.json', e => {
+                        if (e) console.log(e);
+                    });
+                }
+            });
+        }
     })
 }

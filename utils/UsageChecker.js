@@ -65,7 +65,18 @@ exports.removeInactive = function(bot, msg) {
 }
 
 function saveUsage() {
-    fs.writeFile(__dirname + '/../database/UsageCheck.json', JSON.stringify(UsageCheck, null, 4), error => {
-        if (error) console.log(error)
+    fs.writeFile(__dirname + '/../database/UsageCheck-temp.json', JSON.stringify(UsageCheck, null, 4), error => {
+        if (error) console.log(error);
+        else {
+            fs.stat(__dirname + '/../database/UsageCheck-temp.json', (err, stats) => {
+                if (err) console.log(err);
+                else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with UsageCheck"));
+                else {
+                    fs.rename(__dirname + '/../database/UsageCheck-temp.json', __dirname + '/../database/UsageCheck.json', e => {
+                        if (e) console.log(e);
+                    });
+                }
+            });
+        }
     })
 }

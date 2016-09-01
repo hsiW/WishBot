@@ -12,7 +12,7 @@ let mysql = require('mysql'),
     utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: `Creates and edits a profile linked to your Discord account for use by the bot. Profiles can be called with a username/nickname/mention and will default to the users profile if nothing is inputted. Fields can be edited via \`profile [field] [input]\`, and can be cleared via \`profile [field]\`. 
+    usage: `Creates and edits a profile linked to your Discord account for use by the bot. Profiles can be called with a username/nickname/mention and will default to the users profile if nothing is inputted. Fields can be edited via \`profile edit [field] [input]\`, and can be cleared via \`profile edit [field]\`. 
 
 __The fields and their max character limits are as follows:__
 \`\`\`ruby
@@ -29,7 +29,7 @@ __The fields and their max character limits are as follows:__
         [Bio]: 1000 chars
 \`\`\`
 
-\`profile [user] or profile [field] [input]\``,
+\`profile [user] or profile edit [field] [input]\``,
     delete: true,
     cooldown: 5,
     process: (bot, msg, suffix) => {
@@ -167,7 +167,6 @@ function createUser(user) {
 }
 
 function processProfile(bot, msg, person) {
-    console.log(person)
     let msgArray = [`__**Profile for ${person.username}**__`];
     pool.query('SELECT * FROM user_settings WHERE user_id = ' + person.id, (err, rows) => {
         if (err) console.log(errorC('Error while performing Query'));

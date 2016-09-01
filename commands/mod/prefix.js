@@ -10,7 +10,6 @@ module.exports = {
         Database.changePrefix(msg.channel.guild, suffix).then(() => {
             bot.createMessage(msg.channel.id, "📋 Successfully changed prefix to `" + suffix + "` 📋").catch();
         }).catch(err => {
-            console.log(errorC(err))
             bot.createMessage(msg.channel.id, "⛔ " + err + " ⛔").catch();
         })
     }

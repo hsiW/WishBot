@@ -1,6 +1,6 @@
 {
   "name": "wishbot",
-  "version": "5.1.7",
+  "version": "5.1.8",
   "main": "WishBot.js",
   "repository": {
     "type": "git",
@@ -34,5 +34,5 @@
     "xml2js": "^0.4.16",
     "youtube-simple-search": "^0.1.0"
   },
-  "description": "A Discord Bot, made using the Eris Discord Library."
+  "description": "A Discord Bot, made using the Eris Discord Library. 💗 Abal"
 }

@@ -18,11 +18,10 @@ let options = require('./options/options.json'),
     regex,
     bot = new Eris(options.token, {
         getAllUsers: true,
-        messageLimit: 5,
+        messageLimit: 0,
         maxShards: 4,
         autoReconnect: true,
         disableEveryone: true,
-        moreMentions: false,
         disabledEvents: {
             VOICE_STATE_UPDATE: true,
             TYPING_START: true,

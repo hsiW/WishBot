@@ -8,7 +8,7 @@ module.exports = {
         axios.get('http://i.imgur.com/iKTCAoN.png', {
             responseType: 'arraybuffer'
         }).then(response => {
-            bot.createMessage(msg.channel.id, null, {
+            bot.createMessage(msg.channel.id, '', {
                 file: response.data,
                 name: 'wewlad.png'
             });
