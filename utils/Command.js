@@ -30,7 +30,7 @@ ${this.usage}
     }
 
     //Command Processing
-    process(msg, args, bot) {
+    process(msg, args, bot) { //Commands can take and manipulate the msg object, the command arguments and the bot object 
         //Checks if the command deletes on use as well as if the bot has delete permissions before running the msg deletion
         if (this.delete && msg.channel.guild && msg.channel.permissionsOf(bot.user.id).has('manageMessages')) msg.delete();
         //Main Processing of Command(uses Promises)
