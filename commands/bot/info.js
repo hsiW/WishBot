@@ -7,7 +7,8 @@ module.exports = {
     cooldown: 30, 
     process: (msg, args, bot) => { 
         return Promise.resolve({ 
-            message: `\`\`\`tex 
+            message: `
+\`\`\`tex 
 $ WishBot \\${bot.user.username}\\ $ 
  
 Lib: { Eris - v${libVersion} } 
@@ -17,7 +18,8 @@ Default Prefix: { ${prefix} }
  
 % Use ${prefix}help for command info. 
 % Support Server: https://discord.gg/0lBiROCNVaGw5Eqk 
-% Source: https://github.com/hsiw/Wishbot\`\`\`` 
+% Source: https://github.com/hsiw/Wishbot\`\`\`
+` 
         }) 
     } 
-}
+}//will update to new format later today

@@ -1,8 +1,12 @@
 module.exports = {
     usage: 'Returns a link to donate to the development of this bot.',
-    delete: true,
+    delete: false,
     cooldown: 30,
-    process: (bot, msg) => {
-        bot.createMessage(msg.channel.id, '__**Please consider donating to the developement of this bot**__\n**<https://patreon.com/WishBot>**').catch();
+    process: () => {
+        return Promise.resolve({
+            message: `__**You may donate to the developement using either of the following links:**__
+Monthly: **<https://patreon.com/WishBot>**
+Single Donation: **<https://www.paypal.me/WishBot>**`
+        })
     }
 }
