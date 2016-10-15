@@ -1,28 +1,32 @@
 let utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Cleans the mentioned number of this bots messages from the current channel. Can only delete 100 messages at a time without the bot having `manageMessages`, otherwise its limitless.\n`delete [number]`",
-    delete: true,
-    cooldown: 5,
-    process: (bot, msg, suffix) => {
-        if (/^\d+$/.test(suffix)) {
-            if (msg.channel.permissionsOf(bot.user.id).has('manageMessages')) bot.purgeChannel(msg.channel.id, parseInt(suffix), message => message.author.id === bot.user.id).then(count => bot.createMessage(msg.channel.id, `Finished cleaning  **${count}** bot messages in last **${suffix}** message(s) of ${msg.channel.mention}, **${msg.author.username}**-senpai.`).then(message => utils.messageDelete(bot, message))).catch();
+    usage: "Cleans the mentioned number of this bots messages from the current channel. \n`delete [number]`",
+    cooldown: 10,
+    process: (msg, args, bot) => {
+        return new Promise(resolve => {
+            /^\d+$/.test(args) ? args : args = 50;
+            if (msg.channel.permissionsOf(bot.user.id).has('manageMessages')) bot.purgeChannel(msg.channel.id, parseInt(args), message => message.author.id === bot.user.id)
+                .then(deleted => resolve({
+                    message: `Finished cleaning  **${deleted}** bot messages in last **${args}** message(s) of ${msg.channel.mention}, **${msg.author.username}**-senpai.`,
+                    delete: true
+                }))
             else {
-                bot.getMessages(msg.channel.id, 100, msg.id).then(messages => {
-                    let toDelete = parseInt(suffix, 10),
-                        dones = 0;
-                    for (i = 0; i <= 100; i++) {
-                        if (toDelete <= 0 || i === 100) {
-                            bot.createMessage(msg.channel.id, `Finished cleaning **${dones}** message(s) in ${msg.channel.mention}`).then(message => utils.messageDelete(bot, message));
-                            return;
-                        } else if (messages[i].author.id === bot.user.id) {
-                            bot.deleteMessage(msg.channel.id, messages[i].id).catch();
-                            dones++;
-                            toDelete--;
+                var deleted = 0,
+                    processed = 0;
+                msg.channel.getMessages(args, msg.id).then(messages => {
+                    for (let message in messages) {
+                        if (messages[message].author.id === bot.user.id) {
+                            setTimeout(() => messages[message].delete(), 200)
+                            deleted++;
                         }
                     }
-                }).catch(console.log);
+                    resolve({
+                        message: `Finished cleaning  **${deleted}** bot messages in last **${args}** message(s) of ${msg.channel.mention}, **${msg.author.username}**-senpai.`,
+                        delete: true
+                    })
+                });
             }
-        } else bot.createMessage(msg.channel.id, "Using the clean command requires a number, **" + msg.author.username + "**-senpai.").then(message => utils.messageDelete(bot, message)).catch();
+        })
     }
 }
