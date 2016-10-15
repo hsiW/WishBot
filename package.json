@@ -1,60 +1,59 @@
 {
-    "name": "wishbot",
-    "version": "6.0.0",
-    "main": "WishBot.js",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/hsiw/WishBot.git"
+  "name": "wishbot",
+  "version": "6.0.0",
+  "main": "WishBot.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsiw/WishBot.git"
+  },
+  "keywords": [
+    "discord",
+    "eris"
+  ],
+  "author": "hsiW",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hsiw/WishBot/issues"
+  },
+  "homepage": "https://github.com/hsiw/WishBot",
+  "dependencies": {
+    "axios": "^0.14.0",
+    "bluebird": "^3.4.1",
+    "chalk": "^1.1.3",
+    "cleverbot-node": "^0.2.1",
+    "dice-expression-evaluator": "^0.1.2",
+    "entities": "^1.1.1",
+    "eris": "github:abalabahaha/eris#dev",
+    "eventemitter3": "^2.0.0",
+    "giphy-api-without-credentials": "^1.1.0",
+    "google-search": "github:hsiw/google-search",
+    "mathjs": "^3.2.0",
+    "moment": "^2.14.1",
+    "moment-duration-format": "^1.3.0",
+    "mysql": "^2.11.1",
+    "nani": "^1.2.0",
+    "winston": "^2.2.0",
+    "xml2js": "^0.4.16",
+    "youtube-simple-search": "^0.1.0"
+  },
+  "description": "A Discord Bot, made using the Eris Discord Library. 💗 Abal",
+  "eslintConfig": {
+    "globals": {
+      "quotes": true,
+      "commands": true,
+      "inactiveServers": true,
+      "serverC": false,
+      "channelC": false,
+      "userC": false,
+      "warningC": false,
+      "errorC": false,
+      "botC": false,
+      "miscC": false
     },
-    "keywords": [
-        "discord",
-        "eris"
-    ],
-    "author": "hsiW",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/hsiw/WishBot/issues"
-    },
-    "homepage": "https://github.com/hsiw/WishBot",
-    "dependencies": {
-        "axios": "^0.14.0",
-        "bluebird": "^3.4.1",
-        "chalk": "^1.1.3",
-        "cleverbot-node": "^0.2.1",
-        "dice-expression-evaluator": "^0.1.2",
-        "entities": "^1.1.1",
-        "eris": "github:abalabahaha/eris#dev",
-        "eventemitter3": "^1.2.0",
-        "giphy-api-without-credentials": "^1.1.0",
-        "google-search": "github:hsiw/google-search",
-        "mathjs": "^3.2.0",
-        "moment": "^2.14.1",
-        "moment-duration-format": "^1.3.0",
-        "mysql": "^2.11.1",
-        "nani": "^1.2.0",
-        "require-reload": "^0.2.2",
-        "winston": "^2.2.0",
-        "xml2js": "^0.4.16",
-        "youtube-simple-search": "^0.1.0"
-    },
-    "description": "A Discord Bot, made using the Eris Discord Library. 💗 Abal",
-    "eslintConfig": {
-        "globals": {
-            "quotes": true,
-            "commands": true,
-            "inactiveServers": true,
-            "serverC": false,
-            "channelC": false,
-            "userC": false,
-            "warningC": false,
-            "errorC": false,
-            "botC": false,
-            "miscC": false
-        },
-        "ecmaVersion": 6,
-        "env": {
-            "es6": true,
-            "node": true
-        }
+    "ecmaVersion": 6,
+    "env": {
+      "es6": true,
+      "node": true
     }
+  }
 }
