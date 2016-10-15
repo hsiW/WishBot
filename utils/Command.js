@@ -33,6 +33,7 @@ ${this.usage}
     process(msg, args, bot) { //Commands can take and manipulate the msg object, the command arguments and the bot object 
         //Checks if the command deletes on use as well as if the bot has delete permissions before running the msg deletion
         if (this.delete && msg.channel.guild && msg.channel.permissionsOf(bot.user.id).has('manageMessages')) msg.delete();
+        this.execTimes++; //Adds 1 the current number of execution times(Uses)
         //Main Processing of Command(uses Promises)
         //Commands return a Promise which can contain a 'Message' and 'Upload' to send message being the message content, upload being whatever file you'd like to
         //Commands also can return a edit function which allows you to edit messages while also taking the inital sent message object
@@ -41,7 +42,6 @@ ${this.usage}
             if (response.edit) message.edit(response.edit(message)) //Edit sent message 
             if (response.delete) utils.messageDelete(message); //Check for delete sent message
         }).catch(err => utils.fileLog(err))); //Log to console and file if errored
-        this.execTimes++; //Adds 1 the current number of execution times(Uses)
     }
 
     //Cooldown Check(returns true if the command shouldn't be processed)

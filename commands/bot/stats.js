@@ -6,10 +6,12 @@ module.exports = {
     cooldown: 20,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
+            //Get the current command usage total by looping through the command object and getting the executeTimes for each command and adding to the commandUsage variable
             let commandUsage = 0;
             for (var command in commands) {
                 if (commands[command].execTimes !== 0) commandUsage++;
             }
+            //Bot uptime is done in ms so 1000x more than s like Process and Server uptimes
             resolve({
                 message: `
 \`\`\`markdown
