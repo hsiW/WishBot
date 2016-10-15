@@ -1,7 +1,7 @@
 let utils = require('./../../utils/utils.js');
 
 module.exports = {
-    usage: "Cleans the mentioned number of this bots messages from the current channel. \n`delete [number]`",
+    usage: "Removes the bots messages from the current channel. Defaults to 50 messages but can be changed with a mentioned number.\n`delete [number]`",
     cooldown: 10,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
@@ -12,8 +12,7 @@ module.exports = {
                     delete: true
                 }))
             else {
-                var deleted = 0,
-                    processed = 0;
+                var deleted = 0;
                 msg.channel.getMessages(args, msg.id).then(messages => {
                     for (let message in messages) {
                         if (messages[message].author.id === bot.user.id) {
