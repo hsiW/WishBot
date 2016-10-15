@@ -36,7 +36,7 @@
     "xml2js": "^0.4.16",
     "youtube-simple-search": "^0.1.0"
   },
-  "description": "A Discord Bot, made using the Eris Discord Library. 💗 Abal",
+  "description": "An Anime Themed Discord Bot made using the Eris Discord Library",
   "eslintConfig": {
     "globals": {
       "quotes": true,
