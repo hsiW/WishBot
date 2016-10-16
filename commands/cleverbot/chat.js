@@ -6,6 +6,7 @@ Cleverbot.prepare(() => {});
 
 module.exports = {
     usage: "Chat with this bot using the Cleverbot API\n`chat [text]` or `@BotMention [text]`",
+    aliases: ['clever', 'cleverbot', 'talk'],
     delete: false,
     cooldown: 2,
     process: msg => {
