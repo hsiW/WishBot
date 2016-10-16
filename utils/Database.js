@@ -81,13 +81,12 @@ exports.checkChannel = channel => {
 
 //Toggle Command Functions
 
-
 //Toggle commands that are passed to the function(takes a guild and command name)
 function toggleCommand(guild, command) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
             if (err) console.log(err)
-            else if (result.length === 0) addGuild(guild).then(() => toggleCommand(guild, command).then(action => resolve(action))).catch(err => reject(err))
+            else if (result.length === 0) addGuild(guild).then(() => toggleCommand(guild, command).then(action => resolve(action)))
             else {
                 let toggled = false;
                 if (result[0].disabled_commands != undefined) {
@@ -114,15 +113,17 @@ function toggleCommand(guild, command) {
 //Check to see if a command is currently toggled
 exports.checkCommand = (guild, command) => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
-            if (err) resolve();
-            else if (result.length === 0) resolve();
-            else {
-                let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
-                if (disabled !== null && disabled[command] !== undefined) reject();
-                else resolve();
-            }
-        });
+        if (guild === undefined) resolve();
+        else {
+            pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+                if (err || result.length === 0) resolve();
+                else {
+                    let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
+                    if (disabled !== null && disabled[command] !== undefined) reject();
+                    else resolve();
+                }
+            });
+        }
     });
 }
 exports.toggleCommand = toggleCommand;
@@ -131,10 +132,10 @@ exports.toggleCommand = toggleCommand;
 
 //Toggle setting on/off
 function toggleSetting(guild, settingChange, message, channel) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
             if (err) console.log(err)
-            else if (result.length === 0) addGuild(guild).then(() => toggleSetting(guild, settingChange, message, channel).then(action => resolve(action))).catch(err => reject(err))
+            else if (result.length === 0) addGuild(guild).then(() => toggleSetting(guild, settingChange, message, channel).then(action => resolve(action)))
             else {
                 settingChange = settingChange.toLowerCase();
                 var toggled = false,
@@ -163,7 +164,7 @@ function toggleSetting(guild, settingChange, message, channel) {
                     guild_id: guild.id,
                     channel_id: usageChannel,
                     settings: JSON.stringify(serverSettings)
-                }).then(() => resolve(`Sucessfully toggled \`${settingChange}\` to \`${toggled}\``)).catch()
+                }).then(() => resolve(`Sucessfully toggled \`${settingChange}\` to \`${toggled}\``))
             }
         });
     });
