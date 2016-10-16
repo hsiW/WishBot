@@ -104,7 +104,6 @@ function toggleCommand(guild, command) {
                 }
                 //Save guild with new disabled commands stuff
                 saveGuild(guild, {
-                    guild_id: guild.id,
                     disabled_commands: JSON.stringify(disabled)
                 }).then(() => resolve(`Sucessfully toggled \`${command}\` to \`${toggled}\``))
             }
@@ -136,34 +135,34 @@ exports.toggleCommand = toggleCommand;
 function toggleSetting(guild, settingChange, message, channel) {
     return new Promise(resolve => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
-            if (err) console.log(err)
-            else if (result.length === 0) addGuild(guild).then(() => toggleSetting(guild, settingChange, message, channel).then(action => resolve(action)))
+            if (err) console.log(err) //If error log error
+            else if (result.length === 0) addGuild(guild).then(() => toggleSetting(guild, settingChange, message, channel).then(action => resolve(action))) //If no result returned add to database then toggle setting
             else {
-                settingChange = settingChange.toLowerCase();
-                var toggled = false,
-                    usageChannel = result[0].channel_id != undefined ? result[0].channel_id : channel.id,
-                    serverSettings = result[0].settings != undefined ? JSON.parse(result[0].settings) : {};
-                if (settingChange === 'tableflip') {
-                    if (serverSettings.hasOwnProperty('tableflip')) delete serverSettings.tableflip;
-                    else {
+                settingChange = settingChange.toLowerCase(); //Converts settingsChange to lowercase for ease of use
+                var toggled = false, //Changes depending on if something is toggled or not
+                    usageChannel = result[0].channel_id !== undefined ? result[0].channel_id : channel.id, //Gets the channel id from the database if it exists otherwise sets current channel as it
+                    serverSettings = result[0].settings !== undefined ? JSON.parse(result[0].settings) : {}; //Gets settings from database if it exists otherwise sets empty object
+                if (settingChange === 'tableflip') { //Toggles automatic table unflipping
+                    if (serverSettings.hasOwnProperty('tableflip')) delete serverSettings.tableflip; //Toggles off
+                    else { //Toggles on
                         serverSettings['tableflip'] = true;
                         toggled = true;
                     }
-                } else if (settingChange === 'welcome') {
-                    if (message) {
-                        serverSettings.welcome = message;
+                } else if (settingChange === 'welcome') { //Sets and toggles welcome message on
+                    if (message) { //If theres a message
+                        serverSettings.welcome = message; //Sets the welcome message as the passed message variable
                         toggled = true;
-                        usageChannel = channel.id;
-                    } else delete serverSettings.welcome;
-                } else if (settingChange === 'leave') {
-                    if (settingChange) {
-                        serverSettings.leave = message;
+                        usageChannel = channel.id; //Sets the usagechannel as the channel in which the command is used
+                    } else delete serverSettings.welcome; //Disables welcome message
+                } else if (settingChange === 'leave') { //Sets and toggles leave message on
+                    if (message) { //If theres a message
+                        serverSettings.leave = message; //Sets leave message as the passed message variable
                         toggled = true;
-                        usageChannel = channel.id;
-                    } else delete serverSettings.leave;
+                        usageChannel = channel.id; //Sets usagechannel as the channel in which the command is used
+                    } else delete serverSettings.leave; //Disables leave message
                 }
+                //Saves to guild passing the passing the new usagechannel if applicable and the new server settings 
                 saveGuild(guild, {
-                    guild_id: guild.id,
                     channel_id: usageChannel,
                     settings: JSON.stringify(serverSettings)
                 }).then(() => resolve(`Sucessfully toggled \`${settingChange}\` to \`${toggled}\``))
@@ -177,23 +176,21 @@ exports.toggleSetting = toggleSetting;
 exports.checkSetting = (guild, check) => {
     return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
-            if (err) reject(err);
-            else if (result.length !== 0) {
-                if (result[0].settings && Object.keys(JSON.parse(result[0].settings)).length > 0) {
-                    let settings = JSON.parse(result[0].settings);
-                    if (settings.hasOwnProperty('tableflip') && check === "tableflip") resolve();
-                    else if (settings.hasOwnProperty('welcome') && check === "welcome") {
-                        let data = {
+            if (err) reject(err); //If error reject with the error
+            else if (result.length !== 0) { //If the server is in the database 
+                if (result[0].settings && Object.keys(JSON.parse(result[0].settings)).length > 0) { //Checks if theres settings in the database
+                    let settings = JSON.parse(result[0].settings); //sets setting as the parsed settings from the database
+                    if (settings.hasOwnProperty('tableflip') && check === "tableflip") resolve(); //Resolve if tableflipping is turned on
+                    else if (settings.hasOwnProperty('welcome') && check === "welcome") { //Check if a welcome is set and if thats the check being performed
+                        resolve({
                             channel: result[0].channel_id,
                             response: settings.welcome
-                        }
-                        resolve(data);
-                    } else if (settings.hasOwnProperty('leave') && check === "leave") {
-                        let data = {
+                        }); //Resolve with the welcome message and channel ID
+                    } else if (settings.hasOwnProperty('leave') && check === "leave") { //Check if a leave is set and if thats the checking being performed
+                        resolve({
                             channel: result[0].channel_id,
                             response: settings.leave
-                        }
-                        resolve(data);
+                        }); //Resolve with the leave message and channel ID
                     }
                 }
             }
