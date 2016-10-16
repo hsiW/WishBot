@@ -9,8 +9,7 @@ let mysql = require('mysql'),
         password: options.database.password,
         database: options.database.database
     }),
-    utils = require('./utils.js'),
-    guildPrefixes = require('./../database/guildPrefixes.json')
+    guildPrefixes = require('./../database/guildPrefixes.json');
 
 function addGuild(guild) {
     return new Promise((resolve, reject) => {

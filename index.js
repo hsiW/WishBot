@@ -74,7 +74,7 @@ bot.on("messageCreate", msg => {
     else if (msg.author.id !== '87600987040120832') return;
     else {
         //If used in guild and the guild has a custom prefix set the msgPrefix as such otherwise grab the default prefix
-        let msgPrefix = msg.channel.guild && Database.checkPrefix(msg.channel.guild) != undefined ? Database.getPrefix(msg.channel.guild) : options.prefix;
+        let msgPrefix = msg.channel.guild && Database.getPrefix(msg.channel.guild) != undefined ? Database.getPrefix(msg.channel.guild) : options.prefix;
         //Use Eval on the message if it starts with sudo and used by Mei
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") {
             evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
