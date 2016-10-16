@@ -1,8 +1,15 @@
-commands/
+commands/admin/
+commands/anime/
+commands/interactions/
+commands/misc/
+commands/mod/
+commands/search/
+commands/tags/
+commands/utilities/
+commands/wordplay/
 avatars/
 database/
 lists/
 node_modules/
 options/
 error.log
-!/bot/
