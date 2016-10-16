@@ -28,12 +28,14 @@ exports.addToUsageCheck = guild => {
     usageUpdated = true; //Usage Updated so save file
 }
 
+//Remove Guild from UsageCheck Database
 exports.removeFromUsageCheck = guild => {
     if (!guild || !guild.id) return; //If no guild recieved or guild doesn't have an id skip it
     if (UsageCheck.hasOwnProperty(guild.id)) delete UsageCheck[guild.id]; //If in databse remove from database
     usageUpdated = true; //Update file
 }
 
+//Check for Guild Inactivity
 exports.checkInactivity = bot => {
     return new Promise(resolve => {
         //Resets inactive guild array 
@@ -54,6 +56,7 @@ exports.checkInactivity = bot => {
     });
 }
 
+//Remove Inactive Guilds
 exports.removeInactive = bot => {
     return new Promise((resolve, reject) => {
         if (inactiveGuilds.length === 0) reject('Currently No Inactive Guilds') //Reject if no inactive guilds
@@ -79,7 +82,7 @@ exports.removeInactive = bot => {
     });
 }
 
-//Save usage json
+//Save Usage Database File
 function saveUsage() {
     fs.writeFile(__dirname + '/../database/UsageCheck-temp.json', JSON.stringify(UsageCheck, null, 4), error => { //Save Json in a more readable format(first using an temp json to prevent loss of data)
         if (error) console.log(error);
