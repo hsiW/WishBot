@@ -64,7 +64,7 @@ bot.on("ready", () => {
     console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
     console.log("Users: " + userC(bot.users.size) + " | Channels: " + channelC(Object.keys(bot.channelGuildMap).length) + " | Servers: " + serverC(bot.guilds.size))
     //Run inactivity checker and output the number of inactive servers
-    UsageChecker.checkInactivity(bot).catch(err => console.log(errorC(err)));
+    UsageChecker.checkInactivity(bot).then(response => console.log(botC(response))).catch(err => console.log(errorC(err)));
 })
 
 //On Message Creation Event
@@ -143,13 +143,21 @@ bot.on("guildMemberRemove", (guild, member) => {
 })
 
 //Guild Joined Event
-bot.on('guildCreate', () => postGuildCount())
+bot.on('guildCreate', guild => {
+    //Post Guild Count
+    postGuildCount()
+    //Add guild to UsageChecker database
+    UsageChecker.addToUsageCheck(guild);
+})
 
 //Guild Left Event
 bot.on('guildDelete', guild => {
+    //Post Guild Count
     postGuildCount()
-    //Remove Guild from Database
+    //Remove Guild from Database and log if error
     Database.removeGuild(guild).catch(err => utils.fileLog(err))
+    //Remove from UsageChecker database
+    UsageChecker.removeFromUsageCheck(guild);
 })
 
 //Load Commands then Connect(Logs any errors to console and file)

@@ -41,7 +41,7 @@
     "globals": {
       "quotes": true,
       "commands": true,
-      "inactiveServers": true,
+      "inactiveGuilds": true,
       "serverC": false,
       "channelC": false,
       "userC": false,
