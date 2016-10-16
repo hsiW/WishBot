@@ -35,7 +35,7 @@ module.exports = {
                 }
             });
         });
-    });
+    }
 }
 
 //Fix unicode which are returned oddly
