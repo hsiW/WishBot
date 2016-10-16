@@ -74,8 +74,7 @@ exports.unignoreChannel = channel => {
 exports.checkChannel = channel => {
     return new Promise(resolve => {
         pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel.id, (err, result) => {
-            if (err) resolve(); //Resolve if error
-            else(result.length === 0) resolve(); //Resolve if no result returned(not ignored)
+            if (err || result.length === 0) resolve(); //Resolve if error or if no result returned(not ignored)
         });
     });
 }
