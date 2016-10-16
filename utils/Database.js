@@ -20,7 +20,7 @@ function addGuild(guild) {
             guild_id: guild.id,
             settings: JSON.stringify({}), //Pass a blank stringified object
             disabled_commands: JSON.stringify({}) //Pass a blank stringified object
-        }, (err, result) => {
+        }, err => {
             //Resolve or reject accordingly
             if (err) reject(err);
             else resolve();
@@ -31,7 +31,7 @@ function addGuild(guild) {
 //Remove guild from the server_settings database table
 exports.removeGuild = guild => {
     return new Promise((resolve, reject) => {
-        pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+        pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild.id, err => {
             if (err) reject(err);
             else resolve();
         });
@@ -41,7 +41,7 @@ exports.removeGuild = guild => {
 //Update server_settings using the passed data
 function saveGuild(guild, data) {
     return new Promise((resolve, reject) => {
-        pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, data, (err, result) => {
+        pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, data, err => {
             if (err) reject(err);
             else resolve();
         })
@@ -53,7 +53,7 @@ function saveGuild(guild, data) {
 //Add the channel id to the channel_ignores database table and resolve/reject accordingly
 exports.ignoreChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('INSERT INTO channel_ignores SET channel_id = ' + channel.id, (err, result) => {
+        pool.query('INSERT INTO channel_ignores SET channel_id = ' + channel.id, err => {
             if (err) reject(err);
             else resolve();
         });
@@ -63,7 +63,7 @@ exports.ignoreChannel = channel => {
 //Remove the channel from the channel_ignores database table and resolve/reject accordingly
 exports.unignoreChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('DELETE FROM channel_ignores WHERE channel_id = ' + channel.id, (err, result) => {
+        pool.query('DELETE FROM channel_ignores WHERE channel_id = ' + channel.id, err => {
             if (err) reject(err);
             else resolve();
         });
@@ -86,25 +86,27 @@ function toggleCommand(guild, command) {
     return new Promise(resolve => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
             if (err) console.log(err)
-            else if (result.length === 0) addGuild(guild).then(() => toggleCommand(guild, command).then(action => resolve(action)))
+            else if (result.length === 0) addGuild(guild).then(() => toggleCommand(guild, command).then(action => resolve(action))) //If not in database add to database then toggle command
             else {
-                let toggled = false;
-                if (result[0].disabled_commands != undefined) {
+                let toggled = true; //Set to false if something toggled to false otherwise otherwise
+                if (result[0].disabled_commands !== undefined) { //If disabled commands exists
                     var disabled = JSON.parse(result[0].disabled_commands);
+                    //If command already disabled re-enable it
                     if (disabled.hasOwnProperty(command)) delete disabled[command];
                     else {
-                        disabled[command] = true;
-                        toggled = true;
+                        disabled[command] = true; //Setting to true disables it(yes its weird but it works)
+                        toggled = false;
                     }
-                } else {
+                } else { //If disabled commands doesn't exist(shouldn't normally happen)
                     var disabled = {};
                     disabled[command] = true;
-                    toggled = true;
+                    toggled = false;
                 }
+                //Save guild with new disabled commands stuff
                 saveGuild(guild, {
                     guild_id: guild.id,
                     disabled_commands: JSON.stringify(disabled)
-                }).then(() => resolve(`Sucessfully toggled \`${command}\` to \`${!toggled}\``)).catch()
+                }).then(() => resolve(`Sucessfully toggled \`${command}\` to \`${toggled}\``))
             }
         });
     });
@@ -113,14 +115,14 @@ function toggleCommand(guild, command) {
 //Check to see if a command is currently toggled
 exports.checkCommand = (guild, command) => {
     return new Promise((resolve, reject) => {
-        if (guild === undefined) resolve();
+        if (guild === undefined) resolve(); //If not used in a guild resolve because commands cannot be toggled in DM's
         else {
             pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
-                if (err || result.length === 0) resolve();
+                if (err || result.length === 0) resolve(); //If error or no result resolve
                 else {
                     let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
-                    if (disabled !== null && disabled[command] !== undefined) reject();
-                    else resolve();
+                    if (disabled !== null && disabled[command] !== undefined) reject(); //Command disabled so reject
+                    else resolve(); //If there are disabled commands but this isn't one of them, resolve
                 }
             });
         }
