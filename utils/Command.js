@@ -12,6 +12,7 @@ module.exports = class Command {
         this.dm = !(settings.dm === false); //Setting for command to work in DM's(Private messages)(true by default)
         this.cooldown = settings.cooldown || 0; //The cooldown for the command
         this.togglable = !(settings.togglable === false); //Wheather the command is toggable or not with the toggle command(true by default)
+        this.aliases = settings.aliases || null //Array of aliases the commmand has(none by default)
         this.privateServer = settings.privateServer || null; //Array of servers the command is resticted to(no restriction by default)
     }
     //The template help message which is used in `help [cmdName]`
@@ -20,6 +21,7 @@ module.exports = class Command {
 
 ${this.usage}
 
+**Aliases:** ${this.aliases.join(', ')}
 **Cooldown:** \`${this.cooldown}s\` | **Delete on Use:** \`${this.delete}\` | **DM:** \`${this.dm}\` | **Uses:** \`${this.execTimes}\``;
     }
 
