@@ -21,7 +21,7 @@ module.exports = class Command {
 
 ${this.usage}
 
-**Aliases:** ${this.aliases.join(', ')}
+**Aliases:** ${this.aliases.map(a=> "\`"+a+"\`").join(', ')}
 **Cooldown:** \`${this.cooldown}s\` | **Delete on Use:** \`${this.delete}\` | **DM:** \`${this.dm}\` | **Uses:** \`${this.execTimes}\``;
     }
 
