@@ -1,6 +1,7 @@
 let mysql = require('mysql'),
     fs = require('fs'),
     options = require('./../options/options.json'),
+    guildPrefixes = require('./../database/guildPrefixes.json'), //JSON database of guildPrefixes
     pool = mysql.createPool({
         connectionLimit: 100,
         host: options.database.host,
@@ -8,22 +9,26 @@ let mysql = require('mysql'),
         user: options.database.user,
         password: options.database.password,
         database: options.database.database
-    }),
-    guildPrefixes = require('./../database/guildPrefixes.json');
+    });
 
+//Add to or remove from server_settings database
+
+//Add guild to the server_settings database table
 function addGuild(guild) {
     return new Promise((resolve, reject) => {
         pool.query('INSERT INTO server_settings SET ?', {
             guild_id: guild.id,
-            settings: JSON.stringify({}),
-            disabled_commands: JSON.stringify({})
+            settings: JSON.stringify({}), //Pass a blank stringified object
+            disabled_commands: JSON.stringify({}) //Pass a blank stringified object
         }, (err, result) => {
+            //Resolve or reject accordingly
             if (err) reject(err);
             else resolve();
         });
     });
 }
 
+//Remove guild from the server_settings database table
 exports.removeGuild = guild => {
     return new Promise((resolve, reject) => {
         pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
@@ -33,7 +38,19 @@ exports.removeGuild = guild => {
     });
 }
 
-//Ignore Channel Stuffs
+//Update server_settings using the passed data
+function saveGuild(guild, data) {
+    return new Promise((resolve, reject) => {
+        pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, data, (err, result) => {
+            if (err) reject(err);
+            else resolve();
+        })
+    });
+}
+
+//Ignore Channel Functions
+
+//Add the channel id to the channel_ignores database table and resolve/reject accordingly
 exports.ignoreChannel = channel => {
     return new Promise((resolve, reject) => {
         pool.query('INSERT INTO channel_ignores SET channel_id = ' + channel.id, (err, result) => {
@@ -43,6 +60,7 @@ exports.ignoreChannel = channel => {
     });
 }
 
+//Remove the channel from the channel_ignores database table and resolve/reject accordingly
 exports.unignoreChannel = channel => {
     return new Promise((resolve, reject) => {
         pool.query('DELETE FROM channel_ignores WHERE channel_id = ' + channel.id, (err, result) => {
@@ -52,17 +70,20 @@ exports.unignoreChannel = channel => {
     });
 }
 
+//Check to see if the channel is currently being ignored(if its in the channel_ignores database table)
 exports.checkChannel = channel => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel.id, (err, result) => {
-            if (err) resolve();
-            else if (result.length >= 1) reject();
-            else resolve();
+            if (err) resolve(); //Resolve if error
+            else(result.length === 0) resolve(); //Resolve if no result returned(not ignored)
         });
     });
 }
 
-//Command Stuffs
+//Toggle Command Functions
+
+
+
 function toggleCommand(guild, command) {
     return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
@@ -92,25 +113,15 @@ function toggleCommand(guild, command) {
     });
 }
 
-function saveGuild(guild, data) {
-    return new Promise((resolve, reject) => {
-        pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, data, (err, res) => {
-            if (err) reject(err);
-            else resolve();
-        })
-    });
-}
-
+//Check to see if a command is currently toggled
 exports.checkCommand = (guild, command) => {
     return new Promise((resolve, reject) => {
         pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
-            if (err) {
-                console.log(err)
-                resolve();
-            } else if (result.length === 0) resolve();
+            if (err) resolve();
+            else if (result.length === 0) resolve();
             else {
                 let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
-                if (disabled != null && disabled[command] != undefined) reject();
+                if (disabled !== null && disabled[command] !== undefined) reject();
                 else resolve();
             }
         });
@@ -186,7 +197,7 @@ exports.checkSetting = (guild, check) => {
     });
 }
 
-//Guild Prefix Code
+//Guild Prefix Functions
 
 //Add guild to guildPrefixes object
 function addGuildtoJson(guild) {
