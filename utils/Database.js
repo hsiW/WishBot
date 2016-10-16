@@ -25,7 +25,7 @@ function addGuild(guild) {
     });
 }
 
-exports.removeGuild = (guild) => {
+exports.removeGuild = guild => {
     return new Promise((resolve, reject) => {
         pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
             if (err) reject(err);
@@ -215,7 +215,7 @@ function changePrefix(guild, newPrefix) {
 }
 exports.changePrefix = changePrefix;
 
-exports.checkPrefix = (guild) => {
+exports.getPrefix = guild => {
     if (guildPrefixes.hasOwnProperty(guild.id)) return guildPrefixes[guild.id];
 }
 
