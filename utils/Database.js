@@ -116,7 +116,6 @@ exports.checkCommand = (guild, command) => {
         });
     });
 }
-
 exports.toggleCommand = toggleCommand;
 
 //Settings
@@ -158,6 +157,7 @@ function toggleSetting(guild, settingChange, message, channel) {
         });
     });
 }
+exports.toggleSetting = toggleSetting;
 
 exports.checkSetting = (guild, check) => {
     return new Promise((resolve, reject) => {
@@ -186,9 +186,9 @@ exports.checkSetting = (guild, check) => {
     });
 }
 
-exports.toggleSetting = toggleSetting;
+//Guild Prefix Code
 
-//Prefix Stuff
+//Add guild to guildPrefixes object
 function addGuildtoJson(guild) {
     return new Promise(resolve => {
         guildPrefixes[guild.id] = {};
@@ -196,29 +196,37 @@ function addGuildtoJson(guild) {
     });
 }
 
+//Remove guild from guildPrefixes object if it exists in it
+function removeGuildfromJson(guild) {
+    if (guildPrefixes.hasOwnProperty(guild.id)) delete guildPrefixes[guild.id];
+}
+exports.removeGuildfromJson = removeGuildfromJson;
+
+//Used for changing the guilds prefix
 function changePrefix(guild, newPrefix) {
     return new Promise((resolve, reject) => {
-        if (newPrefix === '') reject('The prefix cannot be nothing');
-        else if (newPrefix.includes(' ') || newPrefix === " ") reject('Prefixes cannot contain spaces');
-        else if (guildPrefixes.hasOwnProperty(guild.id)) {
+        if (newPrefix === '') reject('The prefix cannot be nothing'); //Reject if prefix is nothing
+        else if (newPrefix.includes(' ') || newPrefix === " ") reject('Prefixes cannot contain spaces'); //Reject if prefix contains spaces or is just a space
+        else if (guildPrefixes.hasOwnProperty(guild.id)) { //If guild exists in guildPrefixes object already
             if (newPrefix === options.prefix) {
-                delete guildPrefixes[guild.id];
+                removeGuildfromJson(guild); //If newPrefix is the same as the default prefix remove guild from json and resolve
                 resolve();
             } else {
-                guildPrefixes[guild.id] = newPrefix;
+                guildPrefixes[guild.id] = newPrefix; //Change prefix to new prefix and resolve
                 resolve();
             }
-        } else addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(() => resolve())).catch(err => reject(err));
-        savePrefixes();
+        } else addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(() => resolve())).catch(err => reject(err)); //Add guild to json then change prefix
+        savePrefixes(); //Save guildPrefixes json file
     });
 }
 exports.changePrefix = changePrefix;
 
+//Return the guild's prefix if it exists in the guildPrefixes database
 exports.getPrefix = guild => {
     if (guildPrefixes.hasOwnProperty(guild.id)) return guildPrefixes[guild.id];
 }
 
-
+//Save guildPrefixes file checking to make sure that a blank file isn't saved
 function savePrefixes() {
     fs.writeFile(__dirname + '/../database/guildPrefixes-temp.json', JSON.stringify(guildPrefixes, null, 4), error => {
         if (error) console.log(error);
@@ -227,9 +235,7 @@ function savePrefixes() {
                 if (err) console.log(err);
                 else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with guildPrefixes"));
                 else {
-                    fs.rename(__dirname + '/../database/guildPrefixes-temp.json', __dirname + '/../database/guildPrefixes.json', e => {
-                        if (e) console.log(e);
-                    });
+                    fs.renameSync(__dirname + '/../database/guildPrefixes-temp.json', __dirname + '/../database/guildPrefixes.json')
                 }
             });
         }

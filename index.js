@@ -151,6 +151,8 @@ bot.on('guildDelete', guild => {
     postGuildCount()
     //Remove Guild from Database and log if error
     Database.removeGuild(guild).catch(err => utils.fileLog(err))
+    //Remove guild from guildPrefix array if it exists in it
+    Database.removeGuildfromJson(guild)
     //Remove from UsageChecker database
     UsageChecker.removeFromUsageCheck(guild);
 })
