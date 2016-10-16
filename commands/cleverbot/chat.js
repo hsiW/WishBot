@@ -1,8 +1,7 @@
 let Cleverbot = require('cleverbot-node'),
-    onee = new Cleverbot,
-    decode = require('entities');
-
-Cleverbot.prepare(() => {});
+    Yuki = new Cleverbot(),
+    decode = require('entities'); //Used to decode html stuff
+Cleverbot.prepare(() => {}); //Prepares the cleverbot module for use
 
 module.exports = {
     usage: "Chat with this bot using the Cleverbot API\n`chat [text]` or `@BotMention [text]`",
@@ -11,34 +10,37 @@ module.exports = {
     cooldown: 2,
     process: msg => {
         return new Promise(resolve => {
+            //Cleans message content removing mentions and replacing them with the raw usernames, if no message args text defaults to 'Hi'
             let text = (msg.cleanContent.split(' ').length > 1) ? msg.cleanContent.substring(msg.cleanContent.indexOf(' ') + 1).replace('@', '') : 'Hi';
             msg.channel.sendTyping();
-            Cleverbot.prepare(() => {
-                onee.write(text, response => {
-                    if (!response.message) {
-                        resolve({
-                            message: "Cleverbot is currently reseting. Please try again in a moment",
-                            delete: true
-                        });
-                        delete require.cache[require.resolve('cleverbot-node')];
-                        Cleverbot = require('cleverbot-node');
-                        onee = new Cleverbot();
-                        console.log("Cleverbot was reset because nothing was returned");
-                    } else {
-                        response = unicodeToChar(response.message.replace(/<br \/>/g, " ").replace(/\r?\n|\r/g, "\n").replace(/\[(i|\/i)\]/g, "*").replace(/\[(b|\/b)\]/g, "**").replace(/\|/g, "\\u"))
-                        resolve({
-                            message: "🗨 - " + decode.decodeHTML(response)
-                        })
-                    }
-                });
+            //Get cleverbot response
+            Yuki.write(text, response => {
+                if (!response.message) {
+                    //Sometimes Cleverbot doesn't return a message which causes the bot to just send blank messages until its rebooted, this does that
+                    resolve({
+                        message: "Cleverbot is currently reseting. Please try again in a moment",
+                        delete: true
+                    });
+                    console.log(errorC("Cleverbot was reset because nothing was returned."));
+                    delete require.cache[require.resolve('cleverbot-node')];
+                    Cleverbot = require('cleverbot-node');
+                    Yuki = new Cleverbot();
+                    Cleverbot.prepare(() => {});
+                } else {
+                    //Replace html stuff with the correct characters
+                    response = unicodeToChar(response.message.replace(/<br \/>/g, " ").replace(/\r?\n|\r/g, "\n").replace(/\[(i|\/i)\]/g, "*").replace(/\[(b|\/b)\]/g, "**").replace(/\|/g, "\\u"))
+                    resolve({
+                        message: "🗨 - " + decode.decodeHTML(response)
+                    })
+                }
             });
         });
-    }
+    });
 }
 
+//Fix unicode which are returned oddly
 function unicodeToChar(text) {
-    return text.replace(/\\u[\dA-F]{4}/gi,
-        function(match) {
-            return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
-        });
+    return text.replace(/\\u[\dA-F]{4}/gi, (match) => {
+        return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+    });
 }
