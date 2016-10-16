@@ -52,13 +52,7 @@ errorC = colour.red.bold;
 //Ready Event
 bot.on("ready", () => {
     //Sets the status's of every shard seperately
-    bot.shards.forEach((shard) => {
-        shard.editStatus({
-            name: playing[~~(Math.random() * (playing.length))], //Picks a random playing status
-            type: 1,
-            url: urls[~~(Math.random() * (urls.length))] //Picks a random URL
-        });
-    })
+    utils.setRandomStatus(bot, playing, urls)
     //This stuff below is sent to the console when the bot is ready
     console.log(botC(bot.user.username + " is now Ready."));
     console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
@@ -198,28 +192,26 @@ function postGuildCount() {
 }
 
 //Changes the bots status every 10mins
-setInterval(() => {
-    bot.shards.forEach((shard) => {
-        shard.editStatus({
-            name: playing[~~(Math.random() * (playing.length))],
-            type: 1,
-            url: urls[~~(Math.random() * (urls.length))]
-        });
-    })
-}, 6e+5);
+setInterval(() => utils.setRandomStatus(bot, playing, urls), 6e+5);
 
 //Changes the bots avatar every 2hrs
 setInterval(() => {
     //Reads avatar directory and randomly picks an avatar to switch to
     fs.readdir(`${__dirname}/avatars/`, (err, files) => {
-        let avatar = files[~~(Math.random() * (files.length))];
-        //Reads the avatar image file and changes the bots avatar to it
-        fs.readFile(`${__dirname}/avatars/${avatar}`, (err, image) => {
-            let data = "data:image/jpg;base64," + image.toString('base64');
-            bot.editSelf({
-                avatar: data
-            }).then(() => console.log(botC('Changed avatar to ' + avatar))).catch(err => utils.fileLog(err));
-        })
+        if (err) utils.fileLog(err)
+        else {
+            let avatar = files[~~(Math.random() * (files.length))];
+            //Reads the avatar image file and changes the bots avatar to it
+            fs.readFile(`${__dirname}/avatars/${avatar}`, (err, image) => {
+                if (err) utils.fileLog(err)
+                else {
+                    let data = "data:image/jpg;base64," + image.toString('base64');
+                    bot.editSelf({
+                        avatar: data
+                    }).then(() => console.log(botC('Changed avatar to ' + avatar))).catch(err => utils.fileLog(err));
+                }
+            })
+        }
     });
 }, 7.2e+6);
 
