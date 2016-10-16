@@ -83,7 +83,7 @@ exports.checkChannel = channel => {
 //Toggle Command Functions
 
 
-
+//Toggle commands that are passed to the function(takes a guild and command name)
 function toggleCommand(guild, command) {
     return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
@@ -103,11 +103,10 @@ function toggleCommand(guild, command) {
                     disabled[command] = true;
                     toggled = true;
                 }
-                let data = {
+                saveGuild(guild, {
                     guild_id: guild.id,
                     disabled_commands: JSON.stringify(disabled)
-                }
-                saveGuild(guild, data).then(() => resolve(`Sucessfully toggled \`${command}\` to \`${!toggled}\``)).catch()
+                }).then(() => resolve(`Sucessfully toggled \`${command}\` to \`${!toggled}\``)).catch()
             }
         });
     });
@@ -129,7 +128,9 @@ exports.checkCommand = (guild, command) => {
 }
 exports.toggleCommand = toggleCommand;
 
-//Settings
+//Welcome/leave/tableflip Settings Functions
+
+//Toggle setting on/off
 function toggleSetting(guild, settingChange, message, channel) {
     return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
@@ -170,6 +171,7 @@ function toggleSetting(guild, settingChange, message, channel) {
 }
 exports.toggleSetting = toggleSetting;
 
+//Check to see if the setting exists and if so return it
 exports.checkSetting = (guild, check) => {
     return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
