@@ -13,3 +13,7 @@ lists/
 node_modules/
 options/
 error.log
+admins.json
+options.json
+playing.json
+
