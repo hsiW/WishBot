@@ -3,13 +3,13 @@ const Eris = require('eris'), //The bot's api library
     fs = require('fs'), //For reading/writing to a file
     axios = require('axios'), //HTTP client for requests to and from websites
     options = require('./options/options.json'),
-    CommandLoader = require('./utils/CommandLoader.js'),
+    CommandLoader = require('./utils/commandLoader.js'),
     utils = require('./utils/utils.js'),
-    Database = require('./utils/Database.js'),
+    Database = require('./utils/database.js'),
     //List of playing status's for the bot to use
     playing = require('./lists/playing.json'),
-    processCmd = require('./utils/CommandHandler.js'),
-    UsageChecker = require('./utils/UsageChecker.js'),
+    processCmd = require('./utils/commandHandler.js'),
+    UsageChecker = require('./utils/usageChecker.js'),
     //This isn't normally needed but PM2 doesn't work with chalk unless I do this
     colour = new chalk.constructor({
         enabled: true
