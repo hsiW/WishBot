@@ -9,11 +9,15 @@ commands/utilities/
 commands/wordplay/
 avatars/
 database/
-lists/
 node_modules/
-options/
 error.log
 admins.json
 options.json
 playing.json
+8ball.json
+animequotes.json
+dance.json
+dance.json
+puns.json
+lewd.json
 

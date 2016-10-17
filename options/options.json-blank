@@ -1,0 +1,13 @@
+{
+    "token": "",
+    "carbon_key": "",
+    "bot_key": "",
+    "prefix": "",
+    "database": {
+        "host": "",
+        "port": "",
+        "user": "",
+        "password": "",
+        "database": ""
+    }
+}
