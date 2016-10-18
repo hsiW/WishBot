@@ -2,7 +2,7 @@ let getName = require('./../../utils/utils.js').getName,
     moment = require('moment');
 
 module.exports = {
-    usage: "Gives info on the user, can take a username/nickname(can take a mention if a match isn't found) to find the info of that user.\n`info [none] or [user]`",
+    usage: "Gives info on the user, can take a username/nickname(can take a mention if a match isn't found) to find the info of that user.\n`whois [none] or [user]`",
     aliases: ['about'],
     dm: false,
     delete: false,
