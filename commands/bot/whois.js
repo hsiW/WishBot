@@ -15,8 +15,7 @@ module.exports = {
             if (user) {
                 //Resolves will info about the user using moment to format the date and times properly as well as seeing how long ago stuff was
                 resolve({
-                    message: ` 
-\`\`\`Swift 
+                    message: `\`\`\`swift
 User: ${user.user.username}#${user.user.discriminator} 
 ${user.nick !==null ? 'Nickname: '+user.nick+'\n': ''}User ID: ${user.id} 
 Status: ${user.status} 
@@ -24,7 +23,7 @@ ${user.game !== null ? 'Playing: \''+user.game.name+'\'\n' : ''}Join Date: ${mom
 Creation Date: ${moment(user.user.createdAt).utc().format('ddd MMM DD YYYY | kk:mm:ss')} (${moment(user.user.createdAt).fromNow()}) 
 Avatar URL: \"${user.user.avatarURL}\" 
 \`\`\` 
-                                `
+`
                 });
             } //This is just here incase something goes wrong 
             else resolve({
