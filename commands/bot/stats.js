@@ -22,7 +22,7 @@ module.exports = {
 [Memory Usage](RSS: ${(process.memoryUsage().rss / 1024 / 1000).toFixed(2)}MB | Heap Used: ${(process.memoryUsage().heapUsed / 1024 / 1000).toFixed(2)}MB)
 [Shards](${bot.shards.size})
 
-# Available to:
+# Available To:
 [Channels](${Object.keys(bot.channelGuildMap).length})
 [Private Channels](${bot.privateChannels.size})
 [Guilds](${bot.guilds.size})
