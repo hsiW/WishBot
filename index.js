@@ -22,7 +22,7 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 4,
+        maxShards: 8,
         autoReconnect: true,
         disableEveryone: true,
         disabledEvents: {
