@@ -31,7 +31,7 @@ function addGuild(guild) {
 //Remove guild from the server_settings database table
 exports.removeGuild = guild => {
     return new Promise((resolve, reject) => {
-        pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild.id, err => {
+        pool.query('DELETE FROM server_settings WHERE guild_id = ' + guild, err => {
             if (err) reject(err);
             else resolve();
         });
@@ -85,7 +85,7 @@ exports.checkChannel = channel => {
 //Toggle commands that are passed to the function(takes a guild and command name)
 function toggleCommand(guild, command) {
     return new Promise(resolve => {
-        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild, (err, result) => {
             if (err) console.log(err)
             else if (result.length === 0) addGuild(guild).then(() => toggleCommand(guild, command).then(action => resolve(action))) //If not in database add to database then toggle command
             else {
@@ -117,7 +117,7 @@ exports.checkCommand = (guild, command) => {
     return new Promise((resolve, reject) => {
         if (guild === undefined) resolve(); //If not used in a guild resolve because commands cannot be toggled in DM's
         else {
-            pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+            pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild, (err, result) => {
                 if (err || result.length === 0) resolve(); //If error or no result resolve
                 else {
                     let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
@@ -135,7 +135,7 @@ exports.toggleCommand = toggleCommand;
 //Toggle setting on/off
 function toggleSetting(guild, settingChange, message, channel) {
     return new Promise(resolve => {
-        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild, (err, result) => {
             if (err) console.log(err) //If error log error
             else if (result.length === 0) addGuild(guild).then(() => toggleSetting(guild, settingChange, message, channel).then(action => resolve(action))) //If no result returned add to database then toggle setting
             else {
@@ -176,7 +176,7 @@ exports.toggleSetting = toggleSetting;
 //Check to see if the setting exists and if so return it
 exports.checkSetting = (guild, check) => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
+        pool.query('SELECT * FROM server_settings WHERE guild_id = ' + guild, (err, result) => {
             if (err) reject(err); //If error reject with the error
             else if (result.length !== 0) { //If the server is in the database 
                 if (result[0].settings && Object.keys(JSON.parse(result[0].settings)).length > 0) { //Checks if theres settings in the database
@@ -204,14 +204,14 @@ exports.checkSetting = (guild, check) => {
 //Add guild to guildPrefixes object
 function addGuildtoJson(guild) {
     return new Promise(resolve => {
-        guildPrefixes[guild.id] = {};
+        guildPrefixes[guild] = {};
         resolve();
     });
 }
 
 //Remove guild from guildPrefixes object if it exists in it
 function removeGuildfromJson(guild) {
-    if (guildPrefixes.hasOwnProperty(guild.id)) delete guildPrefixes[guild.id];
+    if (guildPrefixes.hasOwnProperty(guild)) delete guildPrefixes[guild];
 }
 exports.removeGuildfromJson = removeGuildfromJson;
 
@@ -220,12 +220,12 @@ function changePrefix(guild, newPrefix) {
     return new Promise((resolve, reject) => {
         if (newPrefix === '') reject('The prefix cannot be nothing'); //Reject if prefix is nothing
         else if (newPrefix.includes(' ') || newPrefix === " ") reject('Prefixes cannot contain spaces'); //Reject if prefix contains spaces or is just a space
-        else if (guildPrefixes.hasOwnProperty(guild.id)) { //If guild exists in guildPrefixes object already
+        else if (guildPrefixes.hasOwnProperty(guild)) { //If guild exists in guildPrefixes object already
             if (newPrefix === options.prefix) {
                 removeGuildfromJson(guild); //If newPrefix is the same as the default prefix remove guild from json and resolve
                 resolve();
             } else {
-                guildPrefixes[guild.id] = newPrefix; //Change prefix to new prefix and resolve
+                guildPrefixes[guild] = newPrefix; //Change prefix to new prefix and resolve
                 resolve();
             }
         } else addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(() => resolve())).catch(err => reject(err)); //Add guild to json then change prefix
@@ -236,7 +236,7 @@ exports.changePrefix = changePrefix;
 
 //Return the guild's prefix if it exists in the guildPrefixes database
 exports.getPrefix = guild => {
-    if (guildPrefixes.hasOwnProperty(guild.id)) return guildPrefixes[guild.id];
+    if (guildPrefixes.hasOwnProperty(guild)) return guildPrefixes[guild];
 }
 
 //Save guildPrefixes file checking to make sure that a blank file isn't saved

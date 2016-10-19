@@ -20,7 +20,7 @@ __Welcome/Leave Messages can include the following text to return different thin
     togglable: false,
     cooldown: 5,
     process: (msg, args) => {
-        if (args.toLowerCase() === 'tableflip') Database.toggleSetting(msg.channel.guild, args, null, msg.channel).then(result => resolve({
+        if (args.toLowerCase() === 'tableflip') Database.toggleSetting(msg.channel.guild.id, args).then(result => resolve({
             message: "⚙ " + result + " ⚙",
             delete: true
         }))
@@ -31,7 +31,7 @@ __Welcome/Leave Messages can include the following text to return different thin
                 message: "🚫 Welcome/Leave Messages are limited to 256 characters in length. 🚫",
                 delete: true
             })
-            else Database.toggleSetting(msg.channel.guild, setting, message, msg.channel).then(result => resolve({
+            else Database.toggleSetting(msg.channel.guild.id, setting, message, msg.channel.id).then(result => resolve({
                 message: "⚙ " + result + " ⚙",
                 delete: true
             }))

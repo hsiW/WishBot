@@ -68,7 +68,7 @@ bot.on("messageCreate", msg => {
     else if (msg.author.id !== '87600987040120832') return;
     else {
         //If used in guild and the guild has a custom prefix set the msgPrefix as such otherwise grab the default prefix
-        let msgPrefix = msg.channel.guild && Database.getPrefix(msg.channel.guild) !== undefined ? Database.getPrefix(msg.channel.guild) : options.prefix;
+        let msgPrefix = msg.channel.guild && Database.getPrefix(msg.channel.guild.id) != undefined ? Database.getPrefix(msg.channel.guild.id) : options.prefix;
         //Use Eval on the message if it starts with sudo and used by Mei
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") {
             evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
@@ -79,7 +79,7 @@ bot.on("messageCreate", msg => {
         //If used in a Guild
         if (msg.channel.guild) {
             //If Message is a tableFlip and the Guild has tableflip(tableunflip) on return an unflipped table
-            if (msg.content === "(╯°□°）╯︵ ┻━┻") Database.checkSetting(msg.channel.guild, 'tableflip').then(() => bot.createMessage(msg.channel.id, tablesUnFlipped[~~(Math.random() * (unflippedTables.length))])).catch(err => utils.fileLog(err))
+            if (msg.content === "(╯°□°）╯︵ ┻━┻") Database.checkSetting(msg.channel.guild.id, 'tableflip').then(() => bot.createMessage(msg.channel.id, tablesUnFlipped[~~(Math.random() * (unflippedTables.length))])).catch(err => utils.fileLog(err))
                 //Check if message starts with a bot user mention and if so replace with the correct prefix and the 'chat' command text
             if (msg.content.replace(/<@!/g, "<@").startsWith(bot.user.mention)) msg.content = msg.content.replace(/<@!/g, "<@").replace(bot.user.mention, msgPrefix + "chat");
             //Prefix command override so that prefix can be used with the default command prefix to prevent forgotten prefixes
@@ -93,7 +93,7 @@ bot.on("messageCreate", msg => {
             if (commandAliases.hasOwnProperty(cmdTxt)) cmdTxt = commandAliases[cmdTxt]; //If the cmdTxt is an alias of the command
             if (cmdTxt === 'channelmute') processCmd(msg, args, commands[cmdTxt], bot); //Override channelCheck if cmd is channelmute to unmute a muted channel
             //Check if a Command was used and runs the corresponding code depending on if it was used in a Guild or not, if in guild checks for muted channel and disabled command
-            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel).then(() => Database.checkCommand(msg.channel.guild, cmdTxt).then(() => processCmd(msg, args, commands[cmdTxt], bot)))
+            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel.id).then(() => Database.checkCommand(msg.channel.guild.id, cmdTxt).then(() => processCmd(msg, args, commands[cmdTxt], bot)))
         }
     }
 });
@@ -117,7 +117,7 @@ bot.on("guildMemberAdd", (guild, member) => {
     //Checks to make sure guild and a member was sent
     if (guild && member) {
         //Checks to see if the guild has a welcome set and if so replaces the correct strings with the correct info
-        Database.checkSetting(guild, 'welcome').then(response => {
+        Database.checkSetting(guild.id, 'welcome').then(response => {
             let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention);
             bot.createMessage(response.channel, message);
         }).catch(err => utils.fileLog(err));
@@ -129,7 +129,7 @@ bot.on("guildMemberRemove", (guild, member) => {
     //Checks to make sure guild and a member was sent
     if (guild && member) {
         //Checks to see if the guild has a leave set and if so replaces the correct strings with the correct info
-        Database.checkSetting(guild, 'leave').then(response => {
+        Database.checkSetting(guild.id, 'leave').then(response => {
             let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username);
             bot.createMessage(response.channel, message)
         }).catch(err => utils.fileLog(err))
@@ -141,7 +141,7 @@ bot.on('guildCreate', guild => {
     //Post Guild Count
     postGuildCount()
     //Add guild to UsageChecker database
-    UsageChecker.addToUsageCheck(guild);
+    UsageChecker.addToUsageCheck(guild.id);
 })
 
 //Guild Left Event
@@ -149,11 +149,11 @@ bot.on('guildDelete', guild => {
     //Post Guild Count
     postGuildCount()
     //Remove Guild from Database and log if error
-    Database.removeGuild(guild).catch(err => utils.fileLog(err))
+    Database.removeGuild(guild.id).catch(err => utils.fileLog(err))
     //Remove guild from guildPrefix array if it exists in it
-    Database.removeGuildfromJson(guild)
+    Database.removeGuildfromJson(guild.id)
     //Remove from UsageChecker database
-    UsageChecker.removeFromUsageCheck(guild);
+    UsageChecker.removeFromUsageCheck(guild.id);
 })
 
 //Load Commands then Connect(Logs any errors to console and file)

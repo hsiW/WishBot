@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 20,
     process: (msg, args) => {
         return new Promise(resolve => {
-            Database.changePrefix(msg.channel.guild, args).then(() => {
+            Database.changePrefix(msg.channel.guild.id, args).then(() => {
                 resolve({
                     message: "📋 Successfully changed prefix to `" + args + "` 📋",
                     delete: true
