@@ -89,9 +89,9 @@ function toggleCommand(guild, command) {
             if (err) console.log(err)
             else if (result.length === 0) addGuild(guild).then(() => toggleCommand(guild, command).then(action => resolve(action))) //If not in database add to database then toggle command
             else {
-                let toggled = true; //Set to false if something toggled to false otherwise otherwise
-                if (result[0].disabled_commands !== undefined) { //If disabled commands exists
-                    var disabled = JSON.parse(result[0].disabled_commands);
+                let toggled = true, //Set to false if something toggled to false otherwise otherwise
+                    disabled = JSON.parse(result[0].disabled_commands);
+                if (disabled.disabled_commands != undefined) { //If disabled commands exists
                     //If command already disabled re-enable it
                     if (disabled.hasOwnProperty(command)) delete disabled[command];
                     else {
@@ -99,7 +99,7 @@ function toggleCommand(guild, command) {
                         toggled = false;
                     }
                 } else { //If disabled commands doesn't exist(shouldn't normally happen)
-                    var disabled = {};
+                    disabled = {};
                     disabled[command] = true;
                     toggled = false;
                 }
@@ -241,14 +241,14 @@ exports.getPrefix = guild => {
 
 //Save guildPrefixes file checking to make sure that a blank file isn't saved
 function savePrefixes() {
-    fs.writeFile(__dirname + '/../database/guildPrefixes-temp.json', JSON.stringify(guildPrefixes, null, 4), error => {
+    fs.writeFile(`${__dirname}/../database/guildPrefixes-temp.json`, JSON.stringify(guildPrefixes, null, 4), error => {
         if (error) console.log(error);
         else {
-            fs.stat(__dirname + '/../database/guildPrefixes-temp.json', (err, stats) => {
+            fs.stat(`${__dirname}/../database/guildPrefixes-temp.json`, (err, stats) => {
                 if (err) console.log(err);
                 else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with guildPrefixes"));
                 else {
-                    fs.renameSync(__dirname + '/../database/guildPrefixes-temp.json', __dirname + '/../database/guildPrefixes.json')
+                    fs.renameSync(`${__dirname}/../database/guildPrefixes-temp.json`, `${__dirname}/../database/guildPrefixes.json`)
                 }
             });
         }
