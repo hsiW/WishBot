@@ -13,7 +13,7 @@ module.exports = class Command {
         this.cooldown = settings.cooldown || 0; //The cooldown for the command
         this.togglable = !(settings.togglable === false); //Wheather the command is toggable or not with the toggle command(true by default)
         this.aliases = settings.aliases || null //Array of aliases the commmand has(none by default)
-        this.privateServer = settings.privateServer || null; //Array of servers the command is resticted to(no restriction by default)
+        this.privateGuild = settings.privateGuild || null; //Array of guilds the command is resticted to(no restriction by default)
     }
     //The template help message which is used in `help [cmdName]`
     help() {
@@ -67,11 +67,11 @@ ${this.usage}
 
     //Private Server Command Check(returns true if command shouldn't be processed)
     privateCheck(msg) {
-        if (this.privateServer === null) //If the command doesn't have a private server array return false
+        if (this.privateGuild === null) //If the command doesn't have a private server array return false
             return false;
         else if (!msg.channel.guild) //Prevents private server commands from working in DM's by returning true if not used in a guild
             return true;
-        else if (this.privateServer.indexOf(msg.channel.guild.id) > -1) //Guild is in the array of privateServers so return false
+        else if (this.privateGuild.indexOf(msg.channel.guild.id) > -1) //Guild is in the array of privateServers so return false
             return false;
         else //If all else fails return true
             return true;
