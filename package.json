@@ -42,7 +42,7 @@
             "commands": true,
             "commandAliases": true,
             "inactiveGuilds": true,
-            "serverC": true,
+            "guildC": true,
             "channelC": true,
             "userC": true,
             "warningC": true,
