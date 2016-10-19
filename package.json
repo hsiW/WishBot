@@ -43,13 +43,13 @@
             "commands": true,
             "commandAliases": true,
             "inactiveGuilds": true,
-            "serverC": false,
-            "channelC": false,
-            "userC": false,
-            "warningC": false,
-            "errorC": false,
-            "botC": false,
-            "miscC": false
+            "serverC": true,
+            "channelC": true,
+            "userC": true,
+            "warningC": true,
+            "errorC": true,
+            "botC": true,
+            "miscC": true
         },
         "ecmaVersion": 6,
         "env": {
