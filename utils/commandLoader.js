@@ -18,11 +18,11 @@ exports.load = function() {
                         //Skips folder if it is empty
                         else if (loaded.length < 1) console.log(errorC(folder + ' was empty and has been skipped.'))
                         else if (loaded) {
-                            for (name of loaded) {
+                            for (let name of loaded) {
                                 //Assigning Command Files to the Global Command Object
                                 commands[name.replace('.js', '')] = new Command(name.replace('.js', ''), folder, require(`${__dirname}/../commands/${folder}/${name}`))
                             }
-                            for (command in commands) {
+                            for (let command in commands) {
                                 //Assigning Command Aliases to the Glboal Command Alias Object
                                 if (commands[command].aliases) commands[command].aliases.forEach(alias => {
                                     commandAliases[alias] = command;
