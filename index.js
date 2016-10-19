@@ -79,7 +79,7 @@ bot.on("messageCreate", msg => {
         //If used in a Guild
         if (msg.channel.guild) {
             //If Message is a tableFlip and the Guild has tableflip(tableunflip) on return an unflipped table
-            if (msg.content === "(╯°□°）╯︵ ┻━┻") Database.checkSetting(msg.channel.guild.id, 'tableflip').then(() => bot.createMessage(msg.channel.id, tablesUnFlipped[~~(Math.random() * (unflippedTables.length))])).catch(err => utils.fileLog(err))
+            if (msg.content === "(╯°□°）╯︵ ┻━┻") Database.checkSetting(msg.channel.guild.id, 'tableflip').then(() => bot.createMessage(msg.channel.id, unflippedTables[~~(Math.random() * (unflippedTables.length))])).catch(err => utils.fileLog(err))
                 //Check if message starts with a bot user mention and if so replace with the correct prefix and the 'chat' command text
             if (msg.content.replace(/<@!/g, "<@").startsWith(bot.user.mention)) msg.content = msg.content.replace(/<@!/g, "<@").replace(bot.user.mention, msgPrefix + "chat");
             //Prefix command override so that prefix can be used with the default command prefix to prevent forgotten prefixes
