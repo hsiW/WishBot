@@ -51,9 +51,9 @@ function saveGuild(guild, data) {
 //Ignore Channel Functions
 
 //Add the channel id to the channel_ignores database table and resolve/reject accordingly
-exports.ignoreChannel = channel => {
+exports.muteChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('INSERT INTO channel_ignores SET channel_id = ' + channel.id, err => {
+        pool.query('INSERT INTO channel_ignores SET channel_id = ' + channel, err => {
             if (err) reject(err);
             else resolve();
         });
@@ -61,9 +61,9 @@ exports.ignoreChannel = channel => {
 }
 
 //Remove the channel from the channel_ignores database table and resolve/reject accordingly
-exports.unignoreChannel = channel => {
+exports.unmuteChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('DELETE FROM channel_ignores WHERE channel_id = ' + channel.id, err => {
+        pool.query('DELETE FROM channel_ignores WHERE channel_id = ' + channel, err => {
             if (err) reject(err);
             else resolve();
         });
@@ -73,7 +73,7 @@ exports.unignoreChannel = channel => {
 //Check to see if the channel is currently being ignored(if its in the channel_ignores database table)
 exports.checkChannel = channel => {
     return new Promise((resolve, reject) => {
-        pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel.id, (err, result) => {
+        pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel, (err, result) => {
             if (err || result.length === 0) resolve(); //Resolve if error or if no result returned(not ignored)
             else reject();
         });

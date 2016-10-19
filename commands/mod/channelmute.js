@@ -5,15 +5,18 @@ module.exports = {
     dm: false,
     togglable: false,
     cooldown: 5,
-    process: (msg) => {
+    process: msg => {
         return new Promise(resolve => {
-            Database.checkChannel(msg.channel).then(() => {
-                Database.ignoreChannel(msg.channel).then(() => resolve({
+            //Checks to see if the channel currently exists in the database or not(is muted if in database)
+            Database.checkChannel(msg.channel.id).then(() => {
+                //If channel isn't in the database add it to the database(which mutes it)
+                Database.muteChannel(msg.channel.id).then(() => resolve({
                     message: '🔇 Sucessfully muted commands in ' + msg.channel.mention + ' 🔇',
                     delete: true
                 }))
             }).catch(() => {
-                Database.unignoreChannel(msg.channel).then(() => resolve({
+                //If the channel is in the database remove it(unmutes the channel)
+                Database.unmuteChannel(msg.channel.id).then(() => resolve({
                     message: '🔈 Sucessfully unmuted commands in ' + msg.channel.mention + ' 🔈',
                     delete: true
                 }))
