@@ -1,0 +1,14 @@
+engines:
+  # ... CONFIG CONTENT ...
+   duplication:
+    # ... CONFIG CONTENT ...
+    enabled: false
+  eslint:
+    enabled: true
+    # ... CONFIG CONTENT ...
+    checks:
+      complexity:
+        enabled: false
+      no-eval:
+        enabled: false
+# ... CONFIG CONTENT ...
