@@ -1,5 +1,4 @@
-let utils = require('./../../utils/utils.js'),
-    Database = require('./../../utils/Database.js');
+let Database = require('./../../utils/database.js');
 
 module.exports = {
     usage: 'Changes the current prefix to the inputted term. Spaces cannot be used.\n`prefix [new prefix]`',
@@ -7,11 +6,19 @@ module.exports = {
     delete: false,
     togglable: false,
     cooldown: 20,
-    process: (bot, msg, suffix) => {
-        Database.changePrefix(msg.channel.guild, suffix).then(() => {
-            bot.createMessage(msg.channel.id, "📋 Successfully changed prefix to `" + suffix + "` 📋").catch();
-        }).catch(err => {
-            bot.createMessage(msg.channel.id, "⛔ " + err + " ⛔").catch();
-        })
+    process: (msg, args) => {
+        return new Promise(resolve => {
+            Database.changePrefix(msg.channel.guild, args).then(() => {
+                resolve({
+                    message: "📋 Successfully changed prefix to `" + args + "` 📋",
+                    delete: true
+                })
+            }).catch(err => {
+                resolve({
+                    message: "⛔ " + err + " ⛔",
+                    delete: true
+                })
+            })
+        });
     }
 }
