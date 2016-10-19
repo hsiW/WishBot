@@ -84,14 +84,14 @@ exports.removeInactive = bot => {
 
 //Save Usage Database File
 function saveUsage() {
-    fs.writeFile(__dirname + '/../database/UsageCheck-temp.json', JSON.stringify(UsageCheck, null, 4), error => { //Save Json in a more readable format(first using an temp json to prevent loss of data)
+    fs.writeFile(`${__dirname}/../database/UsageCheck-temp.json`, JSON.stringify(UsageCheck, null, 4), error => { //Save Json in a more readable format(first using an temp json to prevent loss of data)
         if (error) console.log(error);
         else {
-            fs.stat(__dirname + '/../database/UsageCheck-temp.json', (err, stats) => { //Check size of UsageCheck to prevent loss of data
+            fs.stat(`${__dirname}/../database/UsageCheck-temp.json`, (err, stats) => { //Check size of UsageCheck to prevent loss of data
                 if (err) console.log(err);
                 else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with UsageCheck"));
                 else {
-                    fs.rename(__dirname + '/../database/UsageCheck-temp.json', __dirname + '/../database/UsageCheck.json', e => { //Overwrite main UsageCheck with temp UsageCheck
+                    fs.rename(`${__dirname}/../database/UsageCheck-temp.json`, `${__dirname}/../database/UsageCheck.json`, e => { //Overwrite main UsageCheck with temp UsageCheck
                         if (e) console.log(e);
                     });
                 }
