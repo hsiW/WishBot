@@ -14,7 +14,7 @@ exports.load = function() {
             else if (folders) {
                 folders.forEach(folder => {
                     fs.readdir(`${__dirname}/../commands/${folder}/`, (error, loaded) => {
-                        if (err) reject(`Error reading commands directory: ${error}`);
+                        if (error) reject(`Error reading commands directory: ${error}`);
                         //Skips folder if it is empty
                         else if (loaded.length < 1) console.log(errorC(folder + ' was empty and has been skipped.'))
                         else if (loaded) {
