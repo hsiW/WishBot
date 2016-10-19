@@ -19,8 +19,9 @@ module.exports = {
         			file: somefile,
         			name: 'test.txt'
         		},
-        		edit: (message) => message.id, //Some function that will be used to edit the sent message(check ping for an example)
-        		delete: false //Whether or not to delete the sent message after 5s(shouldn't be used with edit)
+                //Some function that will be used to edit the sent message(check ping for an example)
+        		edit: (message) => message.id, 
+        		delete: false //Whether or not to delete the sent message after 5s
         	})
         })
     }
