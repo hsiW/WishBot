@@ -245,5 +245,5 @@ bot.on("shardDisconnect", (err, id) => {
 bot.on("disconnect", err => {
     console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED"));
     utils.fileLog(err); //Logs Disconnect reason/error to file and console
-    process.exit(0);
+    throw 'Bot Disconnected'
 })
