@@ -1,21 +1,21 @@
 {
     "name": "wishbot",
+    "author": "hsiW",
     "version": "6.0.0",
     "main": "index.js",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/hsiw/WishBot.git"
-    },
+    "description": "An Anime Themed Discord Bot made using the Eris Discord Library",
     "keywords": [
         "discord",
         "eris"
     ],
-    "author": "hsiW",
-    "license": "MIT",
+    "homepage": "https://github.com/hsiw/WishBot",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hsiw/WishBot.git"
+    },
     "bugs": {
         "url": "https://github.com/hsiw/WishBot/issues"
-    },
-    "homepage": "https://github.com/hsiw/WishBot",
+    },    "license": "MIT",
     "dependencies": {
         "axios": "^0.15.2",
         "bluebird": "^3.4.1",
@@ -36,7 +36,6 @@
         "xml2js": "^0.4.16",
         "youtube-simple-search": "^0.1.0"
     },
-    "description": "An Anime Themed Discord Bot made using the Eris Discord Library",
     "eslintConfig": {
         "globals": {
             "quotes": true,
