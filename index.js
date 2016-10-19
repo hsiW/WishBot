@@ -116,7 +116,7 @@ function evalText(msg, args) {
 bot.on("guildMemberAdd", (guild, member) => {
     //Checks to make sure guild and a member was sent
     if (guild && member) {
-        //Checks to see if the guild has a welcome set and if so replaces the correct strings with the correct info
+        //Checks to see if the guild has a welcome set
         Database.checkSetting(guild.id, 'welcome').then(response => {
             sendGuildMessage(response, guild);
         }).catch(err => utils.fileLog(err));
@@ -127,13 +127,14 @@ bot.on("guildMemberAdd", (guild, member) => {
 bot.on("guildMemberRemove", (guild, member) => {
     //Checks to make sure guild and a member was sent
     if (guild && member) {
-        //Checks to see if the guild has a leave set and if so replaces the correct strings with the correct info
+        //Checks to see if the guild has a leave set
         Database.checkSetting(guild.id, 'leave').then(response => {
             sendGuildMessage(response, guild);
         }).catch(err => utils.fileLog(err))
     }
 })
 
+//Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild) {
     bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
