@@ -149,18 +149,12 @@ function toggleSetting(guild, settingChange, message, channel) {
                         serverSettings['tableflip'] = true;
                         toggled = true;
                     }
-                } else if (settingChange === 'welcome') { //Sets and toggles welcome message on
+                } else if (settingChange === 'welcome' || settingChange === 'leave') { //Sets and toggles welcome/leave message on
                     if (message) { //If theres a message
-                        serverSettings.welcome = message; //Sets the welcome message as the passed message variable
+                        serverSettings[settingChange] = message; //Sets the welcom/leavee message as the passed message variable
                         toggled = true;
                         usageChannel = channel.id; //Sets the usagechannel as the channel in which the command is used
-                    } else delete serverSettings.welcome; //Disables welcome message
-                } else if (settingChange === 'leave') { //Sets and toggles leave message on
-                    if (message) { //If theres a message
-                        serverSettings.leave = message; //Sets leave message as the passed message variable
-                        toggled = true;
-                        usageChannel = channel.id; //Sets usagechannel as the channel in which the command is used
-                    } else delete serverSettings.leave; //Disables leave message
+                    } else delete serverSettings[settingChange]; //Disables welcome/leave message
                 }
                 //Saves to guild passing the passing the new usagechannel if applicable and the new server settings 
                 saveGuild(guild, {
