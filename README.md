@@ -1,4 +1,4 @@
-WishBot [![License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000&style=flat-square)](./LICENSE) [![David](https://img.shields.io/david/hsiw/WishBot.svg?maxAge=2592000&style=flat-square)](https://david-dm.org/hsiw/WishBot) [![Code Climate](https://codeclimate.com/github/hsiw/WishBot/badges/gpa.svg?style=flat-square)](https://codeclimate.com/github/hsiw/WishBot) [![Discord](https://discordapp.com/api/guilds/136258746123943937/widget.png)](https://discord.gg/0lBiROCNVaGw5Eqk)
+WishBot [![License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000&style=flat-square)](./LICENSE) [![David](https://img.shields.io/david/hsiw/WishBot.svg?maxAge=2592000&style=flat-square)](https://david-dm.org/hsiw/WishBot) [![Code Climate](https://codeclimate.com/repos/5807944841dabe742300307d/badges/e06cb02a9ae261043f4b/gpa.svg)](https://codeclimate.com/repos/5807944841dabe742300307d/feed) [![Discord](https://discordapp.com/api/guilds/136258746123943937/widget.png)](https://discord.gg/0lBiROCNVaGw5Eqk)
 ====
 ###How the command system works:
 ```js
