@@ -9,6 +9,7 @@ module.exports = {
     dm: false, //Whether the command can work in DM's(private messages) or not
     delete: false, //If the command text should be deleted on use(the text used to invoke the command)
     togglable: false, //If the command can be toggled on or off with the toggle command
+    privateGuild: ['81384788765712384'], //Array of server id's which the command is restricted to
     cooldown: 5, //Cooldown for the command(in seconds)
     process: (msg, args, bot) => {
         return new Promise(resolve => {

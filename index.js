@@ -43,7 +43,7 @@ global.Promise = require('bluebird'),
 //Console Log Colours
 botC = colour.magenta.bold,
 userC = colour.cyan.bold,
-serverC = colour.black.bold,
+guildC = colour.black.bold,
 channelC = colour.green.bold,
 miscC = colour.blue.bold,
 warningC = colour.yellow.bold,
@@ -56,7 +56,7 @@ bot.on("ready", () => {
     //This stuff below is sent to the console when the bot is ready
     console.log(botC(bot.user.username + " is now Ready."));
     console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
-    console.log("Users: " + userC(bot.users.size) + " | Channels: " + channelC(Object.keys(bot.channelGuildMap).length) + " | Servers: " + serverC(bot.guilds.size))
+    console.log("Users: " + userC(bot.users.size) + " | Channels: " + channelC(Object.keys(bot.channelGuildMap).length) + " | Servers: " + guildC(bot.guilds.size))
     //Run inactivity checker and output the number of inactive servers
     UsageChecker.checkInactivity(bot).then(response => console.log(botC(response))).catch(err => console.log(errorC(err)));
 })

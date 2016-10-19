@@ -14,9 +14,9 @@ module.exports = (msg, args, cmd, bot) => {
         else {
             cmd.process(msg, args, bot)
             //Command Logging in Guilds
-            if (msg.channel.guild) console.log(serverC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmd.name) + " was used by " + userC(msg.author.username));
+            if (msg.channel.guild) console.log(guildC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmd.name) + " was used by " + userC(msg.author.username));
             //Comand Logging in PM's
-            else console.log(serverC("@Private Message: ") + warningC(cmd.name) + " was used by " + userC(msg.author.username));
+            else console.log(guildC("@Private Message: ") + warningC(cmd.name) + " was used by " + userC(msg.author.username));
         }
         //Updates the timestamp for the guild to mark it as active
         UsageChecker.updateTimestamp(msg.channel.guild);
