@@ -4,7 +4,7 @@ let options = require("./../options/options.json"),
     fileLog = new(winston.Logger)({ //Creates log transport to log to error.log file
         transports: [
             new(winston.transports.File)({
-                filename: 'error.log',
+                filename: 'error.log', //The name of the logging file
                 showLevel: false
             })
         ]
@@ -12,9 +12,9 @@ let options = require("./../options/options.json"),
 
 //Covert string to having just first character uppercase and the rest lowercase
 exports.toTitleCase = str => {
-    //Finds words and replaces the word with a title case word, doesn't matter what it was previously
-    return str.replace(/\w\S*/g, txt => {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    //Finds words and replaces the word with a title case word, doesn't matter what it was previously(title case is the first letter is uppercase and rest lowercase)
+    return str.replace(/\w\S*/g, word => {
+        return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
     });
 }
 
