@@ -2,6 +2,7 @@ let utils = require('./../../utils/utils.js'),
     admins = require('./../../options/admins.json');
 
 module.exports = {
+    delete: false,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             //Check is args are an alias and if so replace args with correct command text
