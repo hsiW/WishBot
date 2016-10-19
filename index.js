@@ -68,7 +68,7 @@ bot.on("messageCreate", msg => {
     else if (msg.author.id !== '87600987040120832') return;
     else {
         //If used in guild and the guild has a custom prefix set the msgPrefix as such otherwise grab the default prefix
-        let msgPrefix = msg.channel.guild && Database.getPrefix(msg.channel.guild.id) != undefined ? Database.getPrefix(msg.channel.guild.id) : options.prefix;
+        let msgPrefix = msg.channel.guild && Database.getPrefix(msg.channel.guild.id) !== undefined ? Database.getPrefix(msg.channel.guild.id) : options.prefix;
         //Use Eval on the message if it starts with sudo and used by Mei
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") {
             evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
@@ -118,8 +118,7 @@ bot.on("guildMemberAdd", (guild, member) => {
     if (guild && member) {
         //Checks to see if the guild has a welcome set and if so replaces the correct strings with the correct info
         Database.checkSetting(guild.id, 'welcome').then(response => {
-            let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention);
-            bot.createMessage(response.channel, message);
+            sendGuildMessage(response, guild);
         }).catch(err => utils.fileLog(err));
     }
 })
@@ -130,11 +129,14 @@ bot.on("guildMemberRemove", (guild, member) => {
     if (guild && member) {
         //Checks to see if the guild has a leave set and if so replaces the correct strings with the correct info
         Database.checkSetting(guild.id, 'leave').then(response => {
-            let message = response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username);
-            bot.createMessage(response.channel, message)
+            sendGuildMessage(response, guild);
         }).catch(err => utils.fileLog(err))
     }
 })
+
+function sendGuildMessage(response, guild) {
+    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
+}
 
 //Guild Joined Event
 bot.on('guildCreate', guild => {
