@@ -1,6 +1,5 @@
 WishBot [![License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000&style=flat-square)](./LICENSE) [![David](https://img.shields.io/david/hsiw/WishBot.svg?maxAge=2592000&style=flat-square)](https://david-dm.org/hsiw/WishBot) [![Code Climate](https://codeclimate.com/github/hsiw/WishBot/badges/gpa.svg?style=flat-square)](https://codeclimate.com/github/hsiw/WishBot) [![Discord](https://discordapp.com/api/guilds/136258746123943937/widget.png)](https://discord.gg/0lBiROCNVaGw5Eqk)
 ====
-
 ###How the command system works:
 ```js
 //File should be the name of the command (example test.js will make the command 'test')
@@ -10,7 +9,7 @@ module.exports = {
     dm: false, //Whether the command can work in DM's(private messages) or not
     delete: false, //If the command text should be deleted on use(the text used to invoke the command)
     togglable: false, //If the command can be toggled on or off with the toggle command
-    cooldown: 5, //Command cooldown(in seconds)
+    cooldown: 5, //Cooldown for the command(in seconds)
     process: (msg, args, bot) => {
         return new Promise(resolve => {
         	//Whatever function you want here to process the command stuff
