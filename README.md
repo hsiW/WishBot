@@ -3,7 +3,7 @@ WishBot [![License](https://img.shields.io/github/license/mashape/apistatus.svg?
 
 ###How the command system works:
 ```js
-//File should be the name of the command (example test.js will make the command test)
+//File should be the name of the command (example test.js will make the command 'test')
 module.exports = {
     usage: 'The usage info of the command', //The command usage info that shows up in 'help [commmand]'
     aliases: ['stuff'], //Any command aliases
@@ -13,7 +13,7 @@ module.exports = {
     cooldown: 5, //Command cooldown(in seconds)
     process: (msg, args, bot) => {
         return new Promise(resolve => {
-        	//Some command function stuff
+        	//Whatever function you want here to process the command stuff
         	resolve({
         		message: 'This is a message', //The message content to send
         		upload: { //A file to be uploaded(must be a buffer, check wewlad for an example)
