@@ -17,7 +17,7 @@ let mysql = require('mysql'),
 function addGuild(guild) {
     return new Promise((resolve, reject) => {
         pool.query('INSERT INTO server_settings SET ?', {
-            guild_id: guild.id,
+            guild_id: guild,
             settings: JSON.stringify({}), //Pass a blank stringified object
             disabled_commands: JSON.stringify({}) //Pass a blank stringified object
         }, err => {
@@ -41,7 +41,7 @@ exports.removeGuild = guild => {
 //Update server_settings using the passed data
 function saveGuild(guild, data) {
     return new Promise((resolve, reject) => {
-        pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild.id, data, err => {
+        pool.query('UPDATE server_settings SET ? WHERE guild_id = ' + guild, data, err => {
             if (err) reject(err);
             else resolve();
         })
