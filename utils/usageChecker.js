@@ -41,7 +41,7 @@ exports.checkInactivity = bot => {
         //Resets inactive guild array 
         inactiveGuilds = [];
         let now = Date.now();
-        //If the server is in the UsageCheck but the bot is no longer in the guild remove it from the database
+        //If the guild is in the UsageCheck but the bot is no longer in the guild remove it from the database
         Object.keys(UsageCheck).map(id => {
             if (!bot.guilds.get(id)) delete UsageCheck[id];
         });
@@ -62,21 +62,21 @@ exports.removeInactive = bot => {
         if (inactiveGuilds.length === 0) reject('Currently No Inactive Guilds') //Reject if no inactive guilds
         else {
             let count = 0,
-                serverCount = 0;
+                guildCount = 0;
             var removalInterval = setInterval(() => { //Try to leave guild every 200ms
-                let server = bot.guilds.get(inactiveGuilds[serverCount]); //Get server object from ID provided by inactiveGuilds array
+                let guild = bot.guilds.get(inactiveGuilds[guildCount]); //Get guild object from ID provided by inactiveGuilds array
                 if (count >= inactiveGuilds.length) {
                     if (count === 0) reject('Currently No Inactive Guilds'); //Reject if no inactive guilds
                     else resolve('Left ' + count + ' Inactive Guilds'); //Resolve with number of left guilds
                     usageUpdated = true;
                     clearInterval(removalInterval); //Stop Interval
                     return;
-                } else if (server) {
-                    bot.leaveGuild(server.id).then(console.log(warningC('Left Server Due to Inactivity - ' + server.name))).catch(err => console.log(errorC(err))); //Leave server and log if error
-                    if (UsageCheck.hasOwnProperty(server.id)) delete UsageCheck[server.id]; //If in UsageCheck remove from UsageCheck
+                } else if (guild) {
+                    guild.leave().then(console.log(warningC('Left Server Due to Inactivity - ' + guild.name))).catch(err => console.log(errorC(err))); //Leave guild and log if error
+                    if (UsageCheck.hasOwnProperty(guild.id)) delete UsageCheck[guild.id]; //If in UsageCheck remove from UsageCheck
                     count++; //Add 1 to left count
-                } else delete UsageCheck[inactiveGuilds[serverCount]];
-                serverCount++; //Add 1 to current server index position
+                } else delete UsageCheck[inactiveGuilds[guildCount]];
+                guildCount++; //Add 1 to current guild index position
             }, 200)
         }
     });
