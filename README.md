@@ -11,7 +11,7 @@ module.exports = {
     togglable: false, //If the command can be toggled on or off with the toggle command
     privateGuild: ['81384788765712384'], //Array of server id's which the command is restricted to
     cooldown: 5, //Cooldown for the command(in seconds)
-    process: (msg, args, bot) => { //The message object, the message arguments and the bot object can be passed
+    process: (msg, args, bot) => { //The message object, the message arguments and the bot object are passed
         return new Promise(resolve => {
         	//Whatever function you want here to process the command stuff
         	resolve({
