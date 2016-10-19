@@ -2,7 +2,6 @@ commands/admin/
 commands/anime/
 commands/interactions/
 commands/misc/
-commands/mod/
 commands/search/
 commands/tags/
 commands/utilities/
