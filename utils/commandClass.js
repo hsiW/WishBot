@@ -40,7 +40,7 @@ ${this.usage}
         //Commands return a Promise which can contain a 'Message' and 'Upload' to send message being the message content, upload being whatever file you'd like to
         //Commands also can return a edit function which allows you to edit messages while also taking the inital sent message object
         //They can also return a delete after 5s boolean which deletes the sent message after 5s
-        this.job(msg, args, bot).then(response => msg.channel.createMessage(response.message, response.upload).then(message => {
+        this.job(msg, args, bot).then(response => msg.channel.createMessage(response.message ? response.message : '', response.upload).then(message => {
             if (response.edit) message.edit(response.edit(message)) //Edit sent message 
             if (response.delete) utils.messageDelete(message); //Check for delete sent message
         }).catch(err => utils.fileLog(err))); //Log to console and file if errored
