@@ -99,11 +99,11 @@ bot.on("messageCreate", msg => {
 });
 
 
-function evalText(msg, suffix) {
+function evalText(msg, args) {
     let result;
     //Trys to run eval on the text and output either an error or the result if applicable 
     try {
-        result = eval("try{" + suffix + "}catch(err){utils.fileLog(err);bot.createMessage(msg.channel.id, \"```\"+err+\"```\");}");
+        result = eval("try{" + args + "}catch(err){utils.fileLog(err);bot.createMessage(msg.channel.id, \"```\"+err+\"```\");}");
     } catch (e) {
         utils.fileLog(e);
         bot.createMessage(msg.channel.id, "```" + e + "```");
