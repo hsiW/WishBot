@@ -37,7 +37,6 @@
     },
     "eslintConfig": {
         "globals": {
-            "quotes": true,
             "commands": true,
             "commandAliases": true,
             "inactiveGuilds": true,
