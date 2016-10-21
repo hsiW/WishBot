@@ -16,10 +16,10 @@ module.exports = {
                 var deleted = 0; //Tracks the number of deleted messages
                 //Get an array of the number of messages starting before the command message
                 msg.channel.getMessages(args, msg.id).then(messages => {
-                    messages = messages.filter(message => message.author.id === bot.user.id)//Filters array to just the bots messages
-                    //Runs loop to delete bots messages every 201ms
-                    messages.forEach((message, i) => {
-                        setTimeout(() => message.delete(), 201 * (1 + i))
+                    messages = messages.filter(message => message.author.id === bot.user.id) //Filters array to just the bots messages
+                    //Runs loop to delete bots messages from array
+                    messages.forEach(message => {
+                        message.delete();
                         deleted++; //Adds 1 to the deleted variable every delete
                     })
                     //When for loop is finished return the relevant message which will be deleted after 5s
