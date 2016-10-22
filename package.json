@@ -15,7 +15,8 @@
     },
     "bugs": {
         "url": "https://github.com/hsiw/WishBot/issues"
-    },    "license": "MIT",
+    },
+    "license": "MIT",
     "dependencies": {
         "axios": "^0.15.2",
         "bluebird": "^3.4.1",
@@ -37,6 +38,7 @@
     },
     "eslintConfig": {
         "globals": {
+            "tags": true,
             "commands": true,
             "commandAliases": true,
             "inactiveGuilds": true,
