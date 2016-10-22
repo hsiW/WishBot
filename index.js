@@ -93,7 +93,7 @@ bot.on("messageCreate", msg => {
             if (commandAliases.hasOwnProperty(cmdTxt)) cmdTxt = commandAliases[cmdTxt]; //If the cmdTxt is an alias of the command
             if (cmdTxt === 'channelmute') processCmd(msg, args, commands[cmdTxt], bot); //Override channelCheck if cmd is channelmute to unmute a muted channel
             //Check if a Command was used and runs the corresponding code depending on if it was used in a Guild or not, if in guild checks for muted channel and disabled command
-            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel.id).then(() => Database.checkCommand(msg.channel.guild.id, cmdTxt).then(() => processCmd(msg, args, commands[cmdTxt], bot)))
+            else if (commands.hasOwnProperty(cmdTxt)) Database.checkChannel(msg.channel.id).then(() => Database.checkCommand(msg.channel.guild, cmdTxt).then(() => processCmd(msg, args, commands[cmdTxt], bot)))
         }
     }
 });

@@ -117,7 +117,7 @@ exports.checkCommand = (guild, command) => {
     return new Promise((resolve, reject) => {
         if (guild === undefined) resolve(); //If not used in a guild resolve because commands cannot be toggled in DM's
         else {
-            pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild, (err, result) => {
+            pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
                 if (err || result.length === 0) resolve(); //If error or no result resolve
                 else {
                     let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
