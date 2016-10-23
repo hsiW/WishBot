@@ -16,9 +16,6 @@
     "bugs": {
         "url": "https://github.com/hsiw/WishBot/issues"
     },
-    "scripts": {
-        "test": "node index.js"
-    },
     "license": "MIT",
     "dependencies": {
         "axios": "^0.15.2",
