@@ -15,6 +15,7 @@ __Welcome/Leave Messages can include the following text to return different thin
 
 \`setting tableflip\`
 \`setting [leave] or [welcome] and [message] or [none]\``,
+    aliases: ['set'],
     dm: false,
     delete: true,
     togglable: false,
