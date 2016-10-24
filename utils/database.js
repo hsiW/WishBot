@@ -233,17 +233,7 @@ exports.getPrefix = guild => {
     if (guildPrefixes.hasOwnProperty(guild)) return guildPrefixes[guild];
 }
 
-//Save guildPrefixes file checking to make sure that a blank file isn't saved
+//Save guildPrefixes file 
 function savePrefixes() {
-    fs.writeFile(`${__dirname}/../database/guildPrefixes-temp.json`, JSON.stringify(guildPrefixes, null, 4), error => {
-        if (error) console.log(error);
-        else {
-            fs.stat(`${__dirname}/../database/guildPrefixes-temp.json`, (err, stats) => {
-                if (err) console.log(err);
-                else {
-                    fs.renameSync(`${__dirname}/../database/guildPrefixes-temp.json`, `${__dirname}/../database/guildPrefixes.json`)
-                }
-            });
-        }
-    })
+    fs.writeFileSync(`${__dirname}/../database/guildPrefixes.json`, JSON.stringify(guildPrefixes, null, 4))
 }
