@@ -235,5 +235,9 @@ exports.getPrefix = guild => {
 
 //Save guildPrefixes file 
 function savePrefixes() {
-    fs.writeFileSync(`${__dirname}/../database/guildPrefixes.json`, JSON.stringify(guildPrefixes, null, 4))
+    try {
+        fs.writeFileSync(`${__dirname}/../database/guildPrefixes.json`, JSON.stringify(guildPrefixes, null, 4))
+    } catch (e) {
+        console.log(errorC(e))
+    }
 }
