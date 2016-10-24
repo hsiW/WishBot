@@ -240,7 +240,6 @@ function savePrefixes() {
         else {
             fs.stat(`${__dirname}/../database/guildPrefixes-temp.json`, (err, stats) => {
                 if (err) console.log(err);
-                else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with guildPrefixes"));
                 else {
                     fs.renameSync(`${__dirname}/../database/guildPrefixes-temp.json`, `${__dirname}/../database/guildPrefixes.json`)
                 }
