@@ -22,7 +22,7 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 8,
+        maxShards: 1,
         autoReconnect: true,
         disableEveryone: true,
         disabledEvents: {
@@ -194,6 +194,13 @@ function postGuildCount() {
         }).catch(err => utils.fileLog(err));
     }
 }
+
+//Checks to see if any shard is disconnected every 60s and trys to reconnect it if so
+setInterval(() => {
+    bot.shards.forEach(shard => {
+        if (shard.status === 'disconnected') shard.connect();
+    })
+}, 60000)
 
 //Changes the bots status every 10mins
 setInterval(() => utils.setRandomStatus(bot, playing, urls), 6e+5);
