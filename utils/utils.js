@@ -127,7 +127,7 @@ function returnSFWImage(data) {
 
 //Set random bot status(includes random game as well as random streaming url)
 exports.setRandomStatus = (bot, playing, urls) => {
-    bot.shards.forEach((shard) => {
+    bot.shards.forEach(shard => {
         shard.editStatus({
             name: playing[~~(Math.random() * (playing.length))],
             type: 1,
