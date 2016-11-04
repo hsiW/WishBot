@@ -1,3 +1,5 @@
-###These Commands were removed from the bot because they either changed to drastically or they API's stopped working.
+##Disclaimer
 
-They are provided as is for your use
+* These commands are old and mayno longer work.
+* They were removed because either the API broke or because of a massive rewrite for the command.
+* They are provided as is.
