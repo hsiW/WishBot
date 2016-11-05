@@ -17,7 +17,8 @@ module.exports = class Command {
     }
     //The template help message which is used in `help [cmdName]`
     help() {
-        return `__**Command Info for:**__ \`${this.name}\`
+        return `
+__**Command Info for:**__ \`${this.name}\`
 
 ${this.usage}
 
