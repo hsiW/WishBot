@@ -104,7 +104,6 @@ function evalText(msg, args) {
     try {
         result = eval("try{" + args + "}catch(err){utils.fileLog(err);bot.createMessage(msg.channel.id, \"```\"+err+\"```\");}");
     } catch (e) {
-        utils.fileLog(e);
         bot.createMessage(msg.channel.id, "```" + e + "```");
     }
     if (result && typeof result !== "object") bot.createMessage(msg.channel.id, result);
