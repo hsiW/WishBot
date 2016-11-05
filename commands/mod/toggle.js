@@ -1,7 +1,7 @@
 let Database = require('./../../utils/database.js');
 
 module.exports = {
-    usage: 'Toggles the currently enabled commands. Not all commands are togglable.\n`toggle [command]`',
+    usage: 'Toggles the currently enabled commands. Not all commands are togglable. Check their individual help messages for info.\n`toggle [command]`',
     dm: false,
     togglable: false,
     cooldown: 5,
