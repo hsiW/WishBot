@@ -212,17 +212,17 @@ exports.removeGuildfromJson = removeGuildfromJson;
 //Used for changing the guilds prefix
 function changePrefix(guild, newPrefix) {
     return new Promise((resolve, reject) => {
-        if (newPrefix === '') reject('The prefix cannot be nothing'); //Reject if prefix is nothing
-        else if (newPrefix.includes(' ') || newPrefix === " ") reject('Prefixes cannot contain spaces'); //Reject if prefix contains spaces or is just a space
+        newPrefix = newPrefix.length === 0 ? options.prefix : newPrefix; //Sets newPrefix to the default prefix if no prefix inputted 
+        if (newPrefix.includes(' ') || newPrefix === " ") reject('Prefixes cannot contain spaces'); //Reject if prefix contains spaces or is just a space
         else if (guildPrefixes.hasOwnProperty(guild)) { //If guild exists in guildPrefixes object already
             if (newPrefix === options.prefix) {
                 removeGuildfromJson(guild); //If newPrefix is the same as the default prefix remove guild from json and resolve
-                resolve();
+                resolve(newPrefix);
             } else {
                 guildPrefixes[guild] = newPrefix; //Change prefix to new prefix and resolve
-                resolve();
+                resolve(newPrefix);
             }
-        } else addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(() => resolve())).catch(err => reject(err)); //Add guild to json then change prefix
+        } else addGuildtoJson(guild).then(() => changePrefix(guild, newPrefix).then(prefix => resolve(prefix))).catch(err => reject(err)); //Add guild to json then change prefix
         savePrefixes(); //Save guildPrefixes json file
     });
 }
