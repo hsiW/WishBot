@@ -3,6 +3,7 @@ const Database = require('./../../utils/database.js'),
 
 module.exports = {
     usage: 'Returns the current prefix for the guild. Overrides current command prefix and will always work with the default.',
+    toggable: false,
     dm: false,
     delete: false,
     cooldown: 10,
