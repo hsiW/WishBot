@@ -8,9 +8,7 @@ __Welcome/Leave Messages can include the following text to return different thin
 [ChannelMention]: Mention to Current Channel
    [ChannelName]: Name of the Current Channel
       [UserName]: Name of the User
-   [UserMention]: Mention to the User*
-
-*Does not work in leave messages
+   [UserMention]: Mention to the User
 \`\`\`
 
 \`setting tableflip\`
