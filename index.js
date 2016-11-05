@@ -6,8 +6,7 @@ const Eris = require('eris'), //The bot's api library
     CommandLoader = require('./utils/commandLoader.js'),
     utils = require('./utils/utils.js'),
     Database = require('./utils/database.js'),
-    //List of playing status's for the bot to use
-    playing = require('./lists/playing.json'),
+    playing = require('./lists/playing.json'), //List of playing status's for the bot to use
     processCmd = require('./utils/commandHandler.js'),
     UsageChecker = require('./utils/usageChecker.js'),
     //This isn't normally needed but PM2 doesn't work with chalk unless I do this
