@@ -1,0 +1,15 @@
+const Database = require('./../../utils/database.js'),
+    options = require('./../../options/options.json');
+
+module.exports = {
+    usage: 'Returns the current prefix for the guild. Overrides current command prefix and will always work with the default.',
+    delete: false,
+    cooldown: 10,
+    process: (msg, args) => {
+        return new Promise(resolve => {
+            resolve({
+                message: `The current command prefix for this guild is: \`${msg.channel.guild && Database.getPrefix(msg.channel.guild.id) !== undefined ? Database.getPrefix(msg.channel.guild.id) : options.prefix}\``
+            });
+        });
+    }
+}
