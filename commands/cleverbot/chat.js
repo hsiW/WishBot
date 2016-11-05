@@ -30,7 +30,7 @@ module.exports = {
                     //Replace html stuff with the correct characters
                     response = unicodeToChar(response.message.replace(/<br \/>/g, " ").replace(/\r?\n|\r/g, "\n").replace(/\[(i|\/i)\]/g, "*").replace(/\[(b|\/b)\]/g, "**").replace(/\|/g, "\\u"))
                     resolve({
-                        message: "🗨 - " + decode(response)
+                        message: "🗨 " + decode(response)
                     })
                 }
             });
