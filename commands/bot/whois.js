@@ -1,4 +1,4 @@
-let getName = require('./../../utils/utils.js').getName,
+const getName = require('./../../utils/utils.js').getName,
     moment = require('moment');
 
 module.exports = {

@@ -1,4 +1,4 @@
-let utils = require('./utils.js');
+const utils = require('./utils.js');
 
 module.exports = class Command {
     constructor(name, type, settings) {

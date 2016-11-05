@@ -1,6 +1,7 @@
-let UsageCheck = require('./../database/usageCheck.json'), //UsageCheck database thingy
-    fs = require('fs'),
-    usageUpdated = false;
+const UsageCheck = require('./../database/usageCheck.json'), //UsageCheck database thingy
+    fs = require('fs');
+
+let usageUpdated = false; //Used to check if usage was updated for saving 
 
 //Global array of inactive guilds
 inactiveGuilds = []

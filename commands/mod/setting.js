@@ -1,4 +1,4 @@
-let Database = require('./../../utils/database.js');
+const Database = require('./../../utils/database.js');
 
 module.exports = {
     usage: `Used to toggle and configure settings. Configurable settings include automated table unflipping as well as welcome and leave messages. Welcome and Join messages are sent in the channel in which the command is used and can be cleared by leaving the message field blank.

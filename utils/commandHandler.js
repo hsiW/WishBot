@@ -1,4 +1,4 @@
-let admins = require('./../options/admins.json'), //List of Admin ID's which override the mod permissions check as well as allow use of admin commands
+const admins = require('./../options/admins.json'), //List of Admin ID's which override the mod permissions check as well as allow use of admin commands
     UsageChecker = require('./../utils/usageChecker.js');
 
 module.exports = (msg, args, cmd, bot) => {

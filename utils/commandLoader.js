@@ -1,4 +1,4 @@
-let fs = require('fs'), //For reading/writing to/from files
+const fs = require('fs'), //For reading/writing to/from files
     Command = require('./commandClass.js'); //The command class
 
 //Global Command Object in which all commands are loaded into(Can be acessed anywhere in the program)

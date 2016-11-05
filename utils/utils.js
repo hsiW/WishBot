@@ -1,4 +1,4 @@
-let options = require("./../options/options.json"),
+const options = require("./../options/options.json"),
     axios = require('axios'),
     winston = require('winston'), //Used for logging to file
     fileLog = new(winston.Logger)({ //Creates log transport to log to error.log file

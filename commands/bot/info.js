@@ -1,4 +1,4 @@
-let libVersion = require('./../../node_modules/eris/package.json').version, //The current version of the eris lib gotten from the package.json
+const libVersion = require('./../../node_modules/eris/package.json').version, //The current version of the eris lib gotten from the package.json
     botVersion = require('./../../package.json').version, //The bots version gotten from the package.json
     prefix = require('./../../options/options.json').prefix; //Default bot prefix
 

@@ -1,4 +1,4 @@
-let Database = require('./../../utils/database.js');
+const Database = require('./../../utils/database.js');
 
 module.exports = {
     usage: 'Toggles all commands from being used in the channel in which this command is used.',

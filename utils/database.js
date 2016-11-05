@@ -1,4 +1,4 @@
-let mysql = require('mysql'),
+const mysql = require('mysql'),
     fs = require('fs'),
     options = require('./../options/options.json'),
     guildPrefixes = require('./../database/guildPrefixes.json'), //JSON database of guildPrefixes

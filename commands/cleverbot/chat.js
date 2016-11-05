@@ -1,6 +1,6 @@
 let Cleverbot = require('cleverbot-node'),
     Yuki = new Cleverbot(),
-    decode = require('entities'); //Used to decode html stuff
+    decode = require('entities').decodeHTML; //Used to decode html stuff
 Cleverbot.prepare(() => {}); //Prepares the cleverbot module for use
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
                     //Replace html stuff with the correct characters
                     response = unicodeToChar(response.message.replace(/<br \/>/g, " ").replace(/\r?\n|\r/g, "\n").replace(/\[(i|\/i)\]/g, "*").replace(/\[(b|\/b)\]/g, "**").replace(/\|/g, "\\u"))
                     resolve({
-                        message: "🗨 - " + decode.decodeHTML(response)
+                        message: "🗨 - " + decode(response)
                     })
                 }
             });
