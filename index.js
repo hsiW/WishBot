@@ -106,8 +106,8 @@ function evalText(msg, args) {
     } catch (e) {
         bot.createMessage(msg.channel.id, "```" + e + "```");
     }
-    if (result && typeof result !== "object") bot.createMessage(msg.channel.id, result);
-    else if (result && typeof result === "object") bot.createMessage(msg.channel.id, "```xl\n" + result + "```");
+    //Return result to channel
+    if (result && typeof result !== "object") msg.channel.createMessage(result);
 }
 
 //New Guild Member Event
