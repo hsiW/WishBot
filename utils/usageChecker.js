@@ -1,4 +1,4 @@
-const UsageCheck = require('./../database/usageCheck.json'), //UsageCheck database thingy
+const usageCheck = require('./../database/usageCheck.json'), //usageCheck database thingy
     fs = require('fs');
 
 let usageUpdated = false; //Used to check if usage was updated for saving 
@@ -17,22 +17,22 @@ setInterval(() => {
 //Updates usage timestamp to prevent guild from being marked as inactive
 exports.updateTimestamp = guild => {
     if (!guild || !guild.id) return; //If no guild recieved or guild doesn't have an id skip it
-    if (UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = Date.now(); //If in UsageCheck set the last used time to now
+    if (usageCheck.hasOwnProperty(guild.id)) usageCheck[guild.id] = Date.now(); //If in usageCheck set the last used time to now
     if (inactiveGuilds.indexOf(guild.id) > -1) inactiveGuilds.splice(inactiveGuilds.indexOf(guild.id), 1); //If guild is in the inactiveGuilds array remove it
     usageUpdated = true; //Usage is updated so update whenever 1s internval ticks
 }
 
-//Add Guild to UsageCheck Database
-exports.addToUsageCheck = guild => {
+//Add Guild to usageCheck Database
+exports.addTousageCheck = guild => {
     if (!guild || !guild.id) return; //If no guild recieved or guild doesn't have an id skip it
-    if (!UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = Date.now(); //If not in database add it with that last time used as now
+    if (!usageCheck.hasOwnProperty(guild.id)) usageCheck[guild.id] = Date.now(); //If not in database add it with that last time used as now
     usageUpdated = true; //Usage Updated so save file
 }
 
-//Remove Guild from UsageCheck Database
-exports.removeFromUsageCheck = guild => {
+//Remove Guild from usageCheck Database
+exports.removeFromusageCheck = guild => {
     if (!guild || !guild.id) return; //If no guild recieved or guild doesn't have an id skip it
-    if (UsageCheck.hasOwnProperty(guild.id)) delete UsageCheck[guild.id]; //If in databse remove from database
+    if (usageCheck.hasOwnProperty(guild.id)) delete usageCheck[guild.id]; //If in databse remove from database
     usageUpdated = true; //Update file
 }
 
@@ -42,13 +42,13 @@ exports.checkInactivity = bot => {
         //Resets inactive guild array 
         inactiveGuilds = [];
         let now = Date.now();
-        //If the guild is in the UsageCheck but the bot is no longer in the guild remove it from the database
-        Object.keys(UsageCheck).map(id => {
-            if (!bot.guilds.get(id)) delete UsageCheck[id];
+        //If the guild is in the usageCheck but the bot is no longer in the guild remove it from the database
+        Object.keys(usageCheck).map(id => {
+            if (!bot.guilds.get(id)) delete usageCheck[id];
         });
         bot.guilds.forEach(guild => {
-            if (!UsageCheck.hasOwnProperty(guild.id)) UsageCheck[guild.id] = now; //If not in UsageCheck add to it with the last used value as now
-            else if ((now - UsageCheck[guild.id]) >= 1.21e+9) inactiveGuilds.push(guild.id); //If last used time is greator than 2 weeks ago add to inactiveGuilds array
+            if (!usageCheck.hasOwnProperty(guild.id)) usageCheck[guild.id] = now; //If not in usageCheck add to it with the last used value as now
+            else if ((now - usageCheck[guild.id]) >= 1.21e+9) inactiveGuilds.push(guild.id); //If last used time is greator than 2 weeks ago add to inactiveGuilds array
         })
         if (inactiveGuilds.length > 0) { //If theres inactive guilds resolve as well as updating file
             usageUpdated = true;
@@ -74,9 +74,9 @@ exports.removeInactive = bot => {
                     return;
                 } else if (guild) {
                     guild.leave().then(console.log(warningC('Left Server Due to Inactivity - ' + guild.name))).catch(err => console.log(errorC(err))); //Leave guild and log if error
-                    if (UsageCheck.hasOwnProperty(guild.id)) delete UsageCheck[guild.id]; //If in UsageCheck remove from UsageCheck
+                    if (usageCheck.hasOwnProperty(guild.id)) delete usageCheck[guild.id]; //If in usageCheck remove from usageCheck
                     count++; //Add 1 to left count
-                } else delete UsageCheck[inactiveGuilds[guildCount]];
+                } else delete usageCheck[inactiveGuilds[guildCount]];
                 guildCount++; //Add 1 to current guild index position
             }, 200)
         }
@@ -85,14 +85,14 @@ exports.removeInactive = bot => {
 
 //Save Usage Database File
 function saveUsage() {
-    fs.writeFile(`${__dirname}/../database/UsageCheck-temp.json`, JSON.stringify(UsageCheck, null, 4), error => { //Save Json in a more readable format(first using an temp json to prevent loss of data)
+    fs.writeFile(`${__dirname}/../database/usageCheck-temp.json`, JSON.stringify(usageCheck, null, 4), error => { //Save Json in a more readable format(first using an temp json to prevent loss of data)
         if (error) console.log(error);
         else {
-            fs.stat(`${__dirname}/../database/UsageCheck-temp.json`, (err, stats) => { //Check size of UsageCheck to prevent loss of data
+            fs.stat(`${__dirname}/../database/usageCheck-temp.json`, (err, stats) => { //Check size of usageCheck to prevent loss of data
                 if (err) console.log(err);
-                else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with UsageCheck"));
+                else if (stats["size"] < 5) console.log(errorC("There was a size mismatch error with usageCheck"));
                 else {
-                    fs.rename(`${__dirname}/../database/UsageCheck-temp.json`, `${__dirname}/../database/UsageCheck.json`, e => { //Overwrite main UsageCheck with temp UsageCheck
+                    fs.rename(`${__dirname}/../database/usageCheck-temp.json`, `${__dirname}/../database/usageCheck.json`, e => { //Overwrite main usageCheck with temp usageCheck
                         if (e) console.log(e);
                     });
                 }
