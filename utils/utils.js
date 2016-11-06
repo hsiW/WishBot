@@ -61,25 +61,7 @@ exports.splitArray = (array, size) => {
     return sets;
 }
 
-//Converts mins to a nicely laid out string
-exports.minutesToString = mins => {
-    let months = ~~ (mins / 43800),
-        days = ~~ ((mins / 1440) % 30),
-        hours = ~~ ((mins / 60) % 24),
-        minutes = ~~ (mins % 60);
-    return months + "month(s) | " + days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s)";
-}
-
-//Converts days to a nicely laid out string
-exports.daysToString = day => {
-    let months = ~~ (day / 30),
-        days = ~~ (day % 30),
-        hours = ~~ ((day % 24) % 30),
-        minutes = ~~ ((day / 1440) % 60);
-    return months + "month(s) | " + days + "day(s) | " + hours + "hour(s) | " + minutes + "minute(s)";
-}
-
-//Deletes the passed message after 5000ms(nothing more really to say)
+//Deletes the passed message after 5000ms
 exports.messageDelete = msg => {
     setTimeout(() => {
         msg.delete()
