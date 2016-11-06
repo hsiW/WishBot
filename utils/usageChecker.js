@@ -11,7 +11,7 @@ setInterval(() => {
     if (usageUpdated) {
         usageUpdated = false;
         saveUsage();
-    }
+    } 
 }, 1000);
 
 //Updates usage timestamp to prevent guild from being marked as inactive
