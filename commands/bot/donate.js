@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Returns links in which you can donate to the development of this bot.',
+    usage: 'Returns a Patreon link and a Paypal link in which you can donate to the development of this bot.',
     delete: false,
     cooldown: 30,
     process: () => {
