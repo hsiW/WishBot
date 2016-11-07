@@ -1,7 +1,7 @@
 const serverUptime = require('os').uptime();
 
 module.exports = {
-    usage: "Returns some basic stats for the bot.",
+    usage: "Returns stats for the bot. Includes bot/process/server uptime, memory usage, number of shards, channels/privateChannels/guilds/users available, and command usage.",
     delete: false,
     cooldown: 20,
     process: (msg, args, bot) => {
