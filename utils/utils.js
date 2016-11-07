@@ -31,7 +31,7 @@ exports.getName = (msg, name) => {
     else return msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) ? msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) : msg.channel.guild.members.get(msg.author.id);
 }
 
-//Thing to sort objects
+//Thing to sort objects (converts object to array, sorts array then reconverts to object)
 exports.sortObj = obj => {
     let temp_array = [],
         temp_obj = {};
