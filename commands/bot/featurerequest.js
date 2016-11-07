@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Sends a feature request to the maker of the bot. Requests can have a max length of 1750 characters\n`request [feature to request]`',
+    usage: 'Sends a feature request to the maker of the bot. Requests can have a max length of 1750 characters. Meme requests and NSFW will be ignored.\n`request [feature to request]`',
     dm: false,
     cooldown: 60,
     process: (msg, args, bot) => {
