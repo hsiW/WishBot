@@ -1,18 +1,20 @@
 const Database = require('./../../utils/database.js');
 
 module.exports = {
-    usage: `Used to toggle and configure settings. Configurable settings include automated table unflipping as well as welcome and leave messages. Welcome and Join messages are sent in the channel in which the command is used and can be cleared by leaving the message field blank.
+    usage: `Used to toggle and configure settings. Configurable settings include automated table unflipping as well as welcome and leave messages. Welcome and Join messages are sent in the channel in which the command is used and can be toggled off by leaving the message field blank.
 
 __Welcome/Leave Messages can include the following text to return different things:__\`\`\`ruby
-     [GuildName]: Server Name
-[ChannelMention]: Mention to Current Channel
-   [ChannelName]: Name of the Current Channel
-      [UserName]: Name of the User
-   [UserMention]: Mention to the User
+     GuildName: Server Name
+ChannelMention: Mention to Current Channel
+   ChannelName: Name of the Current Channel
+      UserName: Name of the User
+   UserMention: Mention to the User
 \`\`\`
+Exact case must be used
 
 \`setting tableflip\`
-\`setting [leave] or [welcome] and [message] or [none]\``,
+\`setting welcome [message]\`
+\`setting leave [message]\``,
     aliases: ['set'],
     dm: false,
     delete: true,
