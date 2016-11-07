@@ -6,7 +6,6 @@ const Eris = require('eris'), //The bot's api library
     commandLoader = require('./utils/commandLoader.js'),
     utils = require('./utils/utils.js'),
     database = require('./utils/database.js'),
-    playing = require('./lists/playing.json'), //List of playing status's for the bot to use
     processCmd = require('./utils/commandHandler.js'),
     usageChecker = require('./utils/usageChecker.js'),
     //This isn't normally needed but PM2 doesn't work with chalk unless I do this
@@ -51,7 +50,7 @@ errorC = colour.red.bold;
 //Ready Event
 bot.on("ready", () => {
     //Sets the status's of every shard seperately
-    utils.setRandomStatus(bot, playing, urls)
+    utils.setRandomStatus(bot, urls)
     //This stuff below is sent to the console when the bot is ready
     console.log(botC(bot.user.username + " is now Ready."));
     console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
@@ -202,7 +201,7 @@ setInterval(() => {
 }, 60000)
 
 //Changes the bots status every 10mins
-setInterval(() => utils.setRandomStatus(bot, playing, urls), 6e+5);
+setInterval(() => utils.setRandomStatus(bot, urls), 6e+5);
 
 //Changes the bots avatar every 2hrs
 setInterval(() => {
