@@ -214,9 +214,8 @@ setInterval(() => {
             fs.readFile(`${__dirname}/avatars/${avatar}`, (err, image) => {
                 if (err) utils.fileLog(err)
                 else {
-                    let data = `data:image/jpg;base64,${image.toString('base64')}`
                     bot.editSelf({
-                        avatar: data
+                        avatar: `data:image/jpg;base64,${image.toString('base64')}`
                     }).then(() => console.log(botC('Changed avatar to ' + avatar))).catch(err => utils.fileLog(err));
                 }
             })
