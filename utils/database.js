@@ -2,6 +2,7 @@ const mysql = require('mysql'),
     fs = require('fs'),
     options = require('./../options/options.json'),
     guildPrefixes = require('./../database/guildPrefixes.json'), //JSON database of guildPrefixes
+    //Creates database pool
     pool = mysql.createPool({
         connectionLimit: 100,
         host: options.database.host,
@@ -10,8 +11,6 @@ const mysql = require('mysql'),
         password: options.database.password,
         database: options.database.database
     });
-
-//Add to or remove from server_settings database
 
 //Add guild to the server_settings database table
 function addGuild(guild) {
