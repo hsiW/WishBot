@@ -164,8 +164,8 @@ commandLoader.load().then(() => {
 
 //Posts Guild Count to Discord Bots and Carbonitex
 function postGuildCount() {
-    //Check that the bot is ready so premature guild creates won't cause a crash
-    if (bot.ready) {
+    //Check that the bot is ready so premature guild creates won't cause a crash as well as checking if theres a bot/carbon key
+    if (bot.ready && options.bot_key !== '' && options.carbon_key !== '') {
         //Post Guild Count to Discord Bots and if error log to file and console
         axios({
             method: 'post',
