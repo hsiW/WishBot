@@ -193,12 +193,12 @@ function postGuildCount() {
     }
 }
 
-//Checks to see if any shard is disconnected every 60s and trys to reconnect it if so
+//Checks to see if any shard is disconnected every 10s and trys to reconnect it if so
 setInterval(() => {
     bot.shards.forEach(shard => {
         if (shard.status === 'disconnected') shard.connect();
     })
-}, 60000)
+}, 10000)
 
 //Changes the bots status every 10mins
 setInterval(() => utils.setRandomStatus(bot, urls), 6e+5);
