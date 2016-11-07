@@ -27,8 +27,7 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
 
     //Function to get the current cooldown time for the user(is used when a command is on cooldown to show the time left til off cooldown)
     cooldownTime(user) {
-        let now = Date.now();
-        return ((this.lastExecTime[user] + (this.cooldown * 1000)) - now) / 1000;
+        return ((this.lastExecTime[user] + (this.cooldown * 1000)) - Date.now()) / 1000;
     }
 
     //Command Processing
