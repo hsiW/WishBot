@@ -159,7 +159,7 @@ bot.on('guildDelete', guild => {
 
 //Load Commands then Connect(Logs any errors to console and file)
 commandLoader.load().then(() => {
-    bot.connect().then(console.log(warningC("Logged in using Token")))
+    bot.connect().then(console.log(warningC("Connecting with Token")))
 }).catch(err => utils.fileLog(err));
 
 //Posts Guild Count to Discord Bots and Carbonitex
