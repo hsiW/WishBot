@@ -102,11 +102,12 @@ function evalText(msg, args) {
     let result;
     //Trys to run eval on the text and output either an error or the result if applicable 
     try {
-        result = eval("try{" + args + "}catch(err){utils.fileLog(err);bot.createMessage(msg.channel.id, \"```\"+err+\"```\");}");
+        result = eval("try{" + args + "}catch(err){console.log(err);msg.channel.createMessage(\"```\"+err+\"```\");}");
     } catch (e) {
-        bot.createMessage(msg.channel.id, "```" + e + "```");
+        console.log(e)
+        msg.channel.createMessage("```" + e + "```");
     }
-    //Return result to channel
+    //If result isn't undefined and it isn't an object return to channel
     if (result && typeof result !== "object") msg.channel.createMessage(result);
 }
 
