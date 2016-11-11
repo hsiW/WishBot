@@ -27,7 +27,7 @@ module.exports = {
 [Private Channels](${bot.privateChannels.size})
 [Guilds](${bot.guilds.size})
 [Users](${bot.users.size})
-[Average](${bot.users.size/bot.guilds.size})
+[Average](${(bot.users.size/bot.guilds.size).toFixed(2)})
 
 # Command Usage:
 [Total | Commands | Cleverbot](${commandUsage} | ${commandUsage - commands['chat'].execTimes} | ${commands['chat'].execTimes})
