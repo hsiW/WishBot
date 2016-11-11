@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Returns a link to invite this bot to your server.',
+    usage: 'Returns the bots invite link to **invite the bot** to your server.',
     aliases: ['inv'],
     delete: false,
     cooldown: 20,

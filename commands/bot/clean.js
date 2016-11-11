@@ -1,5 +1,7 @@
 module.exports = {
-    usage: "Removes the bots messages from the current channel. Searches the mentioned number of messages to clean from. Defaults to 50 messages but can be changed with a mentioned number.\n`delete [number]`",
+    usage: `Cleans the **bots messages** from the current channel. Cleans from the **passed number** of messages. Defaults to **last 50 messages**.
+
+\`delete [number]\``,
     cooldown: 10,
     process: (msg, args, bot) => {
         return new Promise(resolve => {

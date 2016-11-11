@@ -3,7 +3,7 @@ const libVersion = require('./../../node_modules/eris/package.json').version, //
     prefix = require('./../../options/options.json').prefix; //Default bot prefix
 
 module.exports = {
-    usage: "Returns info about the bot, including a link to the support server as well as a link to the bots source code.",
+    usage: "Returns **info** about the bot, including a link to the **support server** as well as a link to the bots **source code**.",
     delete: false,
     cooldown: 10,
     process: (msg, args, bot) => {
