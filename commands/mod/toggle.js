@@ -1,7 +1,7 @@
 const Database = require('./../../utils/database.js');
 
 module.exports = {
-    usage: 'Toggles the currently enabled commands. Not all commands are togglable. Check their individual help messages for info.\n`toggle [command]`',
+    usage: '**Toggle commands** on/off. **Not all** commands are togglable. Check their individual **help messages for more info**.\n\n`toggle [command]`',
     dm: false,
     togglable: false,
     cooldown: 5,
@@ -18,11 +18,11 @@ module.exports = {
                     })
                 })
             } else if (commands.hasOwnProperty(command) && commands[command].togglable === false) resolve({
-                    message: `⛔ ${args} cannot be toggled off ⛔`,
+                    message: `⛔ ${args} cannot be toggled off. ⛔`,
                     delete: true
                 }) //If command exists but cannot be toggled
             else resolve({
-                    message: `⛔ ${args} isn't a valid command ⛔`,
+                    message: `⛔ ${args} isn't a valid command. ⛔`,
                     delete: true
                 }) //If command doesn't exist
         });

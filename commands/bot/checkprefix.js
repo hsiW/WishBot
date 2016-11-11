@@ -11,7 +11,9 @@ module.exports = {
         return new Promise(resolve => {
             //Returns the current prefix for the guild by checking if its in the prefix database and returning the entry if so, otherwise returning the default prefix.
             resolve({
-                message: `The current command prefix for this guild is: \`${Database.getPrefix(msg.channel.guild.id) !== undefined ? Database.getPrefix(msg.channel.guild.id) : options.prefix}\``
+                message: `The current command prefix for this guild is: \`${Database.getPrefix(msg.channel.guild.id) !== undefined ? Database.getPrefix(msg.channel.guild.id) : options.prefix}\`
+
+Change the current prefix with \`${options.prefix}setprefix [new prefix]\``
             });
         });
     }
