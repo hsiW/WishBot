@@ -69,7 +69,7 @@ bot.on("messageCreate", msg => {
         let msgPrefix = msg.channel.guild && database.getPrefix(msg.channel.guild.id) !== undefined ? database.getPrefix(msg.channel.guild.id) : options.prefix;
         //Use Eval on the message if it starts with sudo and used by Mei
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") {
-            evalText(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
+            evalInput(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
             return;
         }
         //If stuff that isn't a command is used in a PM treat it as using cleverbot by adding the correct prefix as well as the 'chat' command text to the message
@@ -97,7 +97,7 @@ bot.on("messageCreate", msg => {
 });
 
 
-function evalText(msg, args) {
+function evalInput(msg, args) {
     let result;
     //Trys to run eval on the text and output either an error or the result if applicable 
     try {
