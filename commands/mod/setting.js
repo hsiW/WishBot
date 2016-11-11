@@ -3,7 +3,7 @@ const Database = require('./../../utils/database.js');
 module.exports = {
     usage: `Used to configure/toggle settings including **automated table unflipping** and **welcome/leave messages**, both of which are off by default. **Welcome/leave messages** are sent in the **channel** in which this command is last used and can be toggled off by leaving the message field **blank**.
 \`\`\`markdown
-# Welcome/Leave Messages can include the following text:
+# Welcome/Leave Messages can include the following:
 
 [Example](Replaced with this)
 [GuildName](Guild Name)
