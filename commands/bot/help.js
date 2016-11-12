@@ -13,7 +13,7 @@ module.exports = {
             })
             else {
                 let help = {}, //Help object for sorting by type before sending
-                    helpMsg = `**__${bot.user.username} Commands\n__**`; //Start of help message by default
+                    helpMsg = `**__${bot.user.username}'s Commands:__**\n`; //Start of help message by default
                 for (let command in commands) {
                     if (commands[command].dm === false && !msg.channel.guild) continue; //Skip command if cannot be used in DM's
                     if (commands[command].type === 'admin' && !admins.includes(msg.author.id)) continue; //Skip command if its an admin command and the user isn't an admin
@@ -29,7 +29,7 @@ module.exports = {
                 }
                 //Return help message
                 resolve({
-                    message: helpMsg + '\n\nFor more info on these commands use `help [command]`'
+                    message: helpMsg + '\n\nFor additional info on a specific command use `help [command]`.'
                 });
             }
         });
