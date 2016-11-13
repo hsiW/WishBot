@@ -1,5 +1,5 @@
 module.exports = {
-    usage: 'Returns the **most recent changelog entry** from the changelog channel on the **Offical Yuki-chan Server**.',
+    usage: 'Returns the **most recent change log entry** from the #changelog channel on the **Offical Yuki-chan Server**.',
     delete: false,
     cooldown: 10,
     process: (msg, args, bot) => {

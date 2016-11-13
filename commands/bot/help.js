@@ -3,6 +3,8 @@ const utils = require('./../../utils/utils.js'),
 
 module.exports = {
     delete: false,
+    aliases: ['commands'],
+    cooldown: 5,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             //Check is args are an alias and if so replace args with correct command text

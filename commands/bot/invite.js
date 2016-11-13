@@ -2,7 +2,7 @@ module.exports = {
     usage: 'Returns the bots invite link to **invite the bot** to your server.',
     aliases: ['inv'],
     delete: false,
-    cooldown: 20,
+    cooldown: 25,
     process: msg => {
     	//Returns the link to invite the bot to your server
         return Promise.resolve({

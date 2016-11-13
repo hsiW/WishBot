@@ -1,8 +1,8 @@
 module.exports = {
-    usage: `Cleans the **bots messages** from the current channel. Cleans from the **passed number** of messages. Defaults to **last 50 messages**.
+    usage: `Cleans the **bots messages** from the channel. Cleans from the **passed number** of messages. Defaults to **last 50 messages**.
 
-\`delete [number]\``,
-    cooldown: 10,
+\`clean [number]\``,
+    cooldown: 25,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             /^\d+$/.test(args) ? args = parseInt(args) : args = 50; //Checks if args is a number(as well as it existing) and if so sets args to that number otherwise defaults to 50

@@ -3,7 +3,7 @@ const serverUptime = require('os').uptime();
 module.exports = {
     usage: "Returns **stats** for the bot. Includes **bot/process/server** uptime, **memory usage**, **# of shards**, **channels/privateChannels/guilds/users** available, & **command usage**.",
     delete: false,
-    cooldown: 20,
+    cooldown: 25,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             //Get the current command usage total by looping through the command object and getting the executeTimes for each command and adding to the commandUsage variable
