@@ -36,10 +36,10 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
         if (this.delete && msg.channel.guild && msg.channel.permissionsOf(bot.user.id).has('manageMessages')) msg.delete();
         this.execTimes++; //Adds 1 the current number of execution times(Uses)
         //Main Processing of Command(uses Promises)
-        //Commands return a Promise which can contain a 'Message' and 'Upload' to send message being the message content, upload being whatever file you'd like to
+        //Commands return a Promise which can contain a 'Message, 'Upload' & 'Embed' to send message being the message content, upload being whatever file you'd like to, embed being a discord embed object
         //Commands also can return a edit function which allows you to edit messages while also taking the inital sent message object
         //They can also return a delete after 5s boolean which deletes the sent message after 5s
-        this.job(msg, args, bot).then(response => msg.channel.createMessage(response.message ? response.message : '', response.upload).then(message => {
+        this.job(msg, args, bot).then(response => msg.channel.createMessage(response.message ? response.message : '', response.upload, response.embed).then(message => {
             if (response.edit) message.edit(response.edit(message)) //Edit sent message 
             if (response.delete) utils.messageDelete(message); //Check for delete sent message
         }).catch(err => utils.fileLog(err))); //Log to console and file if errored
