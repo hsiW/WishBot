@@ -3,7 +3,7 @@ const libVersion = require('./../../node_modules/eris/package.json').version, //
     prefix = require('./../../options/options.json').prefix; //Default bot prefix
 
 module.exports = {
-    usage: "Returns **info** about the bot, including a link to the **support server** as well as a link to the bots **source code**.",
+    usage: "Returns **info** about the bot, including a link to the **support server**, a link to the bots **source code** & a link to the bots **documentation**.",
     delete: false,
     cooldown: 10,
     process: (msg, args, bot) => {
@@ -21,6 +21,7 @@ module.exports = {
 # Use ${prefix}help a list of the current bot commands.
 [Source](https://github.com/hsiw/Wishbot)
 [Support Server](https://discord.gg/0lBiROCNVaGw5Eqk)
+[Docs](https://github.com/hsiW/WishBot/wiki)
 \`\`\`
 `
         })
