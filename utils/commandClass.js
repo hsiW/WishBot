@@ -39,10 +39,12 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
         //Commands return a Promise which can contain a 'Message, 'Upload' & 'Embed' to send message being the message content, upload being whatever file you'd like to, embed being a discord embed object
         //Commands also can return a edit function which allows you to edit messages while also taking the inital sent message object
         //They can also return a delete after 5s boolean which deletes the sent message after 5s
-        this.job(msg, args, bot).then(response => msg.channel.createMessage(response.message ? response.message : '', response.upload, response.embed).then(message => {
-            if (response.edit) message.edit(response.edit(message)) //Edit sent message 
-            if (response.delete) utils.messageDelete(message); //Check for delete sent message
-        }).catch(err => utils.fileLog(err))); //Log to console and file if errored
+        this.job(msg, args, bot).then(response => {
+            msg.channel.createMessage(response.message ? response.message : '', response.upload, response.embed).then(message => {
+                if (response.edit) message.edit(response.edit(message)) //Edit sent message 
+                if (response.delete) utils.messageDelete(message); //Check for delete sent message
+            })
+        }).catch(err => utils.fileLog(err)); //Log to console and file if errored
     }
 
     //Cooldown Check(returns true if the command shouldn't be processed)
