@@ -5,7 +5,7 @@ module.exports = {
     dm: false,
     delete: false,
     togglable: false,
-    cooldown: 20,
+    cooldown: 25,
     process: (msg, args) => {
         return new Promise(resolve => {
             //Changes guild prefix to the entered args
