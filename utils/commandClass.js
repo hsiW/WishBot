@@ -40,7 +40,10 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
         //Commands also can return a edit function which allows you to edit messages while also taking the inital sent message object
         //They can also return a delete after 5s boolean which deletes the sent message after 5s
         this.job(msg, args, bot).then(response => {
-            msg.channel.createMessage(response.message ? response.message : '', response.upload, response.embed).then(message => {
+            msg.channel.createMessage({
+                content: response.message ? response.message : '', //Message content
+                embed: response.embed ? response.embed : {} //Message embed
+            }, response.upload).then(message => {
                 if (response.edit) message.edit(response.edit(message)) //Edit sent message 
                 if (response.delete) utils.messageDelete(message); //Check for delete sent message
             })
@@ -78,3 +81,4 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
             return true;
     }
 }
+
