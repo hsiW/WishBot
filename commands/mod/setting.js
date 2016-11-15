@@ -12,7 +12,7 @@ module.exports = {
 [UserName](Name of the User)
 [UserMention](Mention to the User)
 
-# Exact case MUST be used exluding brackets #
+# Exact case MUST be used excluding brackets #
 \`\`\`
 \`setting tableflip - Toggles tableflip on/off
 setting welcome/leave [message] - Sets welcome/leave to 'message'\``,
