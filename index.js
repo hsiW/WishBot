@@ -251,3 +251,8 @@ bot.on("disconnect", err => {
     utils.fileLog(err); //Logs Disconnect reason/error to file and console
     throw 'Bot Disconnected'
 })
+
+//Checks for Unhandled Promise rejections and logs
+process.on('unhandledRejection', (reason, p) => {
+    console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
+});
