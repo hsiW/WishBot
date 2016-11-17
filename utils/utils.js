@@ -65,7 +65,7 @@ exports.splitArray = (array, size) => {
 //Deletes the passed message after 5000ms
 exports.messageDelete = msg => {
     setTimeout(() => {
-        msg.delete()
+        msg.delete().catch(err => console.log(errorC(err)))
     }, 5000)
 }
 

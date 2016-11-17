@@ -13,7 +13,7 @@ module.exports = {
                     //When purge is finished return the relevant message which will be deleted after 5s 
                     message: `Finished cleaning  **${deleted}** bot messages in last **${args}** message(s) of ${msg.channel.mention}, **${msg.author.username}**-senpai.`,
                     delete: true
-                }))
+                })).catch(err=> console.log(errorC(err)))
             } else {
                 var deleted = 0; //Tracks the number of deleted messages
                 //Get an array of the number of messages starting before the command message
