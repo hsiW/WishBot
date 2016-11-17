@@ -22,18 +22,20 @@
         "bluebird": "^3.4.6",
         "chalk": "^1.1.3",
         "cleverbot-node": "^0.2.2",
-        "dice-expression-evaluator": "^0.1.2",
         "entities": "^1.1.1",
         "eris": "github:abalabahaha/eris#dev",
         "eventemitter3": "^2.0.2",
+        "mysql": "^2.12.0",
+        "winston": "^2.3.0"
+    },
+    "optionalDependencies": {
         "giphy-api-without-credentials": "^1.1.0",
+        "dice-expression-evaluator": "^0.1.2",
         "mathjs": "^3.7.0",
         "moment": "^2.15.2",
         "moment-duration-format": "^1.3.0",
-        "mysql": "^2.12.0",
-        "nani": "^1.2.0",
-        "winston": "^2.3.0",
-        "youtube-simple-search": "^0.1.1"
+        "youtube-simple-search": "^0.1.1",
+        "nani": "^1.2.0"
     },
     "eslintConfig": {
         "globals": {
