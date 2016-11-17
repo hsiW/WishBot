@@ -20,7 +20,7 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 16,
+        maxShards: 1,
         autoReconnect: true,
         disableEveryone: true,
         disabledEvents: {
@@ -136,7 +136,7 @@ bot.on("guildMemberRemove", (guild, member) => {
 
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
-    if (!guild.name) return;
+    if (!guild.name || !msg.channel.permissionsOf(bot.user.id).has('sendMessages')) return;
     bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
 
