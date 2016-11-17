@@ -43,7 +43,7 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
             if(msg.channel.guild && !msg.channel.permissionsOf(bot.user.id).has('sendMessages')) return; //If the bot cannot send messages in the current channel return.
             msg.channel.createMessage({
                 content: response.message ? response.message : '', //Message content
-                embed: response.embed ? response.embed : {} //Message embed
+                embed: response.embed ? response.embed : undefined //Message embed
             }, response.upload).then(message => {
                 if (response.edit) message.edit(response.edit(message)) //Edit sent message 
                 if (response.delete) utils.messageDelete(message); //Check for delete sent message
