@@ -20,7 +20,7 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 1,
+        maxShards: 16,
         autoReconnect: true,
         disableEveryone: true,
         disabledEvents: {
@@ -76,6 +76,8 @@ bot.on("messageCreate", msg => {
         if (!msg.channel.guild && !msg.content.startsWith(options.prefix)) msg.content = msgPrefix + "chat " + msg.content;
         //If used in a Guild
         if (msg.channel.guild) {
+            //If bot cannot send messages in the current channel
+            if (!msg.channel.permissionsOf(bot.user.id).has('sendMessages')) return;
             //If Message is a tableFlip and the Guild has tableflip(tableunflip) on return an unflipped table
             if (msg.content === "(╯°□°）╯︵ ┻━┻") database.checkSetting(msg.channel.guild.id, 'tableflip').then(() => bot.createMessage(msg.channel.id, unflippedTables[~~(Math.random() * (unflippedTables.length))])).catch(err => utils.fileLog(err))
                 //Check if message starts with a bot user mention and if so replace with the correct prefix and the 'chat' command text
@@ -134,6 +136,7 @@ bot.on("guildMemberRemove", (guild, member) => {
 
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
+    if (!guild.name) return;
     bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
 
