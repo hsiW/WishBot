@@ -23,14 +23,14 @@ exports.updateTimestamp = guild => {
 }
 
 //Add Guild to usageCheck Database
-exports.addTousageCheck = guild => {
+exports.addToUsageCheck = guild => {
     if (!guild || !guild.id) return; //If no guild recieved or guild doesn't have an id skip it
     if (!usageCheck.hasOwnProperty(guild.id)) usageCheck[guild.id] = Date.now(); //If not in database add it with that last time used as now
     usageUpdated = true; //Usage Updated so save file
 }
 
 //Remove Guild from usageCheck Database
-exports.removeFromusageCheck = guild => {
+exports.removeFromUsageCheck = guild => {
     if (!guild || !guild.id) return; //If no guild recieved or guild doesn't have an id skip it
     if (usageCheck.hasOwnProperty(guild.id)) delete usageCheck[guild.id]; //If in databse remove from database
     usageUpdated = true; //Update file
