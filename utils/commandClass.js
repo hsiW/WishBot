@@ -40,6 +40,7 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
         //Commands also can return a edit function which allows you to edit messages while also taking the inital sent message object
         //They can also return a delete after 5s boolean which deletes the sent message after 5s
         this.job(msg, args, bot).then(response => {
+            if(!msg.channel.permissionsOf(bot.user.id).has('sendMessages')) return; //If the bot cannot send messages in the current channel return.
             msg.channel.createMessage({
                 content: response.message ? response.message : '', //Message content
                 embed: response.embed ? response.embed : {} //Message embed
