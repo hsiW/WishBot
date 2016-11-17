@@ -1,6 +1,7 @@
 module.exports = {
-    usage: 'Send a **feature request** to the Bot Developer. Requests can have a max length of **1750 characters**. Meme & NSFW requests will be **ignored**.\n\n`featurerequest [feature to request]`',
+    usage: 'Send a **feature request** to the Bot Developer. Requests can have a max length of **1950 characters**. Meme & NSFW requests will be **ignored**.\n\n`featurerequest [feature to request]`',
     dm: false,
+    delete: false,
     cooldown: 60,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
@@ -10,16 +11,28 @@ module.exports = {
                     delete: true
                 })
                 //If the request is potentially to large tell the user so
-            else if (args.length > 1750) resolve({
-                message: `Requests cannot be over 1750 characters, sorry **${msg.author.username}**-senpai`,
+            else if (args.length > 1950) resolve({
+                message: `Requests cannot be over 1950 characters, **${msg.author.username}**-senpai.`,
                 delete: true
             })
             else {
-                //Create a message in the featureRequest channel in the Yuki-chan server with the users request
-                bot.createMessage('142794318837579777', `**${msg.channel.guild.name}**(*${msg.channel.guild.id}*) - **${msg.author.username}**(*${msg.author.id}*)
-\`\`\`${args}\`\`\``).then(() => resolve({
+                //Create a emnbed message in the #feature_requests channel in the Yuki-chan server with the users request
+                bot.createMessage('142794318837579777', {
+                    embed: {
+                        author: {
+                            name: `${msg.author.username} (${msg.channel.guild.name})`,
+                            icon_url: msg.author.avatarURL
+                        },
+                        title: 'test',
+                        color: 0x743FBF,
+                        description: args,
+                        footer: {
+                            text: `UserID: ${msg.author.id} GuildID: ${msg.channel.guild.id}`
+                        }
+                    }
+                }).then(() => resolve({
                     //Tell the user that their request was successfully sent to the request channel on promise resolve
-                    message: `Your request for **'${args}'** was successfully sent, **${msg.author.username}**-senpai.`
+                    message: `Your request was successfully sent, **${msg.author.username}**-senpai.`
                 }))
             }
         });
