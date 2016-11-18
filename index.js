@@ -20,10 +20,10 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 1,
+        maxShards: 3,
         autoReconnect: true,
         disableEveryone: true,
-        disabledEvents: {
+        disableEvents: {
             VOICE_STATE_UPDATE: true,
             TYPING_START: true,
             GUILD_EMOJI_UPDATE: true,
@@ -31,6 +31,8 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
             GUILD_BAN_ADD: true,
             GUILD_BAN_REMOVE: true,
             MESSAGE_UPDATE: true,
+            MESSAGE_DELETE: true,
+            MESSAGE_DELETE_BULK: true,
             CHANNEL_CREATE: true,
             CHANNEL_DELETE: true
         }
@@ -196,13 +198,6 @@ function postGuildCount() {
     }
 }
 
-//Checks to see if any shard is disconnected every 10s and trys to reconnect it if so
-setInterval(() => {
-    bot.shards.forEach(shard => {
-        if (shard.status === 'disconnected') shard.connect();
-    })
-}, 10000)
-
 //Changes the bots status every 10mins
 setInterval(() => utils.setRandomStatus(bot, urls), 6e+5);
 
@@ -254,8 +249,3 @@ bot.on("disconnect", err => {
     utils.fileLog(err); //Logs Disconnect reason/error to file and console
     throw 'Bot Disconnected'
 })
-
-//Checks for Unhandled Promise rejections and logs
-process.on('unhandledRejection', (reason, p) => {
-    console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
-});
