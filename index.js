@@ -100,7 +100,6 @@ bot.on("messageCreate", msg => {
     }
 });
 
-
 function evalInput(msg, args) {
     let result;
     //Trys to run eval on the text and output either an error or the result if applicable 
@@ -138,7 +137,7 @@ bot.on("guildMemberRemove", (guild, member) => {
 
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
-    if (!guild.name || !msg.channel.permissionsOf(bot.user.id).has('sendMessages')) return;
+    if (!guild.name || guild.channels.get(response.channel.toString()).permissionsOf(bot.user.id).has('sendMessages')) return;
     bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
 
