@@ -45,13 +45,17 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
                 response.embed = undefined;
                 response.delete = true;
             }
-            msg.channel.createMessage({
-                content: response.message ? response.message : '', //Message content
-                embed: response.embed ? response.embed : undefined //Message embed
-            }, response.upload).then(message => {
-                if (response.edit) message.edit(response.edit(message)) //Edit sent message 
-                if (response.delete) utils.messageDelete(message); //Check for delete sent message
-            })
+            try {
+                msg.channel.createMessage({
+                    content: response.message ? response.message : '', //Message content
+                    embed: response.embed ? response.embed : undefined //Message embed
+                }, response.upload).then(message => {
+                    if (response.edit) message.edit(response.edit(message)) //Edit sent message 
+                    if (response.delete) utils.messageDelete(message); //Check for delete sent message
+                })
+            } catch (e) {
+                //Error somewhere its k
+            }
         }).catch(err => utils.fileLog(err)); //Log to console and file if errored
     }
 
