@@ -2,7 +2,7 @@ const getName = require('./../../utils/utils.js').getName,
     moment = require('moment');
 
 module.exports = {
-    usage: "Returns **info on the user**, can take a **nickname/username/mention** to return the info of that user.\n\n`whois [none] or [user]`",
+    usage: "Returns **info on the user**, can take a **nickname/username/mention** to return the info of that user. **Requires** embedded links for this command to work properly.\n\n`whois [none] or [user]`",
     aliases: ['about'],
     dm: false,
     delete: false,
@@ -15,15 +15,39 @@ module.exports = {
             if (user) {
                 //Resolves will info about the user using moment to format the date and times properly as well as seeing how long ago stuff was
                 resolve({
-                    message: `\`\`\`swift
-User: ${user.user.username}#${user.user.discriminator} 
-${user.nick !==null ? 'Nickname: '+user.nick+'\n': ''}User ID: ${user.id} 
-Status: ${user.status} 
-${user.game !== null ? 'Playing: \''+user.game.name+'\'\n' : ''}Join Date: ${moment(user.joinedAt).utc().format('ddd MMM DD YYYY | kk:mm:ss')} (${moment(user.joinedAt).fromNow()}) 
-Creation Date: ${moment(user.user.createdAt).utc().format('ddd MMM DD YYYY | kk:mm:ss')} (${moment(user.user.createdAt).fromNow()}) 
-Avatar URL: \"${user.user.avatarURL}\" 
-\`\`\` 
-`
+                    embed: {
+                        author: {
+                            name: `${user.user.username}#${user.user.discriminator}`,
+                            icon_url: user.user.avatarURL,
+                            url: user.user.avatarURL
+                        },
+                        color: ((1 << 24) * Math.random() | 0), //Randomly sets the colour
+                        fields: [{
+                            name: 'Nickname',
+                            value: user.nick !== null ? user.nick : 'None.',
+                            inline: true
+                        }, {
+                            name: 'Playing',
+                            value: user.game !== null ? user.game.name : 'None.',
+                            inline: true
+                        }, {
+                            name: 'Join Date',
+                            value: `${moment(user.joinedAt).utc().format('ddd MMM DD YYYY | kk:mm:ss')} (${moment(user.joinedAt).fromNow()}) `,
+                            inline: true
+                        }, {
+                            name: 'User ID',
+                            value: user.id,
+                            inline: true
+                        }, {
+                            name: 'Status',
+                            value: user.status,
+                            inline: true
+                        }, {
+                            name: 'Creation Date',
+                            value: `${moment(user.user.createdAt).utc().format('ddd MMM DD YYYY | kk:mm:ss')} (${moment(user.user.createdAt).fromNow()})`,
+                            inline: true
+                        }]
+                    }
                 });
             } //This is just here incase something goes wrong 
             else resolve({
