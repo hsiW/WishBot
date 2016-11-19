@@ -1,5 +1,6 @@
 module.exports = {
     usage: 'Send a **feature request** to the Bot Developer. Requests can have a max length of **1950 characters**. Meme & NSFW requests will be **ignored**.\n\n`featurerequest [feature to request]`',
+    aliases: ['suggest'],
     dm: false,
     delete: false,
     cooldown: 60,
@@ -23,7 +24,6 @@ module.exports = {
                             name: `${msg.author.username} (${msg.channel.guild.name})`,
                             icon_url: msg.author.avatarURL
                         },
-                        title: 'test',
                         color: 0x743FBF,
                         description: args,
                         footer: {
