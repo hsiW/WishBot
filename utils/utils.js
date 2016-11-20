@@ -20,7 +20,7 @@ exports.toTitleCase = str => {
 }
 
 exports.getName = (msg, name) => {
-    //Creates name reject to search by
+    //Creates name regex to search by
     let nameRegex = new RegExp(name, "i");
     //If not in a guild make the msg.user the msg.author(msg.user doesn't normally exit but it helpsme do some commands)
     if (!msg.channel.guild) {
