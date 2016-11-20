@@ -71,10 +71,9 @@ exports.unmuteChannel = channel => {
 
 //Check to see if the channel is currently being ignored(if its in the channel_ignores database table)
 exports.checkChannel = channel => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel, (err, result) => {
             if (err || result.length === 0) resolve(); //Resolve if error or if no result returned(not ignored)
-            else reject();
         });
     });
 }
@@ -113,15 +112,14 @@ function toggleCommand(guild, command) {
 
 //Check to see if a command is currently toggled
 exports.checkCommand = (guild, command) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         if (guild === undefined) resolve(); //If not used in a guild resolve because commands cannot be toggled in DM's
         else {
             pool.query('SELECT disabled_commands FROM server_settings WHERE guild_id = ' + guild.id, (err, result) => {
                 if (err || result.length === 0) resolve(); //If error or no result resolve
                 else {
                     let disabled = JSON.parse(result[0].disabled_commands) ? JSON.parse(result[0].disabled_commands) : null;
-                    if (disabled !== null && disabled[command] !== undefined) reject(); //Command disabled so reject
-                    else resolve(); //If there are disabled commands but this isn't one of them, resolve
+                    if (disabled === null || disabled[command] === undefined) resolve(); //If there are disabled commands but this isn't one of them, resolve
                 }
             });
         }
