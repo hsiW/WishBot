@@ -31,7 +31,7 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
     }
 
     //Command Processing
-    process(msg, args, bot) { //Commands can take and manipulate the msg object, the command arguments and the bot object 
+    run(msg, args, bot) { //Commands can take and manipulate the msg object, the command arguments and the bot object 
         //Checks if the command deletes on use as well as if the bot has delete permissions before running the msg deletion
         if (this.delete && msg.channel.guild && msg.channel.permissionsOf(bot.user.id).has('manageMessages')) msg.delete();
         this.execTimes++; //Adds 1 the current number of execution times(Uses)
@@ -48,8 +48,10 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
             try {
                 msg.channel.createMessage({
                     content: response.message ? response.message : '', //Message content
-                    embed: response.embed ? response.embed : undefined //Message embed
+                    embed: response.embed ? response.embed : undefined, //Message embed
+                    disableEveryone: response.disableEveryone ? response.disableEveryone : false //Allow/deny use of @everyone or @here in sendmessages
                 }, response.upload).then(message => {
+                    console.log(message)
                     if (response.edit) message.edit(response.edit(message)) //Edit sent message 
                     if (response.delete) utils.messageDelete(message); //Check for delete sent message
                 })

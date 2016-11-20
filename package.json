@@ -1,7 +1,7 @@
 {
   "name": "wishbot",
   "author": "hsiW",
-  "version": "6.0.1",
+  "version": "6.0.3",
   "main": "index.js",
   "description": "An Anime Themed Discord Bot made using the Eris Discord Library",
   "keywords": [

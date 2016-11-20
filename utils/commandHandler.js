@@ -12,7 +12,7 @@ module.exports = (msg, args, cmd, bot) => {
         else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) bot.createMessage(msg.channel.id, `\`${cmd.name}\` is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
         //Process the command
         else {
-            cmd.process(msg, args, bot)
+            cmd.run(msg, args, bot)
             //Command Logging in Guilds
             if (msg.channel.guild) console.log(guildC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmd.name) + " was used by " + userC(msg.author.username));
             //Comand Logging in PM's

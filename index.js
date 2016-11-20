@@ -32,9 +32,7 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
             GUILD_BAN_REMOVE: true,
             MESSAGE_UPDATE: true,
             MESSAGE_DELETE: true,
-            MESSAGE_DELETE_BULK: true,
-            CHANNEL_CREATE: true,
-            CHANNEL_DELETE: true
+            MESSAGE_DELETE_BULK: true
         }
     });
 
@@ -137,7 +135,7 @@ bot.on("guildMemberRemove", (guild, member) => {
 
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
-    if (!guild.name || guild.channels.get(response.channel.toString()).permissionsOf(bot.user.id).has('sendMessages')) return;
+    if (!guild.name || (guild.channels.get(response.channel.toString()) && !guild.channels.get(response.channel.toString()).permissionsOf(bot.user.id).has('sendMessages'))) return;
     bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
 
