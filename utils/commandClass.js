@@ -49,7 +49,7 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
                 msg.channel.createMessage({
                     content: response.message ? response.message : '', //Message content
                     embed: response.embed ? response.embed : undefined, //Message embed
-                    disableEveryone: response.disableEveryone ? response.disableEveryone : false //Allow/deny use of @everyone or @here in sendmessages
+                    disableEveryone: response.disableEveryone != null ? response.disableEveryone : undefined //Allow/deny use of @everyone or @here in sendmessages
                 }, response.upload).then(message => {
                     if (response.edit) message.edit(response.edit(message)) //Edit sent message 
                     if (response.delete) utils.messageDelete(message); //Check for delete sent message
