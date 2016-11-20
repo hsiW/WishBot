@@ -3,6 +3,7 @@ WishBot Core [![Dependant Status](https://david-dm.org/hsiw/WishBot/status.svg?s
 ###How the command system works:
 ```js
 //File should be the name of the command (example test.js will make the command 'test')
+//The folder name will define the command type, mod and admin commands require additional permissions
 module.exports = {
     usage: 'The usage info of the command', //The command usage info that shows up in 'help [commmand]'
     aliases: ['stuff'], //Any command aliases
