@@ -51,7 +51,6 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
                     embed: response.embed ? response.embed : undefined, //Message embed
                     disableEveryone: response.disableEveryone ? response.disableEveryone : false //Allow/deny use of @everyone or @here in sendmessages
                 }, response.upload).then(message => {
-                    console.log(message)
                     if (response.edit) message.edit(response.edit(message)) //Edit sent message 
                     if (response.delete) utils.messageDelete(message); //Check for delete sent message
                 })
