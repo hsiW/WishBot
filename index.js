@@ -83,7 +83,7 @@ bot.on("messageCreate", msg => {
                 //Check if message starts with a bot user mention and if so replace with the correct prefix and the 'chat' command text
             if (msg.content.replace(/<@!/, "<@").startsWith(bot.user.mention)) msg.content = msg.content.replace(/<@!/g, "<@").replace(bot.user.mention, msgPrefix + "chat");
             //Prefix command override so that prefix can be used with the default command prefix to prevent forgotten prefixes
-            if ((msg.content.startsWith(options.prefix + 'prefix') || msg.content.startsWith(options.prefix + 'checkprefix')) && msgPrefix !== options.prefix) msg.content = msg.content.replace(options.prefix, msgPrefix)
+            if ((msg.content.startsWith(options.prefix + 'setprefix') || msg.content.startsWith(options.prefix + 'checkprefix')) && msgPrefix !== options.prefix) msg.content = msg.content.replace(options.prefix, msgPrefix)
         }
         //If the message stats with the set prefix
         if (msg.content.startsWith(msgPrefix)) {
