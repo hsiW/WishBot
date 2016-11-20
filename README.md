@@ -17,6 +17,8 @@ module.exports = {
         	//Whatever function you want here to process the command stuff
         	resolve({
         		message: 'This is a message', //The message content to send
+                embed: {}, //Embed object https://discordapp.com/developers/docs/resources/channel#embed-object
+                disableEveryone: false, //Used to enable @everyone and @here mentions 
         		upload: { //A file to be uploaded(must be a buffer, check wewlad for an example)
         			file: somefile,
         			name: 'test.txt'
