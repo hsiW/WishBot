@@ -20,11 +20,11 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 16,
+        maxShards: 8, //Set to lower if hosting yourself
         autoReconnect: true,
         disableEveryone: true,
+        seedVoiceConnections: true,
         disableEvents: {
-            VOICE_STATE_UPDATE: true,
             TYPING_START: true,
             GUILD_EMOJI_UPDATE: true,
             GUILD_INTEGRATIONS_UPDATE: true,
@@ -109,6 +109,7 @@ function evalInput(msg, args) {
     }
     //If result isn't undefined and it isn't an object return to channel
     if (result && typeof result !== "object") msg.channel.createMessage(result);
+    console.log(result)
 }
 
 //New Guild Member Event
@@ -135,8 +136,7 @@ bot.on("guildMemberRemove", (guild, member) => {
 
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
-    if (!guild.name || (guild.channels.get(response.channel.toString()) && !guild.channels.get(response.channel.toString()).permissionsOf(bot.user.id).has('sendMessages'))) return;
-    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel.toString()).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel.toString()).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
+    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
 
 //Guild Joined Event
@@ -179,7 +179,7 @@ function postGuildCount() {
             data: {
                 "server_count": bot.guilds.size
             }
-        }).catch(err => utils.fileLog(err));
+        }).catch(err => console.log(errorC(err)))
         //Post Guild Count to Carbonitex and if error log to file and console
         axios({
             method: 'post',
@@ -191,7 +191,7 @@ function postGuildCount() {
                 "key": options.carbon_key,
                 "servercount": bot.guilds.size
             }
-        }).catch(err => utils.fileLog(err));
+        }).catch(err => console.log(errorC(err)));
     }
 }
 
