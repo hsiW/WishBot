@@ -6,7 +6,9 @@ const options = require("./../options/options.json"),
         transports: [
             new(winston.transports.File)({
                 filename: 'error.log', //The name of the logging file
-                showLevel: false
+                showLevel: false,
+                prettyPrint: true,
+                json: false
             })
         ]
     });
@@ -65,7 +67,7 @@ exports.splitArray = (array, size) => {
 //Deletes the passed message after 5000ms
 exports.messageDelete = msg => {
     setTimeout(() => {
-        msg.delete().catch(err => console.log(errorC(err)))
+        msg.delete();
     }, 5000)
 }
 
