@@ -11,7 +11,7 @@ module.exports = {
     process: msg => {
         return new Promise(resolve => {
             //Cleans message content removing mentions and replacing them with the raw usernames, if no message args text defaults to 'Hi'
-            let text = (msg.cleanContent.split(' ').length > 1) ? msg.cleanContent.substring(msg.cleanContent.indexOf(' ') + 1).replace('@', '') : 'Hi';
+            let text = msg.cleanContent.split(' ').length > 1 ? msg.cleanContent.substring(msg.cleanContent.indexOf(' ') + 1).replace('@', '') : 'Hi';
             //Get cleverbot response
             Yuki.write(text, response => {
                 if (!response.message) {
