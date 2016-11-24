@@ -1,5 +1,6 @@
 const admins = require('./../options/admins.json'), //List of Admin ID's which override the mod permissions check as well as allow use of admin commands
-    usageChecker = require('./../utils/usageChecker.js');
+    usageChecker = require('./../utils/usageChecker.js'),
+    utils = require('./utils.js');
 
 module.exports = (msg, args, cmd, bot) => {
     //Checks for Mod and Admin command types
@@ -12,7 +13,21 @@ module.exports = (msg, args, cmd, bot) => {
         else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) bot.createMessage(msg.channel.id, `\`${cmd.name}\` is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
         //Process the command
         else {
-            cmd.run(msg, args, bot)
+            cmd.exec(msg, args, bot).then(response => {
+                if (response.embed !== undefined && msg.channel.guild && !(msg.channel.permissionsOf(bot.user.id).has('embedLinks'))) return; //If command needs embed permissions and bot doesn't have it
+                try {
+                    msg.channel.createMessage({
+                        content: response.message ? response.message : '', //Message content
+                        embed: response.embed ? response.embed : undefined, //Message embed
+                        disableEveryone: response.disableEveryone != null ? response.disableEveryone : undefined //Allow/deny use of @everyone or @here in sendmessages
+                    }, response.upload).then(message => {
+                        if (response.edit) message.edit(response.edit(message)) //Edit sent message 
+                        if (response.delete) utils.messageDelete(message); //Check for delete sent message
+                    })
+                } catch (e) {
+                    console.log(errorC(e))
+                }
+            })
             //Command Logging in Guilds
             if (msg.channel.guild) console.log(guildC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmd.name) + " was used by " + userC(msg.author.username));
             //Comand Logging in PM's
