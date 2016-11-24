@@ -11,8 +11,8 @@ setInterval(() => {
     if (usageUpdated) {
         usageUpdated = false;
         saveUsage();
-    } 
-}, 1000);
+    }
+}, 5000);
 
 //Updates usage timestamp to prevent guild from being marked as inactive
 exports.updateTimestamp = guild => {
@@ -32,7 +32,7 @@ exports.addToUsageCheck = guild => {
 //Remove Guild from usageCheck Database
 exports.removeFromUsageCheck = guild => {
     if (!guild || !guild.id) return; //If no guild recieved or guild doesn't have an id skip it
-    if (usageCheck.hasOwnProperty(guild.id)) delete usageCheck[guild.id]; //If in databse remove from database
+    if (usageCheck.hasOwnProperty(guild.id)) delete usageCheck[guild.id]; //If in database remove from database
     usageUpdated = true; //Update file
 }
 
@@ -48,7 +48,7 @@ exports.checkInactivity = bot => {
         });
         bot.guilds.forEach(guild => {
             if (!usageCheck.hasOwnProperty(guild.id)) usageCheck[guild.id] = now; //If not in usageCheck add to it with the last used value as now
-            else if ((now - usageCheck[guild.id]) >= 1.21e+9) inactiveGuilds.push(guild.id); //If last used time is greator than 2 weeks ago add to inactiveGuilds array
+            else if ((now - usageCheck[guild.id]) >= 6.048e+8) inactiveGuilds.push(guild.id); //If last used time is greator than 2 weeks ago add to inactiveGuilds array
         })
         if (inactiveGuilds.length > 0) { //If theres inactive guilds resolve as well as updating file
             usageUpdated = true;
