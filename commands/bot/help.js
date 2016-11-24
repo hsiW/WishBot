@@ -11,7 +11,7 @@ module.exports = {
             commandAliases.hasOwnProperty(args) ? args = commandAliases[args] : args;
             //If the args are a command and the command isn't help return the commands usage info
             if (commands.hasOwnProperty(args) && args !== 'help') resolve({
-                message: commands[args].help()
+                message: commands[args].help
             })
             else {
                 let help = {}, //Help object for sorting by type before sending
