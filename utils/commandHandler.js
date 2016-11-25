@@ -15,7 +15,6 @@ module.exports = (msg, args, cmd, bot) => {
         else {
             cmd.exec(msg, args, bot).then(response => {
                 if (response.embed !== undefined && msg.channel.guild && !(msg.channel.permissionsOf(bot.user.id).has('embedLinks'))) return; //If command needs embed permissions and bot doesn't have it
-                try {
                     //Main Processing of Command(uses Promises)
                     //Commands return a Promise which can contain a 'Message, 'Upload' & 'Embed' to send message being the message content, upload being whatever file you'd like to, embed being a discord embed object
                     //Commands also can return a edit function which allows you to edit messages while also taking the inital sent message object
@@ -27,10 +26,7 @@ module.exports = (msg, args, cmd, bot) => {
                     }, response.upload).then(message => {
                         if (response.edit) message.edit(response.edit(message)) //Edit sent message 
                         if (response.delete) utils.messageDelete(message); //Check for delete sent message
-                    })
-                } catch (e) {
-                    console.log(errorC(e))
-                }
+                    }).catch(err => console.log(errorC(err.stack)))
             })
             //Command Logging in Guilds
             if (msg.channel.guild) console.log(guildC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmd.name) + " was used by " + userC(msg.author.username));
