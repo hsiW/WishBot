@@ -150,7 +150,7 @@ function toggleSetting(guild, settingChange, message, channel) {
                     if (message) { //If theres a message
                         serverSettings[settingChange] = message; //Sets the welcom/leavee message as the passed message variable
                         toggled = true;
-                        usageChannel = channel.id; //Sets the usagechannel as the channel in which the command is used
+                        usageChannel = channel; //Sets the usagechannel as the channel in which the command is used
                     } else delete serverSettings[settingChange]; //Disables welcome/leave message
                 }
                 //Saves to guild passing the passing the new usagechannel if applicable and the new server settings 
