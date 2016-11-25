@@ -4,7 +4,7 @@ module.exports = class Command {
     constructor(name, type, settings) {
         this.name = name; //Command Name
         this.type = type; //Comand Type
-        this.usage = settings.usage || 'No Usage'; //Command Usage for in the help message
+        this.usage = settings.usage || 'No Usage Currently Set.'; //Command Usage for in the help message
         this.currentCooldown = {}; //currentlyOnCooldown time for use in coolDown Check
         this.execTimes = 0; //# of Execution times since startup
         this.run = settings.process; //The Function of the command
