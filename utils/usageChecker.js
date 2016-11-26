@@ -48,7 +48,7 @@ exports.checkInactivity = bot => {
         });
         bot.guilds.forEach(guild => {
             if (!usageCheck.hasOwnProperty(guild.id)) usageCheck[guild.id] = now; //If not in usageCheck add to it with the last used value as now
-            else if ((now - usageCheck[guild.id]) >= 6.048e+8) inactiveGuilds.push(guild.id); //If last used time is greator than 2 weeks ago add to inactiveGuilds array
+            else if ((now - usageCheck[guild.id]) >= 1.21e+9) inactiveGuilds.push(guild.id); //If last used time is greator than 2 weeks ago add to inactiveGuilds array
         })
         if (inactiveGuilds.length > 0) { //If theres inactive guilds resolve as well as updating file
             usageUpdated = true;
