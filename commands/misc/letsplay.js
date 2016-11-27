@@ -4,6 +4,7 @@ module.exports = {
     cooldown: 25,
     process: (msg, args) => {
         return new Promise(resolve => {
+            //If args sent use those as the game otherwise just have it be 'a game'
             args = args ? args : "a game";
             if (msg.channel.permissionsOf(msg.author.id).has('mentionEveryone')) resolve({
                 message: `🎮 @everyone, **${msg.author.username}** would like to play ${args}! 🎮`,
