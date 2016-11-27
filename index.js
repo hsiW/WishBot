@@ -23,7 +23,6 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
         maxShards: 8, //Set to lower if hosting yourself
         autoReconnect: true,
         disableEveryone: true,
-        seedVoiceConnections: true,
         disableEvents: {
             TYPING_START: true,
             GUILD_EMOJI_UPDATE: true,
