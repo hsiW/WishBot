@@ -1,5 +1,7 @@
 const Eris = require('eris'), //The bot's api library
-    chalk = require('chalk'), //Used to make the console have pretty colours
+    colour = new(require('chalk')).constructor({ //Used to make the console have pretty colours
+        enabled: true //This isn't normally needed but PM2 doesn't work with chalk unless I do this
+    }),
     fs = require('fs'), //For reading/writing to a file
     axios = require('axios'), //HTTP client for requests to and from websites
     options = require('./options/options.json'),
@@ -8,10 +10,6 @@ const Eris = require('eris'), //The bot's api library
     database = require('./utils/database.js'),
     processCmd = require('./utils/commandHandler.js'),
     usageChecker = require('./utils/usageChecker.js'),
-    //This isn't normally needed but PM2 doesn't work with chalk unless I do this
-    colour = new chalk.constructor({
-        enabled: true
-    }),
     //Unflipped tables for use with the auto-table-unfipper
     unflippedTables = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"];
 
@@ -20,7 +18,7 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 8, //Set to lower if hosting yourself
+        maxShards: 8, //Set to lower if hosting yourself as 8 is overkill in most cases
         autoReconnect: true,
         disableEveryone: true,
         disableEvents: {
