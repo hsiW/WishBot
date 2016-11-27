@@ -5,6 +5,9 @@ module.exports = {
     dm: false,
     delete: false,
     togglable: false,
+    permissions: {
+        'manageGuild': true
+    },
     cooldown: 25,
     process: (msg, args) => {
         return new Promise(resolve => {

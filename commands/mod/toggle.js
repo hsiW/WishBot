@@ -4,6 +4,9 @@ module.exports = {
     usage: '**Toggle commands** on/off. **Not all** commands are togglable. Check their individual **help messages for more info**.\n\n`toggle [command]`',
     dm: false,
     togglable: false,
+    permissions: {
+        'manageGuild': true
+    },
     cooldown: 5,
     process: (msg, args) => {
         return new Promise(resolve => {

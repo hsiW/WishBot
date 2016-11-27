@@ -20,6 +20,9 @@ setting welcome/leave [message] - Sets welcome/leave to 'message'\``,
     dm: false,
     delete: false,
     togglable: false,
+    permissions: {
+        'manageGuild': true
+    },
     cooldown: 5,
     process: (msg, args) => {
         return new Promise(resolve => {

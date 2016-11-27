@@ -5,6 +5,9 @@ module.exports = {
     aliases: ['cmute'],
     dm: false,
     togglable: false,
+    permissions: {
+        'manageGuild': true
+    },
     cooldown: 5,
     process: msg => {
         return new Promise(resolve => {
