@@ -15,7 +15,7 @@ const options = require("./../options/options.json"),
 
 //Covert string to having just first character uppercase and the rest lowercase
 exports.toTitleCase = str => {
-    //Finds words and replaces the word with a title case word, doesn't matter what it was previously(title case is the first letter is uppercase and rest lowercase)
+    //Finds words and replaces the word with a title case word, doesn't matter what it was previously(title case is the first letter of each word is uppercase and rest lowercase)
     return str.replace(/\w\S*/g, word => {
         return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
     });
@@ -23,8 +23,8 @@ exports.toTitleCase = str => {
 
 exports.getName = (msg, name) => {
     //Creates name regex to search by
-    let nameRegex = new RegExp(name, "i");
-    //If not in a guild make the msg.user the msg.author(msg.user doesn't normally exit but it helpsme do some commands)
+    let nameRegex = new RegExp(escapeRegExp(name), "i");
+    //If not in a guild make the msg.user the msg.author(msg.user doesn't normally exit but it helps me do some commands easier)
     if (!msg.channel.guild) {
         msg.user = msg.author;
         return msg;
@@ -32,6 +32,11 @@ exports.getName = (msg, name) => {
     //Check to see if you're able to find the user by nickname or username and return the object if found, if not return the author's member object
     else return msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) ? msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) : msg.channel.guild.members.get(msg.author.id);
 }
+
+function escapeRegExp(string) { //Used to escape regex and prevent errors
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+exports.escapeRegExp = escapeRegExp;
 
 //Thing to sort objects (converts object to array, sorts array then reconverts to object)
 exports.sortObj = obj => {
