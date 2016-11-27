@@ -7,10 +7,9 @@ module.exports = (msg, args, cmd, bot) => {
     else if (cmd.type === "admin" && admins.indexOf(msg.author.id) === -1) return;
     else {
         //Check if the used location passes the private check or if it passes the DM check to prevent some commands from being used in unintended locations
-        if (cmd.privateCheck(msg) || (!cmd.dm && !msg.channel.guild)) return;
+        if (cmd.privateCheck(msg) || (!msg.channel.guild && !cmd.dm) || (msg.channel.guild && !cmd.permissionsCheck(msg))) return;
         //Cooldown check, admins ignore cooldowns
-        else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id))
-            bot.createMessage(msg.channel.id, `\`${cmd.name}\` is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
+        else if (!(admins.indexOf(msg.author.id) > -1) && cmd.cooldownCheck(msg.author.id)) bot.createMessage(msg.channel.id, `\`${cmd.name}\` is currently on cooldown for ${cmd.cooldownTime(msg.author.id).toFixed(1)}s`);
         //Process the command
         else {
             //Execute the command

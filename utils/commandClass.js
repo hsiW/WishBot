@@ -14,6 +14,7 @@ module.exports = class Command {
         this.togglable = !(settings.togglable === false); //Wheather the command is toggable or not with the toggle command(true by default)
         this.aliases = settings.aliases || null //Array of aliases the commmand has(none by default)
         this.privateGuild = settings.privateGuild || null; //Array of guilds the command is resticted to(no restriction by default)
+        this.permissions = settings.permissions || {};
     }
     //The template help message which is used in `help [cmdName]`
     get help() {
@@ -79,5 +80,21 @@ ${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").joi
             return false;
         else //If all else fails return true
             return true;
+    }
+
+    //Used to check if the user has the correct permissions for the command if it has any additonal permissions
+    permissionsCheck(msg) {
+        var hasPermssion = true,
+            permissionKeys = Object.keys(this.permissions);
+        if (permissionKeys.length > 0) {
+            var userPermissions = msg.channel.permissionsOf(msg.author.id).json;
+            for (var key of permissionKeys) {
+                if (this.permissions[key] !== userPermissions[key]) {
+                    hasPermssion = false;
+                    break;
+                }
+            }
+        }
+        return hasPermssion;
     }
 }

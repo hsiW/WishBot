@@ -11,6 +11,12 @@ module.exports = {
     delete: false, //If the command text should be deleted on use(the text used to invoke the command)
     togglable: false, //If the command can be toggled on or off with the toggle command
     privateGuild: ['81384788765712384'], //Array of server id's which the command is restricted to
+    //Additonal permissons that are required or not must not have for the command to work
+    //Exact naming can be found https://abal.moe/Eris/docs/reference
+    permissions: {
+        'manageGuild': true,
+        'administrator': false
+    },
     cooldown: 5, //Cooldown for the command(in seconds)
     //The message object, the message arguments(command suffix) and the bot object can be passed
     process: (msg, args, bot) => { 
