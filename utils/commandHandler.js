@@ -3,7 +3,7 @@ const admins = require('./../options/admins.json'), //List of Admin ID's which o
 
 module.exports = (msg, args, cmd, bot) => {
     //Checks for Admin command types
-    if (cmd.type === "admin" && admins.indexOf(msg.author.id) === -1) return;
+    if (cmd.type === "admin" && !admins.includes(msg.author.id)) return;
     else {
         //Check if the used location passes the private check or if it passes the DM check to prevent some commands from being used in unintended locations
         if (cmd.privateCheck(msg) || (!msg.channel.guild && !cmd.dm) || (msg.channel.guild && !cmd.permissionsCheck(msg) && !admins.inludes(msg.author.id))) return;
