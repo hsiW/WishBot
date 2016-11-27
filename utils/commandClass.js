@@ -23,7 +23,7 @@ __**Command Info for:**__ \`${this.name}\`
 
 ${this.usage}
 
-${this.aliases !== null ? '**Aliases:** '+(this.aliases.map(a=> "\`"+a+"\`").join(', ') +'\n') : ''}**Cooldown:** \`${this.cooldown}s\` | **Delete on Use:** \`${this.delete}\` | **DM:** \`${this.dm}\` | **Uses:** \`${this.execTimes}\``;
+${this.permissions != {} ? '**Permissions:**' + Object.keys(this.permissions).map(p => "\`"+p+"\`").join(', ') +'\n' : ''}${this.aliases !== null ? '**Aliases:** ' + this.aliases.map(a => "\`"+a+"\`").join(', ') +'\n' : ''}**Cooldown:** \`${this.cooldown}s\` | **Delete on Use:** \`${this.delete}\` | **DM:** \`${this.dm}\` | **Uses:** \`${this.execTimes}\``;
     }
 
     //Function to get the current cooldown time for the user(is used when a command is on cooldown to show the time left til off cooldown)
