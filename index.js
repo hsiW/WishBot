@@ -16,7 +16,7 @@ const Eris = require('eris'), //The bot's api library
     unflippedTables = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"];
 
 let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot pulls from to link to in the Streaming Status
-    //Bot Constructor Creation check https://abal.moe/Eris/Client for more info
+    //Bot Constructor Creation check https://abal.moe/Eris/docs/Client for more info
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
