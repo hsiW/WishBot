@@ -89,7 +89,7 @@ function toggleCommand(guild, command) {
             else {
                 let toggled = true, //Set to false if something toggled to false otherwise otherwise
                     disabled = JSON.parse(result[0].disabled_commands);
-                if (disabled.disabled_commands !== undefined) { //If disabled commands exists
+                if (disabled !== undefined) { //If disabled commands exists
                     //If command already disabled re-enable it
                     if (disabled.hasOwnProperty(command)) delete disabled[command];
                     else {
