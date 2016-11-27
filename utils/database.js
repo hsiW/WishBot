@@ -71,7 +71,7 @@ exports.unmuteChannel = channel => {
 
 //Check to see if the channel is currently being ignored(if its in the channel_ignores database table)
 exports.checkChannel = channel => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         pool.query('SELECT * FROM channel_ignores WHERE channel_id = ' + channel, (err, result) => {
             if (err || result.length === 0) resolve(); //Resolve if error or if no result returned(not ignored)
             else reject(); //Channel muted so reject
