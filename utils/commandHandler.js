@@ -1,6 +1,5 @@
 const admins = require('./../options/admins.json'), //List of Admin ID's which override the mod permissions check as well as allow use of admin commands
-    usageChecker = require('./../utils/usageChecker.js'),
-    utils = require('./utils.js');
+    usageChecker = require('./../utils/usageChecker.js');
 
 module.exports = (msg, args, cmd, bot) => {
     //Checks for Mod and Admin command types
@@ -15,12 +14,14 @@ module.exports = (msg, args, cmd, bot) => {
         else {
             //Execute the command
             cmd.exec(msg, args, bot)
-            //Command Logging in Guilds
-            if (msg.channel.guild) console.log(guildC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmd.name) + " was used by " + userC(msg.author.username));
+            if (msg.channel.guild) {
+                //Command Logging in Guilds
+                console.log(guildC("@" + msg.channel.guild.name + ":") + channelC(" #" + msg.channel.name) + ": " + warningC(cmd.name) + " was used by " + userC(msg.author.username));
+                //Updates the timestamp for the guild to mark it as active
+                usageChecker.updateTimestamp(msg.channel.guild);
+            }
             //Comand Logging in PM's
             else console.log(guildC("@Private Message: ") + warningC(cmd.name) + " was used by " + userC(msg.author.username));
         }
-        //Updates the timestamp for the guild to mark it as active
-        usageChecker.updateTimestamp(msg.channel.guild);
     }
 }
