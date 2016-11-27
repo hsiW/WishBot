@@ -5,11 +5,10 @@ module.exports = {
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             //Gets Messages from the changelog channel in the Yuki Server and returns the most recent changelog message
-            bot.getMessages('143904176613752832', 1).then(message => {
-                resolve({
-                    message: message[0].content
-                });
-            })
-        });
+            var channel = bot.getChannel('143904176613752832')
+            channel.getMessage(channel.lastMessageID).then(message => resolve({
+                message: message.content
+            }))
+        })
     }
 }
