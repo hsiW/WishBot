@@ -19,7 +19,7 @@ module.exports = {
                 for (let command in commands) {
                     if (commands[command].dm === false && !msg.channel.guild) continue; //Skip command if cannot be used in DM's
                     if (commands[command].type === 'admin' && !admins.includes(msg.author.id)) continue; //Skip command if its an admin command and the user isn't an admin
-                    if (commands[command].type === 'mod' && !((msg.channel.permissionsOf(msg.author.id).has('manageGuild')) || admins.includes(msg.author.id))) continue; //Skip mod command if user isn't a mod(has mangeGuild permission)
+                    if (!commands[command].permissionsCheck(msg) && !admins.includes(msg.author.id)) continue; //Skip mod command if user isn't a mod(has mangeGuild permission)
                     if (!help.hasOwnProperty(commands[command].type)) help[commands[command].type] = []; //If the help object doesn't have the command type property already add it
                     if (!commands[command].privateCheck(msg)) help[commands[command].type].push(command); //If the command passes returns false for the private check add to help object
                 }
