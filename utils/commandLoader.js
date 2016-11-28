@@ -1,5 +1,6 @@
 const fs = require('fs'), //For reading/writing to/from files
-    Command = require('./commandClass.js'); //The command class
+    Command = require('./commandClass.js'), //The command class
+    reload = require('require-reload')(require);
 
 //Reads directory of commands assigning the command name as the file name(exluding the file extension) and the command type based on the folder the command was loaded from
 exports.load = function() {
@@ -21,7 +22,7 @@ exports.load = function() {
                                 //Assigning Command Files to the Global Command Object
                                 //Try to load command and if theres an error log the file name as well as the error stack
                                 try {
-                                    commands[name.replace('.js', '')] = new Command(name.replace('.js', ''), folder, require(`${__dirname}/../commands/${folder}/${name}`))
+                                    commands[name.replace('.js', '')] = new Command(name.replace('.js', ''), folder, reload(`${__dirname}/../commands/${folder}/${name}`))
                                 } catch (e) {
                                     console.log(errorC(name + ' - ' + e.stack))
                                 }

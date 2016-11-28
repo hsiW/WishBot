@@ -199,10 +199,12 @@ function postGuildCount() {
 //Hot Reload ALl Modules
 function reloadModules(msg) {
     try {
-        //Delete Global Command Objects from Cache
-        delete commands;
-        delete commandAliases;
-        commandHandler = reload.emptyCache('./utils/commandHandler.js');
+        utils = reload('./utils/utils.js');
+        database = reload('./utils/database.js');
+        options = reload('./options/options.json');
+        processCmd = reload('./utils/commandHandler.js');
+        usageChecker = reload('./utils/usageChecker.js');
+        commandHandler = reload('./utils/commandHandler.js');
         commandLoader.load().then(() => {
             console.log(botC('@' + bot.user.username + ': ') + errorC('Successfully Reloaded All Modules'));
             msg.channel.createMessage('Successfully Reloaded All Modules').then(message => utils.messageDelete(message))
@@ -239,9 +241,9 @@ setInterval(() => {
 bot.on("error", err => utils.fileLog(err)) //Logs error to file and console
 
 //Bot Warn Event(Outputs issues that aren't major)
-bot.on("warn", (warn, id) => {
+/*bot.on("warn", (warn, id) => {
     console.log(warningC(warn, id));
-})
+})*/
 
 //Debug event only used to find errors and usually disabled
 //bot.on("debug", console.log)
