@@ -18,7 +18,7 @@ let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot
     bot = new Eris(options.token, {
         getAllUsers: true,
         messageLimit: 0,
-        maxShards: 8, //Set to lower if hosting yourself as 8 is overkill in most cases
+        maxShards: 8, //Set to lower if hosting yourself as 8 is overkill in most cases(its even overkill for Yuki-chan now)
         autoReconnect: true,
         disableEveryone: true,
         disableEvents: {
@@ -49,9 +49,9 @@ bot.on("ready", () => {
     //Sets the status's of every shard seperately
     utils.setRandomStatus(bot, urls)
     //This stuff below is sent to the console when the bot is ready
-    console.log(botC(bot.user.username + " is now Ready."));
-    console.log('Current # of Commands Loaded: ' + warningC(Object.keys(commands).length))
-    console.log("Users: " + userC(bot.users.size) + " | Channels: " + channelC(Object.keys(bot.channelGuildMap).length) + " | Servers: " + guildC(bot.guilds.size))
+    console.log(`${botC(bot.user.username + ' is now Ready with')} ${errorC(bot.shards.size)} ${botC('Shards.')}`);
+    console.log(`Current # of Commands Loaded: ${warningC(Object.keys(commands).length)}`)
+    console.log(`Users: ${userC(bot.users.size)} | Channels: ${channelC(Object.keys(bot.channelGuildMap).length)} | Guilds: ${guildC(bot.guilds.size)}`)
     //Run inactivity checker and output the number of inactive servers
     usageChecker.checkInactivity(bot).then(response => console.log(botC(response))).catch(err => console.log(errorC(err)));
 })
@@ -105,7 +105,7 @@ function evalInput(msg, args) {
         msg.channel.createMessage("```" + e + "```");
     }
     //If result isn't undefined and it isn't an object return to channel
-    if (result && typeof result !== "object") msg.channel.createMessage(result);
+    if (result && typeof result !== 'object') msg.channel.createMessage(result);
     console.log(result)
 }
 
@@ -134,7 +134,7 @@ bot.on("guildMemberRemove", (guild, member) => {
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
     if (response.channel === '' || (response.channel !== '' && !bot.guilds.get(guild.id).channels.get(response.channel).permissionsOf(bot.user.id).has('sendMessages'))) return;
-    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
+    //bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
 
 //Guild Joined Event
@@ -159,7 +159,7 @@ bot.on('guildDelete', guild => {
 
 //Load Commands then Connect(Logs any errors to console and file)
 commandLoader.load().then(() => {
-    bot.connect().then(console.log(warningC("Connecting with Token")))
+    bot.connect().then(console.log(warningC('Connecting with Token')))
 }).catch(err => utils.fileLog(err));
 
 //Posts Guild Count to Discord Bots and Carbonitex
@@ -169,7 +169,7 @@ function postGuildCount() {
         //Post Guild Count to Discord Bots and if error log to file and console
         axios({
             method: 'post',
-            url: "https://bots.discord.pw/api/bots/" + bot.user.id + "/stats",
+            url: `https://bots.discord.pw/api/bots/${bot.user.id}/stats`,
             headers: {
                 "Authorization": options.bot_key,
                 "content-type": "application/json"
@@ -229,18 +229,18 @@ bot.on("warn", (warn, id) => {
 
 //Shard Resume Event
 bot.on('shardResume', id => {
-    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "RECONNECTED"));
+    console.log(`${botC("@" + bot.user.username)} - ${warningC("SHARD #" + id + "RECONNECTED")}`);
 })
 
 //Shard Disconnect Event
 bot.on("shardDisconnect", (err, id) => {
-    console.log(botC("@" + bot.user.username) + " - " + warningC("SHARD #" + id + "DISCONNECTED"));
+    console.log(`${botC("@" + bot.user.username)} - ${warningC("SHARD #" + id + "DISCONNECTED")}`);
     utils.fileLog(err); //Logs reason/error to file and console
 })
 
 //Whole Bot Disconnect Event
 bot.on("disconnect", err => {
-    console.log(botC("@" + bot.user.username) + " - " + errorC("DISCONNECTED"));
+    console.log(`${botC("@" + bot.user.username)} - ${errorC("DISCONNECTED")}`);
     utils.fileLog(err); //Logs Disconnect reason/error to file and console
     throw 'Bot Disconnected'
 })
