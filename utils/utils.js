@@ -1,5 +1,4 @@
-const options = require("./../options/options.json"),
-    playing = require('./../lists/playing.json'), //List of playing status's for the bot to use
+const playing = require('./../lists/playing.json'), //List of playing status's for the bot to use
     winston = require('winston'), //Used for logging to file
     fileLog = new(winston.Logger)({ //Creates log transport to log to error.log file
         transports: [
