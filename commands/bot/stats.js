@@ -16,7 +16,7 @@ module.exports = {
                 message: `
 \`\`\`markdown
 # ${bot.user.username} Statistics:
-[Bot Uptime](${~~(bot.uptime / 864000000)}d : ${~~((bot.uptime / 3600000) % 24)}h : ${~~((bot.uptime / 60000) % 60)}m : ${~~((bot.uptime / 1000) % 60)}s)
+[Bot Uptime](${~~(bot.uptime / 86400000)}d : ${~~((bot.uptime / 3600000) % 24)}h : ${~~((bot.uptime / 60000) % 60)}m : ${~~((bot.uptime / 1000) % 60)}s)
 [Process Uptime](${~~(process.uptime() / 86400)}d : ${~~((process.uptime() / 3600) % 24)}h : ${~~((process.uptime() / 60) % 60)}m : ${~~((process.uptime()) % 60)}s)
 [Server Uptime](${~~(serverUptime / 86400)}d : ${~~((serverUptime / 3600) % 24)}h : ${~~((serverUptime / 60) % 60)}m : ${~~((serverUptime) % 60)}s)
 [Memory Usage](RSS: ${(process.memoryUsage().rss / 1024 / 1000).toFixed(2)}MB | Heap Used: ${(process.memoryUsage().heapUsed / 1024 / 1000).toFixed(2)}MB)
