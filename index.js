@@ -4,16 +4,17 @@ const Eris = require('eris'), //The bot's api library
     }),
     fs = require('fs'), //For reading/writing to a file
     axios = require('axios'), //HTTP client for requests to and from websites
-    options = require('./options/options.json'),
-    commandLoader = require('./utils/commandLoader.js'),
-    utils = require('./utils/utils.js'),
-    database = require('./utils/database.js'),
-    processCmd = require('./utils/commandHandler.js'),
-    usageChecker = require('./utils/usageChecker.js'),
-    //Unflipped tables for use with the auto-table-unfipper
-    unflippedTables = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"];
+    reload = require('require-reload')(require);
 
-let urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot pulls from to link to in the Streaming Status
+var options = reload('./options/options.json'),
+    commandLoader = reload('./utils/commandLoader.js'),
+    utils = reload('./utils/utils.js'),
+    database = reload('./utils/database.js'),
+    processCmd = reload('./utils/commandHandler.js'),
+    usageChecker = reload('./utils/usageChecker.js'),
+    //Unflipped tables for use with the auto-table-unfipper
+    unflippedTables = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
+    urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot pulls from to link to in the Streaming Status
     //Bot Constructor Creation check https://abal.moe/Eris/docs/Client for more info
     bot = new Eris(options.token, {
         getAllUsers: true,
@@ -69,6 +70,8 @@ bot.on("messageCreate", msg => {
             evalInput(msg, msg.content.split(" ").slice(1).join(' '));
             return;
         }
+        //Hot reload all possible files
+        if (msg.content.startsWith(options.prefix + 'reload')) reloadModules(msg);
         //If stuff that isn't a command is used in a PM treat it as using cleverbot by adding the correct prefix as well as the 'chat' command text to the message
         if (!msg.channel.guild && !msg.content.startsWith(options.prefix)) msg.content = msgPrefix + "chat " + msg.content;
         //If used in a Guild
@@ -134,7 +137,7 @@ bot.on("guildMemberRemove", (guild, member) => {
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
     if (response.channel === '' || (response.channel !== '' && !bot.guilds.get(guild.id).channels.get(response.channel).permissionsOf(bot.user.id).has('sendMessages'))) return;
-    //bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
+    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
 }
 
 //Guild Joined Event
@@ -190,6 +193,27 @@ function postGuildCount() {
                 "servercount": bot.guilds.size
             }
         }).catch(err => console.log(errorC(err)));
+    }
+}
+
+//Hot Reload ALl Modules
+function reloadModules(msg) {
+    try {
+        //Delete Global Command Objects from Cache
+        delete commands;
+        delete commandAliases;
+        commandHandler = reload.emptyCache('./utils/commandHandler.js');
+        options = emptyCache('./options/options.json');
+        utils = emptyCache('./utils/utils.js');
+        database = emptyCache('./utils/database.js');
+        processCmd = emptyCache('./utils/commandHandler.js');
+        usageChecker = emptyCache('./utils/usageChecker.js');
+        commandLoader.load().then(() => {
+            console.log(botC('@' + bot.user.username + ': ') + errorC('Successfully Reloaded All Modules'));
+            msg.createMessage('Successfully Reloaded All Modules').then(message => utils.messageDelete(message))
+        });
+    } catch (e) {
+        console.log(errorC('Error Reloading Modules: ' + e))
     }
 }
 
