@@ -51,8 +51,8 @@ ${this.aliases !== null ? '**Aliases:** ' + this.aliases.map(a => "\`"+a+"\`").j
                 }, response.upload).then(message => {
                     if (response.edit) message.edit(response.edit(message)) //Edit sent message 
                     if (response.delete) utils.messageDelete(message); //Check for delete sent message
-                })
-            }).catch(err => utils.fileLog(err)); //Log to console and file if errored
+                }).catch(err => utils.fileLog(err)); //Log to console and file if errored
+            })
         })
     }
 
