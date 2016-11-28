@@ -54,8 +54,9 @@ ${this.aliases !== null ? '**Aliases:** ' + this.aliases.map(a => "\`"+a+"\`").j
     //Cooldown Check(returns true if the command shouldn't be processed)
     cooldownCheck(user) {
         //If the user has a currentCooldown
-        if (this.currentCooldown.hasOwnProperty(user)) //If the user last used the command within the cooldown period return true
+        if (this.currentCooldown.hasOwnProperty(user))
             return true;
+        //Set the currentCooldown to now and remove from object when cooldown period is over
         else {
             this.currentCooldown[user] = Date.now();
             setTimeout(() => {
