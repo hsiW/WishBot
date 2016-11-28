@@ -66,7 +66,7 @@ bot.on("messageCreate", msg => {
         let msgPrefix = msg.channel.guild && database.getPrefix(msg.channel.guild.id) !== undefined ? database.getPrefix(msg.channel.guild.id) : options.prefix;
         //Use Eval on the message if it starts with sudo and used by Mei
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") {
-            evalInput(msg, msg.content.substring((msg.content.split(" ")[0].substring(1)).length + 2));
+            evalInput(msg, msg.content.split(" ").slice(1).join(' '));
             return;
         }
         //If stuff that isn't a command is used in a PM treat it as using cleverbot by adding the correct prefix as well as the 'chat' command text to the message
@@ -76,8 +76,8 @@ bot.on("messageCreate", msg => {
             //If bot cannot send messages in the current channel
             if (!msg.channel.permissionsOf(bot.user.id).has('sendMessages')) return;
             //If Message is a tableFlip and the Guild has tableflip(tableunflip) on return an unflipped table
-            if (msg.content === "(╯°□°）╯︵ ┻━┻") database.checkSetting(msg.channel.guild.id, 'tableflip').then(() => bot.createMessage(msg.channel.id, unflippedTables[~~(Math.random() * (unflippedTables.length))])).catch(err => utils.fileLog(err))
-                //Check if message starts with a bot user mention and if so replace with the correct prefix and the 'chat' command text
+            if (msg.content === "(╯°□°）╯︵ ┻━┻") database.checkSetting(msg.channel.guild.id, 'tableflip').then(() => bot.createMessage(msg.channel.id, unflippedTables[~~(Math.random() * (unflippedTables.length))])).catch(err => utils.fileLog(err));
+            //Check if message starts with a bot user mention and if so replace with the correct prefix and the 'chat' command text
             if (msg.content.replace(/<@!/, "<@").startsWith(bot.user.mention)) msg.content = msg.content.replace(/<@!/g, "<@").replace(bot.user.mention, msgPrefix + "chat");
             //Prefix command override so that prefix can be used with the default command prefix to prevent forgotten prefixes
             if ((msg.content.startsWith(options.prefix + 'setprefix') || msg.content.startsWith(options.prefix + 'checkprefix')) && msgPrefix !== options.prefix) msg.content = msg.content.replace(options.prefix, msgPrefix)
@@ -86,7 +86,7 @@ bot.on("messageCreate", msg => {
         if (msg.content.startsWith(msgPrefix)) {
             let formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length), //Format message to remove command prefix
                 cmdTxt = formatedMsg.split(" ")[0].toLowerCase(), //Get command from the formated message
-                args = formatedMsg.substring((formatedMsg.split(" ")[0]).length + 1); //Get arguments from the formated message
+                args = formatedMsg.split(' ').slice(1).join(' '); //Get arguments from the formated message
             if (commandAliases.hasOwnProperty(cmdTxt)) cmdTxt = commandAliases[cmdTxt]; //If the cmdTxt is an alias of the command
             if (cmdTxt === 'channelmute') processCmd(msg, args, commands[cmdTxt], bot); //Override channelCheck if cmd is channelmute to unmute a muted channel
             //Check if a Command was used and runs the corresponding code depending on if it was used in a Guild or not, if in guild checks for muted channel and disabled command
