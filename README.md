@@ -11,7 +11,7 @@ module.exports = {
     delete: false, //If the command text should be deleted on use(the text used to invoke the command)
     togglable: false, //If the command can be toggled on or off with the toggle command
     privateGuild: ['81384788765712384'], //Array of server id's which the command is restricted to
-    //Additonal permissons that are required, always use true or it will fail
+    //Additonal permissons that are required
     //Exact naming can be found https://abal.moe/Eris/docs/reference
     permissions: {
         'manageGuild': true
