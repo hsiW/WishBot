@@ -203,11 +203,11 @@ function reloadModules(msg) {
         delete commands;
         delete commandAliases;
         commandHandler = reload.emptyCache('./utils/commandHandler.js');
-        options = emptyCache('./options/options.json');
-        utils = emptyCache('./utils/utils.js');
-        database = emptyCache('./utils/database.js');
-        processCmd = emptyCache('./utils/commandHandler.js');
-        usageChecker = emptyCache('./utils/usageChecker.js');
+        options = reload.emptyCache('./options/options.json');
+        utils = reload.emptyCache('./utils/utils.js');
+        database = reload.emptyCache('./utils/database.js');
+        processCmd = reload.emptyCache('./utils/commandHandler.js');
+        usageChecker = reload.emptyCache('./utils/usageChecker.js');
         commandLoader.load().then(() => {
             console.log(botC('@' + bot.user.username + ': ') + errorC('Successfully Reloaded All Modules'));
             msg.createMessage('Successfully Reloaded All Modules').then(message => utils.messageDelete(message))
