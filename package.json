@@ -30,7 +30,6 @@
   },
   "optionalDependencies": {
     "dice-expression-evaluator": "^0.1.2",
-    "giphy-api-without-credentials": "^1.1.0",
     "mathjs": "^3.7.0",
     "moment": "^2.15.2",
     "moment-duration-format": "^1.3.0",
