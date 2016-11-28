@@ -82,39 +82,6 @@ exports.fileLog = err => {
     fileLog.error(err)
 }
 
-//Gets a image from the passed imgur apiURL
-exports.get_image = apiURL => {
-    return new Promise(resolve => {
-        //Get the image data from the imgur api using the imgur_id provided in options
-        axios.get(apiURL, {
-            headers: {
-                'Authorization': 'Client-ID ' + options.imgur_id
-            }
-        }).then(response => {
-            //If data isn't nothing search for a SFW image and resolve it
-            if (response.data.data.length !== 0) returnSFWImage(response.data.data).then(res => resolve(res))
-                //If nothing resolve null
-            else resolve(null)
-        })
-    })
-}
-
-function returnSFWImage(data) {
-    return new Promise(resolve => {
-        //While loop on data
-        while (data.length > 0) {
-            //Gets a random index to check from
-            let index = ~~ (Math.random() * data.length);
-            //If that image isn't nsfw and not an album resolve the image data object
-            if (!data[index].nsfw && !data[index].is_album) resolve(data[index]);
-            //If NSFW or an album remove that image data object from the array and return to start
-            data.splice(index, 1);
-        }
-        //If no images found resolve null
-        resolve(null);
-    });
-}
-
 //Set random bot status(includes random game as well as random streaming url)
 exports.setRandomStatus = (bot, urls) => {
     bot.shards.forEach(shard => {

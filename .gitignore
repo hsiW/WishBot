@@ -6,6 +6,7 @@ commands/search/
 commands/tags/
 commands/utilities/
 commands/wordplay/
+utils/imageUtils.js
 avatars/
 database/
 node_modules/
