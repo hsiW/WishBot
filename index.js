@@ -119,7 +119,7 @@ bot.on("guildMemberAdd", (guild, member) => {
         //Checks to see if the guild has a welcome set
         database.checkSetting(guild.id, 'welcome').then(response => {
             sendGuildMessage(response, guild, member);
-        }).catch(err => utils.fileLog(err));
+        }).catch(err => console.log(errorC(err)));
     }
 })
 
@@ -130,14 +130,14 @@ bot.on("guildMemberRemove", (guild, member) => {
         //Checks to see if the guild has a leave set
         database.checkSetting(guild.id, 'leave').then(response => {
             sendGuildMessage(response, guild, member);
-        }).catch(err => utils.fileLog(err))
+        }).catch(err => console.log(errorC(err)))
     }
 })
 
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
     if (response.channel === '' || (response.channel !== '' && !bot.guilds.get(guild.id).channels.get(response.channel).permissionsOf(bot.user.id).has('sendMessages'))) return;
-    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention));
+    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention)).catch(err => console.log(errorC('err')));
 }
 
 //Guild Joined Event
