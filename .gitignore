@@ -7,6 +7,7 @@ commands/tags/
 commands/utilities/
 commands/wordplay/
 utils/imageUtils.js
+unused/
 avatars/
 database/
 node_modules/
