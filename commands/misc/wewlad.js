@@ -2,8 +2,6 @@ const axios = require('axios');
 
 module.exports = {
     usage: "Returns an **Embeded Wew Lad** to the current channel.",
-    delete: false,
-    cooldown: 5,
     process: () => {
         return new Promise(resolve => {
             //Get the wewlad image from imgur and send it as a file upload

@@ -5,10 +5,10 @@ module.exports = {
     aliases: ['cmute'],
     dm: false,
     togglable: false,
+    delete: true,
     permissions: {
         'manageGuild': true
     },
-    cooldown: 5,
     process: msg => {
         return new Promise(resolve => {
             //Checks to see if the channel currently exists in the database or not(is muted if in database)

@@ -1,7 +1,5 @@
 module.exports = {
     usage: "**Weedle Weedle Weedle Wee**.",
-    delete: false,
-    cooldown: 5,
     process: () => {
     	//Weedle
         return Promise.resolve({

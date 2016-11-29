@@ -4,8 +4,6 @@ const libVersion = require('./../../node_modules/eris/package.json').version, //
 
 module.exports = {
     usage: "Returns **info** about the bot, including a link to the **support server**, a link to the bots **source code** & a link to the bots **documentation**.",
-    delete: false,
-    cooldown: 10,
     process: (msg, args, bot) => {
         //returns basic info about the bot
         return Promise.resolve({

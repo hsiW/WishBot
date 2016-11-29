@@ -1,10 +1,10 @@
 const fs = require('fs'), //For reading/writing to/from files
-    Command = require('./commandClass.js'), //The command class
     reload = require('require-reload')(require);
 
 //Reads directory of commands assigning the command name as the file name(exluding the file extension) and the command type based on the folder the command was loaded from
 exports.load = function() {
     return new Promise((resolve, reject) => {
+        var Command = reload('./commandClass.js'); //The command class
         //Global Command Object in which all commands are loaded into(Can be acessed anywhere in the program)
         commands = {};
         //Global Command Alias object where all command alias objects are loaded into

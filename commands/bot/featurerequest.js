@@ -2,7 +2,6 @@ module.exports = {
     usage: 'Send a **feature request** to the Bot Developer. Requests can have a max length of **1950 characters**. Meme & NSFW requests will be **ignored**.\n\n`featurerequest [feature to request]`',
     aliases: ['suggest'],
     dm: false,
-    delete: false,
     cooldown: 60,
     process: (msg, args, bot) => {
         return new Promise(resolve => {

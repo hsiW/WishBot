@@ -8,9 +8,9 @@ module.exports = class Command {
         this.currentCooldown = {}; //currentlyOnCooldown time for use in coolDown Check
         this.execTimes = 0; //# of Execution times since startup
         this.run = settings.process; //The Function of the command
-        this.delete = !(settings.delete === false); //Setting to delete command on use(true by default)
+        this.delete = settings.delete || false; //Setting to delete command on use(true by default)
         this.dm = !(settings.dm === false); //Setting for command to work in DM's(Private messages)(true by default)
-        this.cooldown = settings.cooldown || 0; //The cooldown for the command
+        this.cooldown = settings.cooldown || 5; //The cooldown for the command
         this.togglable = !(settings.togglable === false); //Wheather the command is toggable or not with the toggle command(true by default)
         this.aliases = settings.aliases || null //Array of aliases the commmand has(none by default)
         this.privateGuild = settings.privateGuild || null; //Array of guilds the command is resticted to(no restriction by default)

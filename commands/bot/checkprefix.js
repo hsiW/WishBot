@@ -5,8 +5,6 @@ module.exports = {
     usage: 'Returns the **Current Prefix** for the Guild. **Overrides** current command prefix and will **always** work with the default prefix.',
     toggable: false,
     dm: false,
-    delete: false,
-    cooldown: 10,
     process: (msg, args) => {
         return new Promise(resolve => {
             //Returns the current prefix for the guild by checking if its in the prefix database and returning the entry if so, otherwise returning the default prefix.

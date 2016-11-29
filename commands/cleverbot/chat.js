@@ -6,8 +6,6 @@ Cleverbot.prepare(() => {}); //Prepares the cleverbot module for use
 module.exports = {
     usage: "**Chat** with the bot using the **Cleverbot API**.\n\n`chat [text]`\n`@BotMention [text]`",
     aliases: ['clever', 'cleverbot', 'talk'],
-    delete: false,
-    cooldown: 5,
     process: msg => {
         return new Promise(resolve => {
             //Cleans message content removing mentions and replacing them with the raw usernames, if no message args text defaults to 'Hi'

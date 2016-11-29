@@ -18,12 +18,10 @@ module.exports = {
 setting welcome/leave [message] - Sets welcome/leave to 'message'\``,
     aliases: ['set'],
     dm: false,
-    delete: false,
     togglable: false,
     permissions: {
         'manageGuild': true
     },
-    cooldown: 5,
     process: (msg, args) => {
         return new Promise(resolve => {
             //If args are tableflip then toggle the tableflip setting

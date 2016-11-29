@@ -1,7 +1,5 @@
 module.exports = {
     usage: '**Pings** this bot, useful for checking if the bots working correctly. **(Not accurate)**',
-    delete: false,
-    cooldown: 5,
     process: msg => {
         return Promise.resolve({
             message: "PONG!", //Sends Pong! on message

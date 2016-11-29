@@ -5,8 +5,6 @@ module.exports = {
     usage: "Returns **info on the user**, can take a **nickname/username/mention** to return the info of that user. **Requires** embedded links in order for this command to display.\n\n`whois [none] or [user]`",
     aliases: ['about'],
     dm: false,
-    delete: false,
-    cooldown: 5,
     process: (msg, args) => {
         return new Promise(resolve => {
             //Get user using either the mention or using the getName function

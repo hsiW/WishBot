@@ -1,6 +1,7 @@
 module.exports = {
     usage: "Tell **everyone** you'd like to **play a game**. May **specify a game** if desired. Uses an **@everyone mention** if the user has permission to do so.\n\n`letsplay [game] or [none]`",
     dm: false,
+    delete: true,
     cooldown: 25,
     process: (msg, args) => {
         return new Promise(resolve => {

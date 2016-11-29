@@ -3,7 +3,6 @@ const Database = require('./../../utils/database.js');
 module.exports = {
     usage: '**Sets the current prefix** to the inputted term. Spaces **cannot** be used. Sending **nothing will revert it** to the default prefix.\n\n`setprefix [new prefix]`',
     dm: false,
-    delete: false,
     togglable: false,
     permissions: {
         'manageGuild': true
