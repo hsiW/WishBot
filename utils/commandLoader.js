@@ -16,7 +16,7 @@ exports.load = function() {
                     fs.readdir(`${__dirname}/../commands/${folder}/`, (error, loaded) => {
                         if (error) reject(`Error reading commands directory: ${error}`);
                         //Skips folder if it is empty
-                        else if (loaded.length < 1) console.log(errorC(folder + ' was empty and has been skipped.'))
+                        else if (loaded.length < 1) console.log(errorC(`${folder} was empty and has been skipped.`))
                         else if (loaded) {
                             for (let name of loaded) {
                                 //Assigning Command Files to the Global Command Object
@@ -24,7 +24,7 @@ exports.load = function() {
                                 try {
                                     commands[name.replace('.js', '')] = new Command(name.replace('.js', ''), folder, reload(`${__dirname}/../commands/${folder}/${name}`))
                                 } catch (e) {
-                                    console.log(errorC(name + ' - ' + e.stack))
+                                    console.log(errorC(`${name} - ${e.stack}`))
                                 }
                             }
                             for (let command in commands) {
