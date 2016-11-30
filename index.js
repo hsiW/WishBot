@@ -88,8 +88,8 @@ bot.on("messageCreate", msg => {
         //If the message stats with the set prefix
         if (msg.content.startsWith(msgPrefix)) {
             let formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length), //Format message to remove command prefix
-                cmdTxt = formatedMsg.split(" ")[0].toLowerCase(), //Get command from the formated message
-                args = formatedMsg.split(' ').slice(1).join(' '); //Get arguments from the formated message
+                cmdTxt = formatedMsg.split(" ")[0].toLowerCase(), //Get command from the formatted message
+                args = formatedMsg.split(' ').slice(1).join(' '); //Get arguments from the formatted message
             if (commandAliases.hasOwnProperty(cmdTxt)) cmdTxt = commandAliases[cmdTxt]; //If the cmdTxt is an alias of the command
             if (cmdTxt === 'channelmute') processCmd(msg, args, commands[cmdTxt], bot); //Override channelCheck if cmd is channelmute to unmute a muted channel
             //Check if a Command was used and runs the corresponding code depending on if it was used in a Guild or not, if in guild checks for muted channel and disabled command
