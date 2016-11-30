@@ -4,6 +4,9 @@ const serverUptime = require('os').uptime(),
 module.exports = {
     usage: "Returns **stats** for the bot. Includes **bot/process/server** uptime, **memory usage**, **# of shards**, **channels/privateChannels/guilds/users** available, & **command usage**. **Basic shard stats** can also be viewed with `stats shards`. **Command usage stats** may be view with `stats usage`.",
     cooldown: 30,
+    permissions: {
+        'manageGuild': true
+    },
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             //Print shard info
