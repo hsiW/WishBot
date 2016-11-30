@@ -1,4 +1,5 @@
 module.exports = {
+    usage: 'Restart the bot if using forever/pm2 otherwise the bot will be shutdown.',
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             resolve({
