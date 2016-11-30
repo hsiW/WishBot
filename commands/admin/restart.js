@@ -5,8 +5,9 @@ module.exports = {
             resolve({
                 message: 'Restarting...'
             })
+            //Disconnect bot then shutdown the process after 1s
             bot.disconnect();
-            setTimeout(function() {
+            setTimeout(() => {
                 console.log("@WishBot - Restarted bot.");
                 process.exit(0);
             }, 1000);
