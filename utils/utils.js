@@ -19,7 +19,8 @@ exports.toTitleCase = str => {
     });
 }
 
-function escapeRegExp(string) { //Used to escape regex and prevent errors
+//Used to escape regex and prevent errors
+function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 exports.escapeRegExp = escapeRegExp;
