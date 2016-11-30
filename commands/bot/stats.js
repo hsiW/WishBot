@@ -2,7 +2,7 @@ const serverUptime = require('os').uptime(),
     toTitleCase = require('./../../utils/utils.js').toTitleCase;
 
 module.exports = {
-    usage: "Returns **stats** for the bot. Includes **bot/process/server** uptime, **memory usage**, **# of shards**, **channels/privateChannels/guilds/users** available, & **command usage**. **Basic shard stats** can also be viewed with `stats shards`.",
+    usage: "Returns **stats** for the bot. Includes **bot/process/server** uptime, **memory usage**, **# of shards**, **channels/privateChannels/guilds/users** available, & **command usage**. **Basic shard stats** can also be viewed with `stats shards`. **Command usage stats** may be view with `stats usage`.",
     cooldown: 30,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
@@ -13,6 +13,23 @@ module.exports = {
 ### Shard Info ### 
 ${bot.shards.map(shard => '[' + shard.id + ']: ' + toTitleCase(shard.status) + ' (' + shard.guildCount + ')').join('\n')}\`\`\` 
             `
+                })
+            } else if (args === 'usage') {
+                //Return Command Usage stats
+                var usage = [];
+                for (command in commands) {
+                    if (commands[command].execTimes !== 0) {
+                        usage.push({
+                            name: command,
+                            usage: commands[command].execTimes
+                        })
+                    }
+                }
+                resolve({
+                    message: `\`\`\`markdown
+### Command Usage ###
+${usage.sort((a,b) => b.usage - a.usage).map(value => "[" + value.name + "]" + "(" + value.usage + ")").join('\n')}\`\`\`
+`
                 })
             } else {
                 //Get the current command usage total by looping through the command object and getting the executeTimes for each command and adding to the commandUsage variable
