@@ -1,4 +1,4 @@
-const UsageChecker = require('./../../utils/usageChecker.js');
+var UsageChecker = require('./../../utils/usageChecker.js');
 
 module.exports = {
     process: (msg, args, bot) => {
