@@ -1,18 +1,28 @@
-const serverUptime = require('os').uptime();
+const serverUptime = require('os').uptime(),
+    toTitleCase = require('./../../utils/utils.js').toTitleCase;
 
 module.exports = {
-    usage: "Returns **stats** for the bot. Includes **bot/process/server** uptime, **memory usage**, **# of shards**, **channels/privateChannels/guilds/users** available, & **command usage**.",
+    usage: "Returns **stats** for the bot. Includes **bot/process/server** uptime, **memory usage**, **# of shards**, **channels/privateChannels/guilds/users** available, & **command usage**. **Basic shard stats** can also be viewed with `stats shards`.",
     cooldown: 30,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
-            //Get the current command usage total by looping through the command object and getting the executeTimes for each command and adding to the commandUsage variable
-            var commandUsage = 0;
-            for (command in commands) {
-                if (commands[command].execTimes !== 0) commandUsage += commands[command].execTimes;
-            }
-            //Bot uptime is done in ms so 1000x more than s like Process and Server uptimes
-            resolve({
-                message: `
+            //Print shard info
+            if (args === 'shards') {
+                resolve({
+                    message: `\`\`\`markdown
+### Shard Info ### 
+${bot.shards.map(shard => '[' + shard.id + ']: ' + toTitleCase(shard.status) + ' (' + shard.guildCount + ')').join('\n')}\`\`\` 
+            `
+                })
+            } else {
+                //Get the current command usage total by looping through the command object and getting the executeTimes for each command and adding to the commandUsage variable
+                var commandUsage = 0;
+                for (command in commands) {
+                    if (commands[command].execTimes !== 0) commandUsage += commands[command].execTimes;
+                }
+                //Bot uptime is done in ms so 1000x more than s like Process and Server uptimes
+                resolve({
+                    message: `
 \`\`\`markdown
 # ${bot.user.username} Statistics:
 [Bot Uptime](${~~(bot.uptime / 86400000)}d : ${~~((bot.uptime / 3600000) % 24)}h : ${~~((bot.uptime / 60000) % 60)}m : ${~~((bot.uptime / 1000) % 60)}s)
@@ -33,7 +43,8 @@ module.exports = {
 [Average](${(commandUsage/(process.uptime() / 60)).toFixed(2)}/min)
 \`\`\`
 `
-            })
+                })
+            }
         });
     }
 }
