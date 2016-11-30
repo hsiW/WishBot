@@ -19,18 +19,6 @@ exports.toTitleCase = str => {
     });
 }
 
-exports.getName = (msg, name) => {
-    //Creates name regex to search by
-    let nameRegex = new RegExp(escapeRegExp(name), "i");
-    //If not in a guild make the msg.user the msg.author(msg.user doesn't normally exit but it helps me do some commands easier)
-    if (!msg.channel.guild) {
-        msg.user = msg.author;
-        return msg;
-    } else if (!name) return msg.channel.guild.members.get(msg.author.id); //If no name passed return the member object of the user
-    //Check to see if you're able to find the user by nickname or username and return the object if found, if not return the author's member object
-    else return msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) ? msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) : msg.channel.guild.members.get(msg.author.id);
-}
-
 function escapeRegExp(string) { //Used to escape regex and prevent errors
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -67,17 +55,30 @@ exports.splitArray = (array, size) => {
     return sets;
 }
 
+//Logs errors to the cconsole as well as the error.log
+exports.fileLog = err => {
+    console.log(errorC(err))
+    fileLog.error(err)
+}
+
+//Try to get a user object from a typed name
+exports.getName = (msg, name) => {
+    //Creates name regex to search by
+    let nameRegex = new RegExp(escapeRegExp(name), "i");
+    //If not in a guild make the msg.user the msg.author(msg.user doesn't normally exit but it helps me do some commands easier)
+    if (!msg.channel.guild) {
+        msg.user = msg.author;
+        return msg;
+    } else if (!name) return msg.channel.guild.members.get(msg.author.id); //If no name passed return the member object of the user
+    //Check to see if you're able to find the user by nickname or username and return the object if found, if not return the author's member object
+    else return msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) ? msg.channel.guild.members.find(member => (member.nick || member.user.username).match(nameRegex)) : msg.channel.guild.members.get(msg.author.id);
+}
+
 //Deletes the passed message after 5000ms
 exports.messageDelete = msg => {
     setTimeout(() => {
         msg.delete();
     }, 5000)
-}
-
-//Logs errors to the cconsole as well as the error.log
-exports.fileLog = err => {
-    console.log(errorC(err))
-    fileLog.error(err)
 }
 
 //Set random bot status(includes random game as well as random streaming url)
