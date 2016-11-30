@@ -1,5 +1,4 @@
 module.exports = {
-    delete: false,
     process: (msg, args, bot) => {
         return new Promise(resolve => {
             if (!args) resolve({
