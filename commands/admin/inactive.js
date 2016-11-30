@@ -3,6 +3,7 @@ var UsageChecker = require('./../../utils/usageChecker.js');
 module.exports = {
     process: (msg, args, bot) => {
         return new Promise(resolve => {
+            //Check inactivity and return the number of active guilds as well as a file with all the server ID's
             if (args === 'get' || args === 'check') {
                 UsageChecker.checkInactivity(bot).then(response => resolve({
                     message: response,
@@ -12,8 +13,9 @@ module.exports = {
                     }
                 }))
             } else {
-                UsageChecker.checkInactivity(bot).catch(err => console.log(warningC(err))).then(UsageChecker.removeInactive(bot).then(success => resolve({
-                    message: success,
+                //Leave Inactive Guilds
+                UsageChecker.checkInactivity(bot).catch(err => console.log(warningC(err))).then(UsageChecker.removeInactive(bot).then(response => resolve({
+                    message: response,
                     delete: true
                 })).catch(err => {
                     console.log(errorC(err))
