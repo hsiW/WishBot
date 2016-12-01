@@ -26,10 +26,10 @@ exports.escapeRegExp = escapeRegExp;
 
 //Thing to sort objects (converts object to array, sorts array then reconverts to object)
 exports.sortObj = obj => {
-    let temp_array = [],
+    var temp_array = [],
         temp_obj = {};
     //Converts Object to array
-    for (let key in obj) {
+    for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
             temp_array.push(key);
         }
@@ -37,7 +37,7 @@ exports.sortObj = obj => {
     //Sorts array
     temp_array.sort();
     //Converts array back to object
-    for (let i = 0; i < temp_array.length; i++) {
+    for (var i = 0; i < temp_array.length; i++) {
         temp_obj[temp_array[i]] = obj[temp_array[i]];
     }
     return temp_obj;
@@ -45,11 +45,11 @@ exports.sortObj = obj => {
 
 //Splits array into the number size you specify
 exports.splitArray = (array, size) => {
-    let sets = [],
+    var sets = [],
         chunks = array.length / size,
         i = 0;
     //This code creates an array of arrays and its magic don't question it
-    for (let i = 0, j = 0; i < chunks; i++, j += size) {
+    for (var i = 0, j = 0; i < chunks; i++, j += size) {
         sets[i] = array.slice(j, j + size);
     }
     return sets;
@@ -64,7 +64,7 @@ exports.fileLog = err => {
 //Try to get a user object from a typed name
 exports.getName = (msg, name) => {
     //Creates name regex to search by
-    let nameRegex = new RegExp(escapeRegExp(name), "i");
+    var nameRegex = new RegExp(escapeRegExp(name), "i");
     //If not in a guild make the msg.user the msg.author(msg.user doesn't normally exit but it helps me do some commands easier)
     if (!msg.channel.guild) {
         msg.user = msg.author;
