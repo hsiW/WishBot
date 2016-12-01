@@ -1,4 +1,4 @@
-const serverUptime = require('os').uptime(),
+var serverUptime = require('os').uptime(),
     toTitleCase = require('./../../utils/utils.js').toTitleCase;
 
 module.exports = {

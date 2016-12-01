@@ -1,4 +1,4 @@
-const Database = require('./../../utils/database.js');
+var Database = require('./../../utils/database.js');
 
 module.exports = {
     usage: `Used to configure/toggle settings including **automated table unflipping** and **welcome/leave messages**, both of which are off by default. **Welcome/leave messages** are sent in the **channel** in which this command is last used and can be toggled off by leaving the message field **blank**.

@@ -12,6 +12,7 @@ var options = reload('./options/options.json'),
     database = reload('./utils/database.js'),
     processCmd = reload('./utils/commandHandler.js'),
     usageChecker = reload('./utils/usageChecker.js'),
+    playing = reload('./lists/playing.json'), //List of playing status's for the bot to use
     //Unflipped tables for use with the auto-table-unfipper
     unflippedTables = ["┬─┬﻿ ︵ /(.□. \\\\)", "┬─┬ノ( º _ ºノ)", "┬─┬﻿ ノ( ゜-゜ノ)", "┬─┬ ノ( ^_^ノ)", "┬──┬﻿ ¯\\\\_(ツ)", "(╯°□°）╯︵ /(.□. \\\\)"],
     urls = ['https://www.twitch.tv/winningthewaronpants'], //Twitch URLS the bot pulls from to link to in the Streaming Status
@@ -48,7 +49,7 @@ errorC = colour.red.bold;
 //Ready Event
 bot.on("ready", () => {
     //Sets the status's of every shard seperately
-    utils.setRandomStatus(bot, urls)
+    setRandomStatus()
     //This stuff below is sent to the console when the bot is ready
     console.log(`${botC(bot.user.username + ' is now Ready with')} ${errorC(bot.shards.size)} ${botC('Shards.')}`);
     console.log(`Current # of Commands Loaded: ${warningC(Object.keys(commands).length)}`)
@@ -196,6 +197,17 @@ function postGuildCount() {
     }
 }
 
+//Set random bot status(includes random game as well as random streaming url)
+function setRandomStatus() {
+    bot.shards.forEach(shard => {
+        shard.editStatus({
+            name: playing[~~(Math.random() * (playing.length))],
+            type: 1,
+            url: urls[~~(Math.random() * (urls.length))]
+        });
+    })
+}
+
 //Hot Reload ALl Modules
 function reloadModules(msg) {
     try {
@@ -205,6 +217,7 @@ function reloadModules(msg) {
         processCmd = reload('./utils/commandHandler.js');
         usageChecker = reload('./utils/usageChecker.js');
         commandHandler = reload('./utils/commandHandler.js');
+        playing = reload('./lists/playing.json');
         commandLoader.load().then(() => {
             console.log(botC('@' + bot.user.username + ': ') + errorC('Successfully Reloaded All Modules'));
             msg.channel.createMessage('Successfully Reloaded All Modules').then(message => utils.messageDelete(message))
@@ -215,7 +228,7 @@ function reloadModules(msg) {
 }
 
 //Changes the bots status every 10mins
-setInterval(() => utils.setRandomStatus(bot, urls), 6e+5);
+setInterval(() => setRandomStatus(), 6e+5);
 
 //Changes the bots avatar every 2hrs
 setInterval(() => {

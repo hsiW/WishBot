@@ -1,4 +1,4 @@
-const Database = require('./../../utils/database.js');
+var Database = require('./../../utils/database.js');
 
 module.exports = {
     usage: '**Toggles all commands** from **being used in the channel** in which this command is used. **Overrides the muted channel** condition so it can be used in a muted channel.',

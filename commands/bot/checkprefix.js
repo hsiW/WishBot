@@ -1,4 +1,4 @@
-const Database = require('./../../utils/database.js'),
+var Database = require('./../../utils/database.js'),
     options = require('./../../options/options.json');
 
 module.exports = {

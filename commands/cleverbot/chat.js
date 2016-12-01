@@ -1,10 +1,10 @@
-let Cleverbot = require('cleverbot-node'),
+var Cleverbot = require('cleverbot-node'),
     Yuki = new Cleverbot(),
     decode = require('entities').decodeHTML; //Used to decode html stuff
 Cleverbot.prepare(() => {}); //Prepares the cleverbot module for use
 
 module.exports = {
-    usage: "**Chat** with the bot using the **Cleverbot API**.\n\n`chat [text]`\n`@BotMention [text]`",
+    usage: "**Chat** with the bot using the **Cleverbot API**.\n\n`chat [text]`\n`@BotMention [text]` or `chat [text]",
     aliases: ['clever', 'cleverbot', 'talk'],
     process: msg => {
         return new Promise(resolve => {
@@ -15,7 +15,7 @@ module.exports = {
                 if (!response.message) {
                     //Sometimes Cleverbot doesn't return a message which causes the bot to just send blank messages until its rebooted, this does that
                     resolve({
-                        message: "Cleverbot is currently reseting. Please try again in a moment",
+                        message: "Cleverbot is currently reseting. Please try again in a moment.",
                         delete: true
                     });
                     console.log(errorC("Cleverbot was reset because nothing was returned."));

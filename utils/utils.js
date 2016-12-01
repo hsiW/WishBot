@@ -1,5 +1,4 @@
-const playing = require('./../lists/playing.json'), //List of playing status's for the bot to use
-    winston = require('winston'), //Used for logging to file
+const winston = require('winston'), //Used for logging to file
     fileLog = new(winston.Logger)({ //Creates log transport to log to error.log file
         transports: [
             new(winston.transports.File)({
@@ -80,15 +79,4 @@ exports.messageDelete = msg => {
     setTimeout(() => {
         msg.delete();
     }, 5000)
-}
-
-//Set random bot status(includes random game as well as random streaming url)
-exports.setRandomStatus = (bot, urls) => {
-    bot.shards.forEach(shard => {
-        shard.editStatus({
-            name: playing[~~(Math.random() * (playing.length))],
-            type: 1,
-            url: urls[~~(Math.random() * (urls.length))]
-        });
-    })
 }

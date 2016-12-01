@@ -1,4 +1,4 @@
-const Database = require('./../../utils/database.js');
+var Database = require('./../../utils/database.js');
 
 module.exports = {
     usage: '**Toggle commands** on/off. **Not all** commands are togglable. Check their individual **help messages for more info**.\n\n`toggle [command]`',

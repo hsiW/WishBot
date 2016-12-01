@@ -1,4 +1,4 @@
-const utils = require('./../../utils/utils.js'),
+var utils = require('./../../utils/utils.js'),
     admins = require('./../../options/admins.json');
 
 module.exports = {

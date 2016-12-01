@@ -1,5 +1,6 @@
-const getName = require('./../../utils/utils.js').getName,
-    moment = require('moment');
+const moment = require('moment');
+
+var getName = require('./../../utils/utils.js').getName;
 
 module.exports = {
     usage: "Returns **info on the user**, can take a **nickname/username/mention** to return the info of that user. **Requires** embedded links in order for this command to display.\n\n`whois [none] or [user]`",
