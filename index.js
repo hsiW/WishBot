@@ -63,7 +63,7 @@ bot.on("messageCreate", msg => {
     //else if (msg.author.id !== '87600987040120832') return; //Used only if I want to disable the bot for everyone but me while testing/debugging
     else {
         //If used in guild and the guild has a custom prefix set the msgPrefix as such otherwise grab the default prefix
-        let msgPrefix = msg.channel.guild && database.getPrefix(msg.channel.guild.id) !== undefined ? database.getPrefix(msg.channel.guild.id) : options.prefix;
+        var msgPrefix = msg.channel.guild && database.getPrefix(msg.channel.guild.id) !== undefined ? database.getPrefix(msg.channel.guild.id) : options.prefix;
         //Use Eval on the message if it starts with sudo and used by Mei
         if (msg.content.split(" ")[0] === "sudo" && msg.author.id === "87600987040120832") {
             evalInput(msg, msg.content.split(" ").slice(1).join(' '));
@@ -86,7 +86,7 @@ bot.on("messageCreate", msg => {
         }
         //If the message stats with the set prefix
         if (msg.content.startsWith(msgPrefix)) {
-            let formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length), //Format message to remove command prefix
+            var formatedMsg = msg.content.substring(msgPrefix.length, msg.content.length), //Format message to remove command prefix
                 cmdTxt = formatedMsg.split(" ")[0].toLowerCase(), //Get command from the formatted message
                 args = formatedMsg.split(' ').slice(1).join(' '); //Get arguments from the formatted message
             if (commandAliases.hasOwnProperty(cmdTxt)) cmdTxt = commandAliases[cmdTxt]; //If the cmdTxt is an alias of the command
@@ -98,7 +98,7 @@ bot.on("messageCreate", msg => {
 });
 
 function evalInput(msg, args) {
-    let result;
+    var result;
     //Trys to run eval on the text and output either an error or the result if applicable 
     try {
         result = eval("try{" + args + "}catch(err){console.log(err);msg.channel.createMessage(\"```\"+err+\"```\");}");
@@ -234,7 +234,7 @@ setInterval(() => {
     fs.readdir(`${__dirname}/avatars/`, (err, files) => {
         if (err) utils.fileLog(err)
         else {
-            let avatar = files[~~(Math.random() * (files.length))];
+            var avatar = files[~~(Math.random() * (files.length))];
             //Reads the avatar image file and changes the bots avatar to it
             fs.readFile(`${__dirname}/avatars/${avatar}`, (err, image) => {
                 if (err) utils.fileLog(err)
