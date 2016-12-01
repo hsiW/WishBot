@@ -21,8 +21,6 @@ var options = reload('./options/options.json'),
         getAllUsers: true,
         messageLimit: 0,
         maxShards: 8, //Set to lower if hosting yourself as 8 is overkill in most cases(its even overkill for Yuki-chan now)
-        autoReconnect: true,
-        disableEveryone: true,
         disableEvents: {
             TYPING_START: true,
             GUILD_EMOJI_UPDATE: true,
