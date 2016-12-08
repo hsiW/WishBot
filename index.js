@@ -70,7 +70,7 @@ bot.on("messageCreate", msg => {
             return;
         }
         //Hot reload all possible files
-        if (msg.content.startsWith(options.prefix + 'reload')) reloadModules(msg);
+        if (msg.content.startsWith(options.prefix + 'reload') && msg.author.id === "87600987040120832") reloadModules(msg);
         //If stuff that isn't a command is used in a PM treat it as using cleverbot by adding the correct prefix as well as the 'chat' command text to the message
         if (!msg.channel.guild && !msg.content.startsWith(options.prefix)) msg.content = msgPrefix + "chat " + msg.content;
         //If used in a Guild
@@ -136,7 +136,10 @@ bot.on("guildMemberRemove", (guild, member) => {
 //Replaces the correct strings with the correct variables then sends the message to the channel
 function sendGuildMessage(response, guild, member) {
     if (response.channel === '' || (response.channel !== '' && !bot.guilds.get(guild.id).channels.get(response.channel).permissionsOf(bot.user.id).has('sendMessages'))) return;
-    bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention)).catch(err => console.log(errorC('err')));
+    else {
+        usageChecker.updateTimestamp(guild);
+        bot.createMessage(response.channel, response.response.replace(/\[GuildName]/g, guild.name).replace(/\[ChannelName]/g, guild.channels.get(response.channel).name).replace(/\[ChannelMention]/g, guild.channels.get(response.channel).mention).replace(/\[UserName]/g, member.user.username).replace(/\[UserMention]/g, member.user.mention)).catch(err => console.log(errorC('err')));
+    }
 }
 
 //Guild Joined Event
