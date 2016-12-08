@@ -30,7 +30,7 @@ ${this.aliases !== null ? '**Aliases:** ' + this.aliases.map(a => "\`"+a+"\`").j
     exec(msg, args, bot) {
         return new Promise(resolve => { //Commands can take and manipulate the msg object, the command arguments and the bot object 
             //Checks if the command deletes on use as well as if the bot has delete permissions before running the msg deletion
-            if (this.delete && msg.channel.guild && msg.channel.permissionsOf(bot.user.id).has('manageMessages')) msg.delete();
+            if (this.delete && msg.channel.guild && msg.channel.permissionsOf(bot.user.id).has('manageMessages')) msg.delete().catch(err => console.log(errorC(err)));
             this.execTimes++; //Adds 1 the current number of execution times(Uses)
             //Run the command
             this.run(msg, args, bot).then(response => {
