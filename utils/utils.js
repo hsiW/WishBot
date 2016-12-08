@@ -8,7 +8,8 @@ const winston = require('winston'), //Used for logging to file
                 json: false
             })
         ]
-    });
+    }),
+    fs = require('fs');
 
 //Covert string to having just first character uppercase and the rest lowercase
 exports.toTitleCase = str => {
@@ -79,4 +80,21 @@ exports.messageDelete = msg => {
     setTimeout(() => {
         msg.delete();
     }, 5000)
+}
+
+exports.saveFile = (file, data) => {
+    var ext = /(?:\.([^.]+))?$/.exec(file);
+    fs.writeFile(`${file}-temp${ext}`, data, error => {
+        if (error) {
+            console.log(errorC(err))
+        } else {
+            fs.stat(`${file}-temp${ext}`, (err, stats) => {
+                if (err || stats["size"] < 5) {
+                    console.log(errorC(`Did not save ${file} due to error.`))
+                } else {
+                    fs.renameSync(`${__dirname}/${file}-temp${ext}`, `${__dirname}/${file}${ext}`)
+                }
+            });
+        }
+    });
 }
