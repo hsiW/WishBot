@@ -86,7 +86,7 @@ ${this.aliases !== null ? '**Aliases:** ' + this.aliases.map(a => "\`"+a+"\`").j
     //Used to check if the user has the correct permissions for the command if it has any additonal permissions
     permissionsCheck(msg) {
         var hasPermssion = true;
-        if (this.permissions != null) {
+        if (this.permissions != null && msg.channel.guild) {
             var permissionKeys = Object.keys(this.permissions),
                 userPermissions = msg.channel.permissionsOf(msg.author.id).json;
             for (var key of permissionKeys) {
