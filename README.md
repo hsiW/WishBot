@@ -1,6 +1,6 @@
 WishBot Core [![Dependant Status](https://david-dm.org/hsiw/WishBot/status.svg?style=flat-square)](https://david-dm.org/hsiw/WishBot) [![License](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000&style=flat-square)](./LICENSE) [![GitHub forks](https://img.shields.io/github/forks/hsiw/WishBot.svg?style=flat-square)](https://github.com/hsiw/WishBot/network) [![GitHub stars](https://img.shields.io/github/stars/hsiw/WishBot.svg?style=flat-square)](https://github.com/hsiw/WishBot/stargazers) [![eris](https://img.shields.io/badge/js-eris-blue.svg?style=flat-square)](https://abal.moe/Eris/) [![Discord](https://discordapp.com/api/guilds/136258746123943937/widget.png)](https://discord.gg/0lBiROCNVaGw5Eqk)
 ====
-###How the command system works:
+### How the command system works:
 ```js
 //File should be the name of the command (example test.js will make the command 'test')
 //The folder name will define the command type, mod and admin commands require additional permissions
